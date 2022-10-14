@@ -1,0 +1,39 @@
+     25%
+     
+            Ingreso al sistema
+1- El usuario Ingresa nombre usuario/mail y password.
+2- El sistema verifica que el usuario exista
+3- Se muestra mensaje de bienvenida y pantalla inicial 
+
+            Registro del usuario al sistema
+1- El usuario ingresa los datos solicitados por el sistma (usuario,email, contraseña, nombre, apellido).  
+2- El sistema valida el nombre de usuario y el email existan en la plataforma y verifica que los datos ingresados sean correctos.
+3- El usuario tendra la opcion de decidir si quiere ser prestador de servicios o no en el proceso de registro( puedo hacerlo en otro momento ). 
+4. En caso de aceptar el punto 3, podra selecionar entre los tipos de servicio que tenga la plaforma los cuales quiera prestar.
+
+            Buscar Un servicio por localidad
+1- Se visualizara una vista con los campos de informacion personal que el usuario tiene actualmente y con los campos que le hacen falta completar para poder usar el sistema. 
+2- Se le dara una sugerencia al usuario de los campos que debe completar.
+3- El usuario podra cambiar su rol a prestador en caso de ser usuario comun.  
+4- Podra subir una imagen de perfil y hasta 5 fotos de publicidad en caso ser usuario prestador de servicios. 
+5- El sistema validara los cambios una vez el usuario finalice la edicion y guarde los cambios de su perfil.
+
+    50%
+    Usuario podra modificar en todo momento los datos y estados de la prestacion. 
+
+1- Usuario accede a menu de sus prestaciones
+2- Sistema mapea los datos del usuario y presenta en pantalla
+3- Usuario guarda la nueva informacion 
+
+    Se busca un servicio dependiendo de la localidad 
+
+1-El usuario selecciona la provincia y localidad.                                                                                
+2-El usuario visualiza los prestadores mejor votados que esten disponible y que se encuentren en esa zona. Ademas, podra seleccionar el tipo de servicio que busca.                                                                                             
+3- Adicionalmente se mostrara un filtrado con la lista de categorias de servicios disponibles en la plataforma 
+4- Si se selecciona un tipo de servicio se listaran los prestadores mejor votados que se encuentren disponibles de esa  tegoria.                                                        
+5- Si no se encuentran disponibles prestadores de esa categoria en la zona solicitada, se mostrara un aviso para dar la opcion que se vean los prestadores disponibles de las localidades cercanas(geolocalizacion) de esa categoria.
+
+    El usuario prestador administrar su disponibilidad de manera manual o programada ( meses/dias/ horarios ) esto mostrara visualmente dicho estado al momento de visualizar su perfil
+
+1- La seccion disponibilidad (en las opc de nuevo/editar de servicios prestados, se pre cargan los datos meses / dias / horarios )
+2- Al buscar servicios, el prestador que posea esta opcion sera visible en su perfil de forma que sea mas perseptible en el perfil
