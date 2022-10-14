@@ -96,8 +96,8 @@ const SideBar = (props) => {
                     ))}
                 </ul>
             </div>
-            <div className={`${open ? 'md:pl-64' : 'md:pl-24'} lg:mr-[310px] h-auto flex flex-around p-2 md:p-0  duration-300 w-full md:ml-2   md:flex-1 `}>
-                <div className="w-full lg:px-10">
+            <div className={`${open ? 'md:pl-64' : 'md:pl-24'} lg:mr-[310px] h-auto flex flex-around p-2 md:p-0  duration-500 w-full md:ml-2   md:flex-1 `}>
+                <div className="w-full lg:px-20">
                     <Header>
 
                     </Header>
@@ -106,7 +106,7 @@ const SideBar = (props) => {
                 </div>
                 {/* <AppHeader /> */}
             </div>
-            <div className={'lg:w-[310px] float-right overflow-auto lg:flex-col hidden lg:flex lg:fixed h-screen right-0 bg-gray-700 text-white-ghost ml-2 p-1 border-l border-gray-100'} >
+            <div className={'lg:w-[310px] float-right overflow-auto lg:flex-col hidden lg:flex lg:fixed h-screen right-0 bg-transparent text-white-ghost ml-2 p-1 border-l dark:bg-gray-900  border-gray-500 dark:border-gray-100'} >
 
                 <Card />
                 <Card />
