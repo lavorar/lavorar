@@ -77,6 +77,7 @@ const SideBar = (props) => {
                                 } `}
                             >
                                 <div
+                                    
                                     onClick={() => { Menu.href ? navigate(Menu.href) : '' }}
                                     className={`cursor-pointer  duration-300  text-gray-900  dark:text-white-ghost`}>
                                     <IconWithButton
@@ -108,6 +109,10 @@ const SideBar = (props) => {
             </div>
             <div className={'lg:w-[310px] float-right overflow-auto lg:flex-col hidden lg:flex lg:fixed h-screen right-0 bg-gray-700 text-white-ghost ml-2 p-1 border-l border-gray-100'} >
 
+                <Card />
+                <Card />
+                <Card />
+                <Card />
                 <Card />
                 <Card />
                 <Card />

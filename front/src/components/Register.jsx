@@ -3,36 +3,29 @@ import { useState } from "react";
 import { useAuth } from "../context/authContext";
 import { useNavigate, Link } from "react-router-dom";
 
+import axios from 'axios'
 import { Alert } from "./Alert";
 
 export function Register() {
-  const [user, setUser] = useState({ email: "", password: "" });
+  const [user, setUser] = useState({ email: "", password: "",username:'', name: ''});
   const { signup } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState();
   const handleChange = ({ target: { name, value } }) => {
     setUser({ ...user, [name]: value });
   };
-
+  const endpoint = "http://localhost:1337/api/users";
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await signup(user.email, user.password, user.name, user.surName);
-      navigate("/");
-      setError("");
-    } catch (error) {
-      console.log(error.code);
-      if (error.code === "auth/invalid-email") {
-        setError("Mensaje del servidor: mail o clave incorrecta");
-      }
-      if (error.code === "auth/user-not-found") {
-        setError("Mensaje del servidor: Cuenta no existe");
-      }
-
-      // setError(error.message);
-    }
-
-    // console.log(user);
+    await axios
+      .post(endpoint, { email: user.email, password: user.password , username: user.email, })
+      .then(function (response) {
+        console.log(response.data);
+        // setcategories(response.data);
+      })
+      .catch(function (error) {
+        console.error("error", error.response);
+      });
   };
 
   return (
