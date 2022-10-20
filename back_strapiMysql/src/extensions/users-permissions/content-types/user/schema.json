@@ -110,6 +110,12 @@
       "relation": "oneToMany",
       "target": "api::review.review",
       "mappedBy": "users_review_creator"
+    },
+    "phone": {
+      "type": "biginteger"
+    },
+    "is_lender": {
+      "type": "boolean"
     }
   }
 }

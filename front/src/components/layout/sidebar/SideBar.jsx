@@ -41,10 +41,10 @@ const SideBar = (props) => {
         <div className="flex md:flex-row h-auto  bg-gray-100 dark:bg-gray-900">
             <div
                 className={` ${open ? "w-64" : "w-24 "
-                    } hidden md:flex  flex-col bg-transparent border-0 border-r border-gray-500 dark:border-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white-ghost h-full p-3 z-20 fixed pt-8  duration-300`}
+                    } overflow-y-auto hidden md:flex  flex-col bg-transparent border-0 border-r border-gray-500 dark:border-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white-ghost h-full p-3 z-20 fixed pt-8  duration-300`}
             >
                 <div
-                    className={`absolute cursor-pointer group -right-5 top-11
+                    className={`absolute  cursor-pointer group -right-5 top-11
                             rounded-full  ${!open && "rotate-180"}`}>
                     <IconWithButton
                         onClick={() => setOpen(!open)}

@@ -38,8 +38,14 @@ const resetPassword = (email) =>{
 export function AuthProvider({ children }) {
   const signup = (email, password) =>
     createUserWithEmailAndPassword(auth, email, password);
-  const login = async (email, password) =>
-    signInWithEmailAndPassword(auth, email, password);
+  const login = async (user) => {
+    console.log(user)
+    const { data } = await axios.post('http://localhost:1337/api/auth/local', {
+      identifier: user.email,
+      password: user.password,
+    })
+    return data
+  }
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const logout = () => {signOut(auth)};

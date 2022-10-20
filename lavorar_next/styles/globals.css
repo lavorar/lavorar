@@ -1,0 +1,8 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+#_next {
+  --tw-bg-opacity: 1;
+  background-color: #000000;
+}
