@@ -3,7 +3,8 @@ import { useContext, useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { authContext, useAuth } from "../context/authContext";
 import HomeSearchBar from "./layout/elements/HomeSearchBar";
-import axios from 'axios'
+import axios from 'axios';
+import locations from "./city.json";
 
 export function Home() {
   const { user, loading } = useAuth();
@@ -11,22 +12,23 @@ export function Home() {
   const navigate = useNavigate("/");
   const endpoint = 'http://localhost:1337/api/categories'
 
-  useEffect(() => {
-    getAllCategories()
-  }, [])
+  
+  // useEffect(() => {
+  //   getAllCategories()
+  // }, [])
 
-  const getAllCategories = async () => {
-    await axios.get(endpoint)
-      .then(function (response) {
-        //console.log("success", response.data);
-        setcategories(response.data)
-      })
-      .catch(function (error) {
-        console.error('error', error.response);
-      });
-  }
+  // const getAllCategories = async () => {
+  //   await axios.get(endpoint)
+  //     .then(function (response) {
+  //       //console.log("success", response.data);
+  //       setcategories(response.data)
+  //     })
+  //     .catch(function (error) {
+  //       console.error('error', error.response);
+  //     });
+  // }
 
-  console.log(categories);
+  // console.log(locations);
 
   if (loading) return <h1>Loading...</h1>;
   return (
