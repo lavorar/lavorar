@@ -13,7 +13,7 @@ const Card = (props) => {
           <div className="flex flex-row">
             <img
               className="mb-5 w-14 h-14 p-4 rounded-full shadow-lg bg-zinc-500 "
-              src="logo.png"
+              src="vercel.svg"
               alt="img"
             />
 

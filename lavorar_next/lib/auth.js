@@ -11,7 +11,7 @@ export const setToken = (data) => {
     Cookies.set('jwt', data.jwt);
 
     if (Cookies.get('username')) {
-        Router.reload('/');
+        //  Router.reload();
     }
 };
 

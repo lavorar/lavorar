@@ -15,12 +15,8 @@ export default function Example(props) {
     const { user, loading } = useUser();
     const navigate = useRouter()
     const handleLogout = async () => {
-        try {
-            await unsetToken();
-        } catch {
-            console.log(error);
-        }
-        navigate.push("/");
+        unsetToken();
+
     };
     return (
         <div className="text-right">
@@ -112,10 +108,10 @@ export default function Example(props) {
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <button
-                                                        onClick={() => [navigate('/login')]}
-                                                        className={`${active ? 'bg-opacity-90  ' : ' '}  group flex w-full items-center rounded-full px-10 py-2 text-md bg-[#0343F5] bg-gradient bg-gradient-to-l text-white-ghost`}
+                                                        onClick={() => [navigate.push('/login')]}
+                                                        className={`${active ? 'bg-opacity-90  ' : ' '}  group flex w-full items-center rounded-full px-10 py-2 text-md  bg-gradient-to-r from-sky-500 to-blue-700 text-white-ghost`}
                                                     >
-                                                        <div className={`rounded-full mr-3 ${active ? ' ' : 'bg-[#0343F5]'} h-9 w-9 p-1 text-white-ghost`}>
+                                                        <div className={`rounded-full mr-3 h-9 w-9 p-1 text-white-ghost`}>
                                                             <LoginRoundedIcon />
                                                         </div>
                                                         Iniciar Sesion

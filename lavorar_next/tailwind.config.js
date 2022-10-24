@@ -12,6 +12,7 @@ module.exports = {
       colors: {
         "orange-brand": "#FF8A00",
         "orange-high": "#FFAA2B",
+        "orange-pastel": "#ff9a22 ",
         "white-ghost": "rgb(250,250,250)",
       },
     },

@@ -50,17 +50,17 @@ const Header = (props) => {
   return (
     <>
       <nav className="bg-gradient-to-r
-      from-gray-300
-      via-gray-200
+      from-gray-100
+      via-gray-400
       to-gray-200 
       dark:bg-gradient-to-r
-      dark:from-gray-900
-      dark:via-gray-800
-      dark:to-gray-700 text-gray-900 dark:text-white-ghost px-2 sm:px-4 p-0 sticky w-full z-10 top-0 py-1 left-0">
+      dark:from-[#1B2232]
+      dark:via-gray-600
+      dark:to-gray-800 text-gray-900  dark:text-white-ghost px-2 sm:px-4 p-0 sticky w-full z-10 top-0 py-1 left-0">
         <div className="container flex justify-between md:justify-end h-16 items-center mx-auto px-2">
-          <a href="https://flowbite.com/" className="flex items-center md:invisible ">
-            <img src="/Lavorar-logo-negativo.svg" className="mr-6 w-16" alt="LAvorar Logo" />
-            <span className="self-center text-xl font-semibold whitespace-nowrap hidden dark:text-white">Flowbite</span>
+          <a href="/" className="flex items-center md:invisible ">
+            <img src="/Lavorar-logo-negativo.svg" className="mr-2 w-16" alt="LAvorar Logo" />
+            <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Lavorar</span>
           </a>
           <div className="flex md:order-2 ">
 

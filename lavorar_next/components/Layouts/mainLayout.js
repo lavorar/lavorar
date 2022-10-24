@@ -25,7 +25,7 @@ const Layout = ({ user, loading = false, children }) => {
     const Menus = [
         { title: "Inicio", src: <HomeRoundedIcon fontSize={'large'} />, always: true, href: '/' },
         { title: "Explorar", src: <ExploreRoundedIcon fontSize={'large'} />, always: true },
-        { title: "Mi Perfil", src: <PersonRoundedIcon fontSize={'large'} />, always: user ? true : false, gap: true },
+        { title: "Mi Perfil", src: <PersonRoundedIcon fontSize={'large'} />, always: user ? true : false, gap: true , href: '/profile'},
         { title: "Guardado", src: <BookmarkOutlinedIcon fontSize={'large'} />, always: user ? true : false },
         { title: "Mis Trabajos", src: <WorkRoundedIcon fontSize={'large'} />, always: user ? true : false },
         { title: "Horario y Agenda", src: <EventAvailableRoundedIcon fontSize={'large'} />, always: user ? true : false },
@@ -55,10 +55,10 @@ const Layout = ({ user, loading = false, children }) => {
                 <div className="flex md:flex-row h-auto ">
                     <div
                         className={` ${open ? "w-64" : "w-24 "
-                            } hidden md:flex z-50  flex-col bg-transparent border-0 border-r border-gray-500 dark:border-gray-100  text-gray-900 dark:text-white-ghost h-full p-3  fixed pt-8  duration-300`}
+                            } hidden md:flex z-50  flex-col bg-transparent border-0 border-r border-gray-500 dark:border-gray-100  text-gray-900 dark:text-white-ghost h-full p-3  fixed pt-8  duration-500`}
                     >
                         <div
-                            className={`absolute  cursor-pointer group -right-5 top-5
+                            className={`absolute  cursor-pointer group -right-5 top-10
                             rounded-full duration-300  ${!open && "rotate-180"}`}>
                             <IconWithButton
                                 onClick={() => setOpen(!open)}
@@ -66,7 +66,7 @@ const Layout = ({ user, loading = false, children }) => {
                                 <ArrowBackIosNewRoundedIcon fontSize="small" />
                             </IconWithButton>
                         </div>
-                        <div className="flex mt-10 flex-row gap-x-2 justify-start items-center ">
+                        <div className="flex flex-row gap-x-2 justify-start items-center ">
                             <img
                                 src="/Lavorar-logo-negativo.svg"
                                 className={`cursor-pointer duration-500 ${open ? "w-20" : "w-14 ml-1 "
@@ -110,22 +110,26 @@ const Layout = ({ user, loading = false, children }) => {
                             ))}
                         </ul>
                     </div>
-                    <div className={`${open ? 'md:pl-64' : 'md:pl-24'} z-10 lg:mr-[310px] h-auto flex flex-around p-2 md:p-0  duration-500 w-full md:ml-2   md:flex-1 `}>
-                        <div className="w-full ">
+                    <div className={`${open ? 'md:pl-64' : 'md:pl-24'}  z-10 lg:mr-[310px] h-auto flex flex-around p-2 md:p-0  duration-500 w-full md:ml-2   md:flex-1 `}>
+                        <div className="w-full  ">
                             <Header>
 
                             </Header>
+                            <div className='pt-5 md:p-10'>
+
                             {children}
+                            </div>
 
                         </div>
                         {/* <AppHeader /> */}
                     </div>
-                    <div className={'lg:w-[310px] float-right overflow-auto lg:flex-col hidden lg:flex lg:fixed h-screen right-0 bg-transparent text-white-ghost ml-2 p-1 border-l  border-gray-500 dark:border-gray-100'} >
-
+                    <div className={'lg:w-[310px] float-right overflow-auto lg:flex-col hidden lg:flex lg:fixed h-screen right-0 bg-transparent ml-2 p-1 border-l  border-gray-500 dark:border-gray-100'} >
+                       <div className='pt-16' >
                         <Card />
                         <Card />
                         <Card />
                         <Card />
+                        </div>         
                     </div>
                 </div >
                 <NavMobile />

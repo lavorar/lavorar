@@ -26,12 +26,6 @@
       "relation": "oneToMany",
       "target": "api::category.category",
       "mappedBy": "province"
-    },
-    "users_permissions_users": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "plugin::users-permissions.user",
-      "mappedBy": "province"
     }
   }
 }

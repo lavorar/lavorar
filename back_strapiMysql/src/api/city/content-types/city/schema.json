@@ -21,12 +21,6 @@
       "target": "api::province.province",
       "inversedBy": "cities"
     },
-    "users_permissions_users": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "plugin::users-permissions.user",
-      "mappedBy": "city"
-    },
     "categories": {
       "type": "relation",
       "relation": "oneToMany",

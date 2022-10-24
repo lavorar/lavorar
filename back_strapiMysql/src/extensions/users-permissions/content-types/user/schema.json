@@ -75,29 +75,11 @@
       "target": "api::category.category",
       "inversedBy": "users"
     },
-    "city": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::city.city",
-      "inversedBy": "users_permissions_users"
-    },
-    "province": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::province.province",
-      "inversedBy": "users_permissions_users"
-    },
     "service_recruiter": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::service.service",
       "mappedBy": "users_recruiter"
-    },
-    "roles": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::rol.rol",
-      "inversedBy": "users_roles"
     },
     "lender": {
       "type": "relation",
@@ -116,6 +98,18 @@
     },
     "is_lender": {
       "type": "boolean"
+    },
+    "aboutme": {
+      "type": "richtext"
+    },
+    "birth": {
+      "type": "date"
+    },
+    "province": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
     }
   }
 }

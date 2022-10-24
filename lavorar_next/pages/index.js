@@ -9,7 +9,7 @@ export default function Home() {
     <Layout user={user} >
       <div className="flex flex-col  items-center w-full p-1 text-black">
         {/* <HomeSearchBar /> */}
-        <div className="mt-10 flex flex-wrap justify-evenly duration-300 gap-4 lg:gap-8 w-full lg:px-5">
+        <div className="mt-10 flex flex-wrap  justify-evenly  gap-4 lg:gap-8 w-full lg:px-5">
           <Card />
           <Card />
           <Card />
