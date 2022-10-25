@@ -4,7 +4,7 @@ import { useFetchUser, useUser } from "../lib/authContext";
 
 export default function Home() {
   const { user, loading } = useFetchUser();
-  console.log(user)
+  //console.log(user)
   return (
     <Layout user={user} >
       <div className="flex flex-col  items-center w-full p-1 text-black">

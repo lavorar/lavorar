@@ -6,10 +6,12 @@ export default function FormProvider({ children }) {
     const [data, setData] = useState({});
 
     const setFormValues = (values) => {
+        console.log('valores',values)        
         setData((prevValues) => ({
             ...prevValues,
             ...values,
         }));
+        console.log('datos', data)
     };
 
     return (

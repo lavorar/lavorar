@@ -63,17 +63,16 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "name": {
+    "firstName": {
       "type": "string"
     },
-    "surname": {
+    "lastName": {
       "type": "string"
     },
     "categories": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::category.category",
-      "inversedBy": "users"
+      "relation": "oneToMany",
+      "target": "api::category.category"
     },
     "service_recruiter": {
       "type": "relation",

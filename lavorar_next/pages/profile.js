@@ -13,6 +13,7 @@ import ButtonCard from '../components/elements/ButtonCard';
 
 const Profile = ({ avatar }) => {
     const { user, loading } = useFetchUser();
+    console.log(user)
     const [image, setImage] = useState(null);
     const router = useRouter();
 
@@ -48,7 +49,7 @@ const Profile = ({ avatar }) => {
                             <h1 className="text-5xl text-center font-bold">
                                 Bienvenido {' '}
                                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">
-                                    {user.name + ' ' + user.surname}
+                                    {user.firstName + ' ' + user.lastName}
                                 </span>
                                 <span>👋</span>
                             </h1>
@@ -65,7 +66,7 @@ const Profile = ({ avatar }) => {
 
                                         <div className="pl-5 flex flex-col">
                                             <div className="flex justify-center items-center text-3xl ">
-                                                {user.name + ' ' + user.surname}
+                                                {user.firstName + ' ' + user.lastName}
                                                 <VerifiedIcon sx={{ fontSize: 30 }} className="pl-1" />
                                             </div>
                                             <div className="flex justify-start items-center pt-2">
@@ -93,7 +94,7 @@ const Profile = ({ avatar }) => {
                                     <BasicRating />
                                 </div>
                                 <h5 className="  pt-2 mx-2  mb-1 px-1 text-base font-medium ">
-                                   { user.aboutme ? user.aboutme : 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumend    laboriosam, quod aut officiis ea deleniti repellat nisi delectus magnam reiciendis?'}
+                                    {user.aboutme ? user.aboutme : 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumend    laboriosam, quod aut officiis ea deleniti repellat nisi delectus magnam reiciendis?'}
                                 </h5>
                             </div>
 
@@ -103,9 +104,16 @@ const Profile = ({ avatar }) => {
                                         Skills
                                     </span>
                                     <div className='flex'>
+                                        {user.categories? 
+                                        user.categories.map((categorie) => (
+                                            <ButtonCard text={categorie.name} />
+                                        )) 
+                                        :
+                                         <>
+                                        </>}
+                                        {/* <ButtonCard text="Categoria" />
                                         <ButtonCard text="Categoria" />
-                                        <ButtonCard text="Categoria" />
-                                        <ButtonCard text="Categoria" />
+                                        <ButtonCard text="Categoria" /> */}
                                     </div>
                                 </div>
                                 <div className='flex flex-row gap-20  py-3 justify-start items-center'>
