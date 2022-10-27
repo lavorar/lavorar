@@ -42,37 +42,48 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
 
     const { register, handleSubmit, reset, formState } = useForm(formOptions);
     const { errors } = formState;
-    const onSubmit = (values) => {
-        values.username = values.email      
-        setFormValues(values);
-        nextFormStep();
+    const onSubmit = async (values) => {        
         // setFormValues(data);
-        // try {
-        //     const responseData = await fetcher(
-        //         `${process.env.NEXT_PUBLIC_STRAPI_URL}/auth/local/register`,
-        //         {
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //             },
-        //             body: JSON.stringify({
-        //                 email: userData.email,
-        //                 password: userData.password,
-        //                 username: userData.email,
-        //                 name: userData.name,
-        //                 surname: userData.surname,
-        //                 birth: userData.birth,
-        //             }),
-        //             method: 'POST',
-        //         }
-        //     );
-        //     setregistration(true)
-        //     console.log(responseData)
-        //     setToken(responseData);
-        //     setUser({ ...user, user: responseData.user, jwt: responseData.jwt })
-        //     console.log('id user', user)
-        // } catch (error) {
-        //     console.error(error);
-        // }
+         try {
+             const responseData = await fetcher(
+                 `${process.env.NEXT_PUBLIC_STRAPI_URL}/auth/local/register`,
+                 {
+                     headers: {
+                         'Content-Type': 'application/json',
+                     },
+                     body: JSON.stringify({
+                         email: values.email,
+                         password: values.password,
+                         username: values.email,
+                         name: values.name,
+                         surname: values.surname,
+                         birth: values.birth,
+                     }),
+                     method: 'POST',
+                 }
+             );  
+             console.log('response', responseData)
+             if (responseData.user)
+             {
+                 console.log('user', responseData.user)
+                 values.jwt = responseData.jwt
+                 values.id = responseData.user.id
+                 setFormValues(values);
+                 nextFormStep();
+                 //setregistration(true)
+                 console.log(responseData)
+                 setToken(responseData);  
+             }
+             else{
+                alert('el email ya esta tomado')
+             }
+                       
+            //  setUser({ ...user, user: responseData.user, jwt: responseData.jwt })
+              
+         } catch (error) {
+             console.error(error);
+         }
+        
     };
 
     // const handleLender = async (e) => {

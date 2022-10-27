@@ -9,49 +9,71 @@ export default function FormCompleted() {
     const router = useRouter();
 
     function delay(time) {
-        return new Promise(resolve => setTimeout(resolve, time));
+        return new  Promise((resolve) => {
+            setTimeout(() => {
+                resolve(register());
+            }, time);
+        });
     }
 
     async function test() {
         console.log('start timer');
-        await delay(1000);
-        console.log('after 1 second');
+        await delay(2500);
+        console.log('after 2 second');
     }
 
     test();
 
-    const redirection = async (inputValue) => {
+    const register = async () => {
+        // try {
+        //     const responseData = await fetcher(
+        //         `${process.env.NEXT_PUBLIC_STRAPI_URL}/auth/local/register`,
+        //         {
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //             },
+        //             body: JSON.stringify(data),
+        //             method: 'POST',
+        //         }
+        //     );
+        //     // setregistration(true)
+        //     console.log(responseData)
+        //     setToken(responseData);
+        //     router.replace('/')            
+        //     // setUser({ ...user, user: responseData.user, jwt: responseData.jwt })
+        //     // console.log('id user', user)
+        // } catch (error) {
+        //     console.error(error);
+        // }
+
         try {
-            const responseData = await fetcher(
-                `${process.env.NEXT_PUBLIC_STRAPI_URL}/auth/local/register`,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                    method: 'POST',
-                }
-            );
-            // setregistration(true)
-            console.log(responseData)
-            setToken(responseData);
-            router.replace('/')
-            // setUser({ ...user, user: responseData.user, jwt: responseData.jwt })
-            // console.log('id user', user)
-        } catch (error) {
-            console.error(error);
-        }
+             const responseData = await fetcher(
+                 `${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${data.id}`,
+                 {
+                     headers: {
+                         'Content-Type': 'application/json',
+                         Authorization: `Bearer ${data.jwt}`,
+                     },
+                     body: JSON.stringify(data),
+                     method: 'PUT',
+                 }
+             );
+             console.log(responseData)
+
+         } catch (error) {
+             console.error(error);
+         }
 
     };
 
-    const promiseOptions = () =>
-        new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(redirection());
-            }, 1000);
-        });
+     const promiseOptions = () =>
+         new Promise((resolve) => {
+             setTimeout(() => {
+                 resolve(redirection());
+             }, 2000);
+         });
 
-    promiseOptions()
+    // promiseOptions()
     return (
         <>
             <h1 className="text-5xl text-center font-bold">

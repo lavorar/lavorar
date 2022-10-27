@@ -65,9 +65,9 @@ const Profile = ({ avatar }) => {
                                         />
 
                                         <div className="pl-5 flex flex-col">
-                                            <div className="flex justify-center items-center text-3xl ">
+                                            <div className="flex justify-start items-end text-3xl ">
                                                 {user.firstName + ' ' + user.lastName}
-                                                <VerifiedIcon sx={{ fontSize: 30 }} className="pl-1" />
+                                                <VerifiedIcon sx={{ fontSize: 30 }} className="ml-2" />
                                             </div>
                                             <div className="flex justify-start items-center pt-2">
                                                 <LocationOnIcon sx={{ fontSize: 20 }} /> <div className="text-xl pl-1">
@@ -106,7 +106,7 @@ const Profile = ({ avatar }) => {
                                     <div className='flex'>
                                         {user.categories? 
                                         user.categories.map((categorie) => (
-                                            <ButtonCard text={categorie.name} />
+                                            <ButtonCard  key={categorie.id} text={categorie.name} />
                                         )) 
                                         :
                                          <>

@@ -7,6 +7,7 @@ import Select from 'react-select'
 import { useQuery } from 'react-query';
 import axios from 'axios'
 import { components } from "react-select";
+import AsyncSelect from 'react-select'
 
 
 const LenderOptions = ({ formStep, nextFormStep }) => {
@@ -31,53 +32,85 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
         return data
     }
 
-    const { data, isFetching, error } = useQuery('todos', getCategories)
+    const { data, isFetching, error } = useQuery(['todos'], getCategories, { staleTime: Infinity })
 
 
-    const options = []
-    if (!isFetching) {
-        data.data.map((categorie) => (
-            options.push({
-                value: categorie.attributes.name,
-                label: categorie.attributes.name,
-                name: categorie.attributes.name,
-                id: categorie.id
-            })
-        ))
-    }
+    // const options = []
+    // if (!isFetching) {
+    //     data.data.map((categorie) => (
+    //         options.push({
+    //             value: categorie.attributes.name,
+    //             label: categorie.attributes.name,
+    //             name: categorie.attributes.name,
+    //             id: categorie.id
+    //         })
+    //     ))
+    // }
+    // const [categories, setcategories ] = useState([])
+    // if (!isFetching) {
+    //     setcategories(data.data)
+    // }
+    //console.log(data?.data)
 
-
-    const validationSchema = Yup.object().shape({
-        aboutme: Yup.string()
-            .required('Ingresa una descripcion!'),
-        categories: Yup.object()
-            .required('debes selecionar una categoria')
-    });
-    const formOptions = { resolver: yupResolver(validationSchema) };
 
     const { setFormValues } = useFormData();
 
     const { handleSubmit, control, formState } = useForm({
     });
     const { errors } = formState;
-    const [errorCategorie, seterrorCategorie] = useState(null)
 
     const onSubmit = (values) => {
-        console.log('values', values)
+        // console.log('values', values)
+        values.province = values.province.Localidad_censal.nombre
+        values.city = values.city.nombre
         setFormValues(values);
         nextFormStep();
-        if (selectedOptions.length === 0) {
-            seterrorCategorie(false)
-        }
     };
 
-    const [selectedOptions, setSelectedOptions] = useState([]);
+
+
+    const getProvinces = async () => {
+        const { data } = await axios.get(`https://apis.datos.gob.ar/georef/api/provincias?campos=id,nombre`)
+        return data
+    }
+
+    const provinces = useQuery(['provinces'], getProvinces, { staleTime: Infinity })
+    const [cityId, setcityId] = useState(null)
+    const [cityValue, setcityValue] = useState(null)
+
+    const getCitys = async (cityId) => {
+        if (cityId) {
+            const { data } = await axios.get(`https://apis.datos.gob.ar/georef/api/localidades?provincia=${cityId}&campos=id,localidad_censal,nombre&max=400`)
+            // console.log(data.localidades)
+            data.localidades.map((localidad) => (
+                localidad.nombre = localidad.localidad_censal.nombre
+            ))
+            return data
+        }
+        return
+    }
+
+    const citys = useQuery(
+        ['citys', cityId],
+        () => getCitys(cityId),
+        {
+            enabled: Boolean(cityId),
+            staleTime: Infinity
+        }
+    )
+    const handleProvinceChange = (e) => {
+        control._formValues.province = e
+        setcityId(e.id)
+        control._formValues.city = undefined
+        setcityValue({ id: 1, name: 'ingresa una cuidad', label: 'ingresa una cuidad' })
+    }
+
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
             className={`${formStep === 2 ? 'block' : 'hidden'}`}
         >
-            <section className={'text-black my-3'}>
+            <div className="flex flex-col text-black">
                 <label className='mb-5 dark:text-gray-50'>Categoria</label>
                 <Controller
                     className='mt-5 '
@@ -86,57 +119,66 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
                         <Select
                             components={{ Menu }}
                             {...field}
-                            options={options}
+                            options={data?.data}
                             isMulti
+                            placeholder='Habilidad o rubro al que te dedicas'
                             id="categories" instanceId="categories"
                             isValidNewOption={isValidNewOption}
+                            getOptionLabel={(option) => option.attributes.name}
+                            getOptionValue={(option) => option.id} // It should be unique value in the options. E.g. ID
                         />
                     )}
                     name="categories"
                     control={control}
                 />
                 <p className={` ${errors.categories ? 'text-orange-high block' : 'invisible'}  `}>{'Debes ingresar al menos una categoria'}</p>
-            </section>  
-            {/* <section className={'text-black my-3'}>
+            </div>
+            <div className="flex flex-col text-black">
                 <label className='mb-5 dark:text-gray-50'>Provincia</label>
                 <Controller
                     className='mt-5 '
                     rules={{ required: true }}
                     render={({ field }) => (
-                        <Select
-                            components={{ Menu }}
+                        <AsyncSelect
                             {...field}
-                            options={options}
-                            isMulti
+                            placeholder='Provincia'
+                            options={provinces.data?.provincias}
+                            isDisabled={provinces.isLoading}
+                            onChange={handleProvinceChange}
                             id="province" instanceId="province"
-                            isValidNewOption={isValidNewOption}
+                            getOptionLabel={(option) => option.nombre}
+                            getOptionValue={(option) => option.id} // It should be unique value in the options. E.g. ID
                         />
                     )}
                     name="province"
                     control={control}
                 />
-                <p className={` ${errors.province ? 'text-orange-high block' : 'invisible'}  `}>{'Debes ingresar al menos una categoria'}</p>
-            </section>
-            <section className={'text-black my-3'}>
-                <label className='mb-5 dark:text-gray-50'>Localidad</label>
+                <p className={` ${errors.province ? 'text-orange-high block' : 'invisible'}  `}>{'Debes seleccionar una provincia'}</p>
+            </div>
+            <div className="flex flex-col text-black">
+                <label className='mb-5 dark:text-gray-50'>Provincia</label>
                 <Controller
                     className='mt-5 '
                     rules={{ required: true }}
                     render={({ field }) => (
-                        <Select
-                            components={{ Menu }}
+                        <AsyncSelect
                             {...field}
-                            options={options}
-                            isMulti
+                            value={cityValue}
+                            onChange={(e) => { setcityValue(e), control._formValues.city = e }}
+                            placeholder='Ingresa una Ciudad'
+                            options={citys.data?.localidades}
                             id="city" instanceId="city"
-                            isValidNewOption={isValidNewOption}
+                            defaultOptions={[{ id: 0, label: "Loading..." }]}
+                            isDisabled={!citys.data?.localidades}
+                            getOptionLabel={(option) => option.nombre}
+                            getOptionValue={(option) => option.id} // It should be unique value in the options. E.g. ID
                         />
                     )}
                     name="city"
                     control={control}
                 />
-                <p className={` ${errors.city ? 'text-orange-high block' : 'invisible'}  `}>{'Debes ingresar al menos una categoria'}</p>
-            </section>              */}
+                <p className={` ${errors.city ? 'text-orange-high block' : 'invisible'}  `}>{'Debes seleccionar una ciudad'}</p>
+            </div>
             <button
                 className='block mb-6 text-gray-900 bg-orange-pastel text-lg rounded py-2.5 w-full'
                 type="submit"
