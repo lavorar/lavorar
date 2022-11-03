@@ -1,0 +1,258 @@
+{
+    "cantidad": 10,
+    "inicio": 0,
+    "localidades": [
+        {
+            "categoria": "Localidad simple",
+            "centroide": {
+                "lat": -33.4394729739475,
+                "lon": -64.8316610855999
+            },
+            "departamento": {
+                "id": "14098",
+                "nombre": "Río Cuarto"
+            },
+            "id": "14098270000",
+            "localidad_censal": {
+                "id": "14098270",
+                "nombre": "Suco"
+            },
+            "municipio": {
+                "id": "142588",
+                "nombre": "Suco"
+            },
+            "nombre": "SUCO",
+            "provincia": {
+                "id": "14",
+                "nombre": "Córdoba"
+            }
+        },
+        {
+            "categoria": "Entidad",
+            "centroide": {
+                "lat": -28.407625810512,
+                "lon": -67.0961546311905
+            },
+            "departamento": {
+                "id": "46119",
+                "nombre": "San Blas de Los Sauces"
+            },
+            "id": "46119010008",
+            "localidad_censal": {
+                "id": "46119010",
+                "nombre": "Salicas - San Blas"
+            },
+            "municipio": {
+                "id": "460119",
+                "nombre": "San Blas de los Sauces"
+            },
+            "nombre": "SALICAS",
+            "provincia": {
+                "id": "46",
+                "nombre": "La Rioja"
+            }
+        },
+        {
+            "categoria": "Componente de localidad compuesta",
+            "centroide": {
+                "lat": -34.6132917290185,
+                "lon": -58.3887517365082
+            },
+            "departamento": {
+                "id": null,
+                "nombre": null
+            },
+            "id": "02000010000",
+            "localidad_censal": {
+                "id": "02000010",
+                "nombre": "Ciudad Autónoma de Buenos Aires"
+            },
+            "municipio": {
+                "id": null,
+                "nombre": null
+            },
+            "nombre": "CIUDAD DE BUENOS AIRES",
+            "provincia": {
+                "id": "02",
+                "nombre": "Ciudad Autónoma de Buenos Aires"
+            }
+        },
+        {
+            "categoria": "Localidad simple",
+            "centroide": {
+                "lat": -37.1774801030509,
+                "lon": -62.7578962604015
+            },
+            "departamento": {
+                "id": "06007",
+                "nombre": "Adolfo Alsina"
+            },
+            "id": "06007010000",
+            "localidad_censal": {
+                "id": "06007010",
+                "nombre": "Carhué"
+            },
+            "municipio": {
+                "id": "060007",
+                "nombre": "Adolfo Alsina"
+            },
+            "nombre": "CARHUE",
+            "provincia": {
+                "id": "06",
+                "nombre": "Buenos Aires"
+            }
+        },
+        {
+            "categoria": "Localidad simple",
+            "centroide": {
+                "lat": -37.4486186469627,
+                "lon": -63.117609405389
+            },
+            "departamento": {
+                "id": "06007",
+                "nombre": "Adolfo Alsina"
+            },
+            "id": "06007020000",
+            "localidad_censal": {
+                "id": "06007020",
+                "nombre": "Colonia San Miguel Arcángel"
+            },
+            "municipio": {
+                "id": "060007",
+                "nombre": "Adolfo Alsina"
+            },
+            "nombre": "COLONIA SAN MIGUEL ARCANGEL",
+            "provincia": {
+                "id": "06",
+                "nombre": "Buenos Aires"
+            }
+        },
+        {
+            "categoria": "Localidad simple",
+            "centroide": {
+                "lat": -37.3173292631958,
+                "lon": -63.2331690622102
+            },
+            "departamento": {
+                "id": "06007",
+                "nombre": "Adolfo Alsina"
+            },
+            "id": "06007030000",
+            "localidad_censal": {
+                "id": "06007030",
+                "nombre": "Delfín Huergo"
+            },
+            "municipio": {
+                "id": "060007",
+                "nombre": "Adolfo Alsina"
+            },
+            "nombre": "DELFIN HUERGO",
+            "provincia": {
+                "id": "06",
+                "nombre": "Buenos Aires"
+            }
+        },
+        {
+            "categoria": "Componente de localidad compuesta",
+            "centroide": {
+                "lat": -37.3563345638716,
+                "lon": -62.4387637810214
+            },
+            "departamento": {
+                "id": "06007",
+                "nombre": "Adolfo Alsina"
+            },
+            "id": "06007040000",
+            "localidad_censal": {
+                "id": "06007040",
+                "nombre": "Espartillar"
+            },
+            "municipio": {
+                "id": "060007",
+                "nombre": "Adolfo Alsina"
+            },
+            "nombre": "ESPARTILLAR",
+            "provincia": {
+                "id": "06",
+                "nombre": "Buenos Aires"
+            }
+        },
+        {
+            "categoria": "Localidad simple",
+            "centroide": {
+                "lat": -37.4544378016288,
+                "lon": -63.2565950033782
+            },
+            "departamento": {
+                "id": "06007",
+                "nombre": "Adolfo Alsina"
+            },
+            "id": "06007050000",
+            "localidad_censal": {
+                "id": "06007050",
+                "nombre": "Esteban Agustín Gascón"
+            },
+            "municipio": {
+                "id": "060007",
+                "nombre": "Adolfo Alsina"
+            },
+            "nombre": "ESTEBAN AGUSTIN GASCON",
+            "provincia": {
+                "id": "06",
+                "nombre": "Buenos Aires"
+            }
+        },
+        {
+            "categoria": "Localidad simple",
+            "centroide": {
+                "lat": -36.6613400852941,
+                "lon": -63.3661281675236
+            },
+            "departamento": {
+                "id": "06007",
+                "nombre": "Adolfo Alsina"
+            },
+            "id": "06007060000",
+            "localidad_censal": {
+                "id": "06007060",
+                "nombre": "La Pala"
+            },
+            "municipio": {
+                "id": "060007",
+                "nombre": "Adolfo Alsina"
+            },
+            "nombre": "LA PALA",
+            "provincia": {
+                "id": "06",
+                "nombre": "Buenos Aires"
+            }
+        },
+        {
+            "categoria": "Localidad simple",
+            "centroide": {
+                "lat": -36.7999468137731,
+                "lon": -63.3385151506224
+            },
+            "departamento": {
+                "id": "06007",
+                "nombre": "Adolfo Alsina"
+            },
+            "id": "06007070000",
+            "localidad_censal": {
+                "id": "06007070",
+                "nombre": "Maza"
+            },
+            "municipio": {
+                "id": "060007",
+                "nombre": "Adolfo Alsina"
+            },
+            "nombre": "MAZA",
+            "provincia": {
+                "id": "06",
+                "nombre": "Buenos Aires"
+            }
+        }
+    ],
+    "parametros": {},
+    "total": 4142
+}

@@ -12,8 +12,7 @@ import LastStep from '../components/SingUp/LastStep';
 import FormCompleted from '../components/SingUp/FormCompleted';
 const Register = (jwt) => {
     const { user } = useFetchUser();
-    const [formStep, setFormStep] = useState(2);
-    
+    const [formStep, setFormStep] = useState(2);    
     const nextFormStep = () => setFormStep((currentStep) => currentStep + 1);    
     const prevFormStep = () => setFormStep((currentStep) => currentStep - 1);
     const back2FormStep = () => setFormStep((currentStep) => currentStep - 2);
@@ -40,18 +39,7 @@ const Register = (jwt) => {
                         )}
                     </Progress>                    
                 </div>                
-            </div>
-            {/* {formStep >= 0 && (
-                <PersonalInfo formStep={formStep} nextFormStep={nextFormStep} />
-            )}
-            {formStep >= 1 && (
-                <BillingInfo formStep={formStep} nextFormStep={nextFormStep} />
-            )}
-            {formStep >= 2 && (
-                <ConfirmPurchase formStep={formStep} nextFormStep={nextFormStep} />
-            )}
-
-            {formStep > 2 && <FormCompleted />} */}
+            </div>            
         </SignUpLayout>
     );
 };

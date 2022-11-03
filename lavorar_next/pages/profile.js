@@ -71,7 +71,7 @@ const Profile = ({ avatar }) => {
                                             </div>
                                             <div className="flex justify-start items-center pt-2">
                                                 <LocationOnIcon sx={{ fontSize: 20 }} /> <div className="text-xl pl-1">
-                                                    {(user.province ? user.province + ', ' : 'Provincia , ') + (user.city ? user.city : 'Ciudad')}</div>
+                                                    {(user.provincia ? user.provincia.name + ', ' : 'Provincia , ') + (user.localidad ? user.localidad.name : 'Ciudad')}</div>
                                             </div>
                                         </div>
                                     </div>

@@ -1,4 +1,5 @@
 import Card from "../components/elements/Card";
+import HomeSearchBar from "../components/elements/HomeSearchBar";
 import Layout from "../components/Layouts/mainLayout";
 import { useFetchUser, useUser } from "../lib/authContext";
 
@@ -8,7 +9,7 @@ export default function Home() {
   return (
     <Layout user={user} >
       <div className="flex flex-col  items-center w-full p-1 text-black">
-        {/* <HomeSearchBar /> */}
+        <HomeSearchBar />
         <div className="mt-10 flex flex-wrap  justify-evenly  gap-4 lg:gap-8 w-full lg:px-5">
           <Card />
           <Card />

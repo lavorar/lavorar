@@ -104,11 +104,17 @@
     "birth": {
       "type": "date"
     },
-    "province": {
-      "type": "string"
+    "provincia": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::province.province",
+      "inversedBy": "users"
     },
-    "city": {
-      "type": "string"
+    "localidad": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::city.city",
+      "inversedBy": "users"
     }
   }
 }

@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { useForm, Controller } from 'react-hook-form';
 import { useFormData } from '../../context/FormContext'
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
 import Select from 'react-select'
 import { useQuery } from 'react-query';
 import axios from 'axios'
@@ -20,7 +18,7 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
                 {optionSelectedLength < 3 ? (
                     props.children
                 ) : (
-                    <div style={{ margin: 15 }}>Escoge un maximo de 3 categorias</div>
+                    <div style={{ margin: 15 }}>LImite alcanzado</div>
                 )}
             </components.Menu>
         );
@@ -28,29 +26,11 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
     const isValidNewOption = (inputValue, selectValue) =>
         inputValue.length > 0 && selectValue.length < 3;
     const getCategories = async (user) => {
-        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/categories `)
+        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/categories`)
         return data
     }
 
     const { data, isFetching, error } = useQuery(['todos'], getCategories, { staleTime: Infinity })
-
-
-    // const options = []
-    // if (!isFetching) {
-    //     data.data.map((categorie) => (
-    //         options.push({
-    //             value: categorie.attributes.name,
-    //             label: categorie.attributes.name,
-    //             name: categorie.attributes.name,
-    //             id: categorie.id
-    //         })
-    //     ))
-    // }
-    // const [categories, setcategories ] = useState([])
-    // if (!isFetching) {
-    //     setcategories(data.data)
-    // }
-    //console.log(data?.data)
 
 
     const { setFormValues } = useFormData();
@@ -60,9 +40,10 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
     const { errors } = formState;
 
     const onSubmit = (values) => {
-        // console.log('values', values)
-        values.province = values.province.Localidad_censal.nombre
-        values.city = values.city.nombre
+        values.localidad = { name: values.localidad.name, identificador: values.localidad.identificador }
+        values.provincia = { name: values.provincia.name, identificador: values.provincia.identificador }
+        
+        console.log('submit', values)
         setFormValues(values);
         nextFormStep();
     };
@@ -70,22 +51,39 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
 
 
     const getProvinces = async () => {
-        const { data } = await axios.get(`https://apis.datos.gob.ar/georef/api/provincias?campos=id,nombre`)
-        return data
+        const { data } = await axios.get(`https://apis.datos.gob.ar/georef/api/provincias?campos=nombre`)
+        const options = []
+        data.provincias.map((provice) => (
+            options.push({
+                value: provice.id,
+                label: provice.nombre,
+                identificador: provice.id,
+                name: provice.nombre,
+            })
+        ))
+        return options
+
     }
 
     const provinces = useQuery(['provinces'], getProvinces, { staleTime: Infinity })
     const [cityId, setcityId] = useState(null)
-    const [cityValue, setcityValue] = useState(null)
+    const [cityValue, setcityValue] = useState({ id: 1, name: 'ingresa una cuidad', label: 'ingresa una cuidad' })
 
     const getCitys = async (cityId) => {
         if (cityId) {
-            const { data } = await axios.get(`https://apis.datos.gob.ar/georef/api/localidades?provincia=${cityId}&campos=id,localidad_censal,nombre&max=400`)
-            // console.log(data.localidades)
-            data.localidades.map((localidad) => (
-                localidad.nombre = localidad.localidad_censal.nombre
+            const { data } = await axios.get(`https://apis.datos.gob.ar/georef/api/localidades?provincia=${cityId}&campos=nombre&max=400`)
+            const options = []
+            data.localidades.map((city) => (
+                city.nombre = city.nombre.toLowerCase(),
+                city.nombre = city.nombre.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()),
+                options.push({
+                    value: city.id,
+                    label: city.nombre,
+                    identificador: city.id,
+                    name: city.nombre,
+                })
             ))
-            return data
+            return options
         }
         return
     }
@@ -98,10 +96,11 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
             staleTime: Infinity
         }
     )
+    // console.log(citys)
     const handleProvinceChange = (e) => {
-        control._formValues.province = e
-        setcityId(e.id)
-        control._formValues.city = undefined
+        control._formValues.provincia = e
+        setcityId(e.identificador)
+        control._formValues.localidad = undefined
         setcityValue({ id: 1, name: 'ingresa una cuidad', label: 'ingresa una cuidad' })
     }
 
@@ -111,7 +110,7 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
             className={`${formStep === 2 ? 'block' : 'hidden'}`}
         >
             <div className="flex flex-col text-black">
-                <label className='mb-5 dark:text-gray-50'>Categoria</label>
+                <label className='mb-5 dark:text-gray-50'>Categoria (3 max)</label>
                 <Controller
                     className='mt-5 '
                     rules={{ required: true }}
@@ -139,21 +138,21 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
                     className='mt-5 '
                     rules={{ required: true }}
                     render={({ field }) => (
-                        <AsyncSelect
+                        <Select
                             {...field}
                             placeholder='Provincia'
-                            options={provinces.data?.provincias}
+                            options={provinces.data}
                             isDisabled={provinces.isLoading}
                             onChange={handleProvinceChange}
-                            id="province" instanceId="province"
-                            getOptionLabel={(option) => option.nombre}
-                            getOptionValue={(option) => option.id} // It should be unique value in the options. E.g. ID
+                            id="provincia" instanceId="provincia"
+                        // getOptionLabel={(option) => option.nombre}
+                        // getOptionValue={(option) => option.nombre} // It should be unique value in the options. E.g. ID
                         />
                     )}
-                    name="province"
+                    name="provincia"
                     control={control}
                 />
-                <p className={` ${errors.province ? 'text-orange-high block' : 'invisible'}  `}>{'Debes seleccionar una provincia'}</p>
+                <p className={` ${errors.provincia ? 'text-orange-high block' : 'invisible'}  `}>{'Debes seleccionar una provincia'}</p>
             </div>
             <div className="flex flex-col text-black">
                 <label className='mb-5 dark:text-gray-50'>Provincia</label>
@@ -161,23 +160,23 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
                     className='mt-5 '
                     rules={{ required: true }}
                     render={({ field }) => (
-                        <AsyncSelect
+                        <Select
                             {...field}
                             value={cityValue}
-                            onChange={(e) => { setcityValue(e), control._formValues.city = e }}
-                            placeholder='Ingresa una Ciudad'
-                            options={citys.data?.localidades}
-                            id="city" instanceId="city"
-                            defaultOptions={[{ id: 0, label: "Loading..." }]}
-                            isDisabled={!citys.data?.localidades}
-                            getOptionLabel={(option) => option.nombre}
-                            getOptionValue={(option) => option.id} // It should be unique value in the options. E.g. ID
+                            onChange={(e) => { setcityValue(e), control._formValues.localidad = e }}
+                            placeholder='Ingresa una Ciudaddd'
+                            options={citys.data}
+                            id="localidad" instanceId="localidad"
+                            defaultOptions={[{ id: 0, label: "ingresa una provincia", value: '' }]}
+                            isDisabled={!citys.isSuccess}
+                            // getOptionLabel={(option) => option.nombre}
+                            // getOptionValue={(option) => option.nombre}
                         />
                     )}
-                    name="city"
+                    name="localidad"
                     control={control}
                 />
-                <p className={` ${errors.city ? 'text-orange-high block' : 'invisible'}  `}>{'Debes seleccionar una ciudad'}</p>
+                <p className={` ${errors.localidad ? 'text-orange-high block' : 'invisible'}  `}>{'Debes seleccionar una ciudad'}</p>
             </div>
             <button
                 className='block mb-6 text-gray-900 bg-orange-pastel text-lg rounded py-2.5 w-full'

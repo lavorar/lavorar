@@ -23,12 +23,6 @@
       "target": "api::city.city",
       "inversedBy": "categories"
     },
-    "province": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::province.province",
-      "inversedBy": "categories"
-    },
     "services": {
       "type": "relation",
       "relation": "oneToMany",
@@ -39,6 +33,12 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::lender.lender",
+      "inversedBy": "categories"
+    },
+    "provinces": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::province.province",
       "inversedBy": "categories"
     }
   }

@@ -15,17 +15,26 @@
     "name": {
       "type": "string"
     },
-    "province": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::province.province",
-      "inversedBy": "cities"
-    },
     "categories": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::category.category",
       "mappedBy": "city"
+    },
+    "users": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "localidad"
+    },
+    "identificador": {
+      "type": "uid"
+    },
+    "province": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::province.province",
+      "inversedBy": "cities"
     }
   }
 }
