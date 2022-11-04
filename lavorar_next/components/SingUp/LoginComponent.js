@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { setToken } from '../../lib/auth';
 import { fetcher } from '../../lib/api';
 
-const RegisterComponent = () => {
+const LoginComponent = () => {
     const router = useRouter();
     const [userData, setUserData] = useState({
         identifier: '',
@@ -88,4 +88,4 @@ const RegisterComponent = () => {
     );
 };
 
-export default RegisterComponent;
+export default LoginComponent;
