@@ -11,11 +11,13 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
+import { useRouter } from 'next/router';
 // import { useAuth } from "../../../context/authContext";
 
 const Header = (props) => {
   // const { user, logout, loading } = useAuth();
-  const user = false
+  const router = useRouter();
+  const user = props.user
   const [open, setopen] = useState(false)
   const [openNotification, setopenNotification] = useState(false)
 
@@ -64,7 +66,16 @@ const Header = (props) => {
           </a>
           <div className="flex md:order-2 ">
 
-            {user ?
+            <div className='mr-2 block '> 
+              <button
+                type="button"
+                onClick={(e) => router.replace('/donate')}
+                className="focus:outline-none text-white bg-orange-brand hover:bg-yellow-500 focus:ring-2 focus:ring-orange-high dark:focus:ring-orange-high font-medium rounded-lg text-base px-3 py-2 mr-2 my-2 "
+              >
+                Dona 
+              </button>
+            </div>
+            {/* {user ?
               <div className='mr-2  hidden md:block group'>
 
                 <IconWithButton>
@@ -80,7 +91,7 @@ const Header = (props) => {
 
 
             {user ?
-              <div className={`mr-2 group`}>
+              <div className={`mr-2 group `}>
                 <IconWithButton
                   onBlur={() => closeNotification}
                   onClick={() => {
@@ -105,7 +116,7 @@ const Header = (props) => {
               </div>
               :
               <></>
-            }
+            } */}
 
             <div className='mr-4 hidden md:block'>
               <Dropdown>

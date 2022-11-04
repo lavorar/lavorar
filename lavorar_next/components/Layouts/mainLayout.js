@@ -20,7 +20,7 @@ import Card from "../elements/Card";
 import NavMobile from '../elements/NavMobile';
 
 const Layout = ({ user, loading = false, children }) => {
-    const navigate = useRouter()
+    const router = useRouter()
     const [open, setOpen] = useState(true);
     const Menus = [
         { title: "Inicio", src: <HomeRoundedIcon fontSize={'large'} />, always: true, href: '/' },
@@ -91,7 +91,7 @@ const Layout = ({ user, loading = false, children }) => {
                                 } `}
                                     >
                                         <div
-                                            onClick={() => { Menu.href ? navigate.push(Menu.href) : '' }}
+                                            onClick={() => { Menu.href ? router.push(Menu.href) : '' }}
                                             className={`cursor-pointer  duration-300  text-gray-900  dark:text-white-ghost`}>
                                             <IconWithButton
                                             >
@@ -109,10 +109,16 @@ const Layout = ({ user, loading = false, children }) => {
                                     </div>
                             ))}
                         </ul>
+                        <p className="text-center space-x-1 mt-2">
+                            <span className="text-gray-700 dark:text-gray-300 text-sm font-semibold">Apoya nuestro trabajo! </span>
+                            <a className="text-orange-high text-center cursor-pointer text-sm font-semibold"
+                                onClick={() => router.replace('/donate')}
+                            >Donar</a>
+                        </p>
                     </div>
                     <div className={`${open ? 'md:pl-64' : 'md:pl-24'}  z-10 lg:mr-[310px] h-auto flex flex-around p-2 md:p-0  duration-500 w-full md:ml-2   md:flex-1 `}>
                         <div className="w-full  ">
-                            <Header>
+                            <Header user={user} >
 
                             </Header>
                             <div className='pt-5 md:p-10'>
@@ -185,7 +191,7 @@ export default Layout;
 //                                 } `}
 //                             >
 //                                 <div
-//                                     onClick={() => { Menu.href ? navigate(Menu.href) : '' }}
+//                                     onClick={() => { Menu.href ? router(Menu.href) : '' }}
 //                                     className={`cursor-pointer  duration-300  text-gray-900  dark:text-white-ghost`}>
 //                                     <IconWithButton
 //                                     >

@@ -5,7 +5,7 @@ import Select from 'react-select'
 import { useQuery } from 'react-query';
 import axios from 'axios'
 import { components } from "react-select";
-import AsyncSelect from 'react-select'
+
 
 
 const LenderOptions = ({ formStep, nextFormStep }) => {
