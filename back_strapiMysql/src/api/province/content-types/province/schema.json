@@ -37,6 +37,10 @@
     },
     "identificador": {
       "type": "uid"
+    },
+    "Slug": {
+      "type": "uid",
+      "targetField": "name"
     }
   }
 }

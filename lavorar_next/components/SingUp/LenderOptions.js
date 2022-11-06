@@ -38,10 +38,24 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
     const { handleSubmit, control, formState } = useForm({
     });
     const { errors } = formState;
+    
+    const slugify = str =>
+        str
+            .toLowerCase()
+            .trim()            
+            .normalize('NFD')
+            .replace(/([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi, "$1")            
+            .replace(/[^\w\s-]/g, '')
+            .replace(/[\s_-]+/g, '-')
+            .replace(/^-+|-+$/g, '')
+            .normalize();
 
     const onSubmit = (values) => {
-        values.localidad = { name: values.localidad.name, identificador: values.localidad.identificador }
-        values.provincia = { name: values.provincia.name, identificador: values.provincia.identificador }
+        let slugprovince = slugify(values.provincia.name )
+        
+        let slugcity= slugify(values.localidad.name)
+        values.localidad = { name: values.localidad.name, identificador: values.localidad.identificador, slug: slugcity }
+        values.provincia = { name: values.provincia.name, identificador: values.provincia.identificador, Slug: slugprovince }
         
         console.log('submit', values)
         setFormValues(values);

@@ -15,9 +15,9 @@ module.exports = createCoreController('api::city.city', ({ strapi }) => ({
 
     // Method 3: Replacing a core action
     async findOne(ctx) {
-        const { identificador } = ctx.params;
+        const { slug } = ctx.params;
 
-        const entity = await strapi.db.query('api::city.city').findOne({ where: { identificador } });
+        const entity = await strapi.db.query('api::city.city').findOne({ where: { slug } });
         const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
 
         return this.transformResponse(sanitizedEntity);

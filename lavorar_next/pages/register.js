@@ -12,7 +12,7 @@ import LastStep from '../components/SingUp/LastStep';
 import FormCompleted from '../components/SingUp/FormCompleted';
 const Register = (jwt) => {
     const { user } = useFetchUser();
-    const [formStep, setFormStep] = useState(2);    
+    const [formStep, setFormStep] = useState(0);    
     const nextFormStep = () => setFormStep((currentStep) => currentStep + 1);    
     const prevFormStep = () => setFormStep((currentStep) => currentStep - 1);
     const back2FormStep = () => setFormStep((currentStep) => currentStep - 2);

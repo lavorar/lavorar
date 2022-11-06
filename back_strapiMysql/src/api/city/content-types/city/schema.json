@@ -35,6 +35,10 @@
       "relation": "manyToOne",
       "target": "api::province.province",
       "inversedBy": "cities"
+    },
+    "slug": {
+      "type": "string",
+      "required": true
     }
   }
 }
