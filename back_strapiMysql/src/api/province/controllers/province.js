@@ -15,9 +15,10 @@ module.exports = createCoreController('api::province.province', ({ strapi }) => 
 
     // Method 3: Replacing a core action
     async findOne(ctx) {
-        const { identificador } = ctx.params;
-
-        const entity = await strapi.db.query('api::province.province').findOne({ where: { identificador } });
+        const { Slug } = ctx.params;
+                
+        const entity = await strapi.db.query('api::province.province').findOne({ where: {Slug} });
+        
         const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
 
         return this.transformResponse(sanitizedEntity);

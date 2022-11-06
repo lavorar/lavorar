@@ -26,6 +26,7 @@ const SecondStep = ({ formStep, nextFormStep }) => {
 
   const onSubmit = (values) => {
     console.log('values', values.is_lender)
+    values.is_lender ? values.role = { id: 3} : ''
     setFormValues(values);
     if(!values.is_lender){
       nextFormStep();

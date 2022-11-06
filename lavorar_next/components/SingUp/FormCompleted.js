@@ -11,149 +11,94 @@ export default function FormCompleted() {
     const { data } = useFormData();
     const router = useRouter();
     const provinceForm = data.provincia
-    const cityForm = data.localidad
+    const [cityForm, setcityForm] = useState(data.localidad)
     const { setFormValues } = useFormData();
 
     const [datos, setdatos] = useState(data)
 
 
 
-    function delay(time) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(register());
-            }, time);
-        });
-    }
 
-    async function test() {
-        console.log('start timer');
-        await delay(2500);
-        console.log('after 2 second');
-    }
-
-    test();
-
-
-    const [province, setprovince] = useState(null)
-    const newProvince = async () => {
-        const { data } = await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces`, { data: provinceForm })
-        return data.data
-    }
+    const [province, setprovince] = useState(null)    
 
     const getProvince = async () => {
-        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces1/${provinceForm.identificador}`)
-        return data.data
+        let response = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces1/${provinceForm.Slug}`)
+            .then(({ data }) => {
+                return data.data
+            }).catch(async (error) => {
+                return await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces`, { data: provinceForm })
+                    .then(({ data }) => {
+                        return data.data
+                    })
+                    .catch((error) => {
+                        return error
+                    })
+            })
+        return response
     }
 
-    const [enabledNewProvince, setenabledNewProvince] = useState(undefined)
+
     const [foundProvince, setfoundProvince] = useState(undefined)
     const queryprovince = useQuery(
         ['province'],
         getProvince,
         {
             onSettled: (data) => {
-                console.log('se encuenta la provincia', data)
-                setprovince(data)
-                setfoundProvince(true)  
-                setdatos({...datos, provincia: data})              
-            },
-            onError: (error) => {
-                setenabledNewProvince(true)
-            },
-
-            staleTime: Infinity
-        }
-    )
-    const querynewProvince = useQuery(['newprovince', enabledNewProvince], newProvince,
-        {
-            enabled: Boolean(enabledNewProvince),
-            onSettled: (data) => {
-                console.log(data)
                 setprovince(data)
                 setfoundProvince(true)
-                setdatos({ ...datos, provincia: data })  
+                setdatos({ ...datos, provincia: data })
+                setcityForm({ ...cityForm, province: data })
             },
             staleTime: Infinity
         }
     )
+    // console.log(queryprovince)    
 
-    // let provinceObj
-    // if (queryprovince.data) {
-    //     provinceObj = queryprovince.data
-    //     const newdata = { ...data, provincia: provinceObj }
-    //     newdata.provincia = { ...cityForm, province: provinceObj }
-    // }
-    // else {
-    //     if (querynewProvince.data) {
-    //         provinceObj = querynewProvince.data
-    //         newdata = { ...data, provincia: provinceObj }
-    //         newdata.provincia = { ...cityForm, province: provinceObj }
-    //     }
-    // }
+    
 
 
 
-    const newCity = async () => {
-        const { data } = await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/cities`, {
-            data: {
-                name: cityForm.name,
-                identificador: cityForm.identificador,
-                province: province
-            }
-        })
-        return data.data
-    }
 
     const getCity = async () => {
-
-        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/citys1/${cityForm.identificador}`)
-
-        return data.data
+        // console.log('ciudad form', cityForm)  
+        let response = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/citys1/${cityForm.slug}`)
+            .then(({ data }) => {
+                return data.data
+            }).catch(async (error) => {
+        
+                return await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/cities`, { data: cityForm })
+                    .then(({ data }) => {
+                        return data.data
+                    })
+                    .catch((error) => {
+                        return error
+                    })
+            })
+        return response
     }
+
     const [city, setcity] = useState(null)
-    const [enabledNewCity, setenabledNewCity] = useState(undefined)  
 
     const [foundcity, setfoundcity] = useState(undefined)
     const querycity = useQuery(
         ['city'],
         getCity,
         {
-            onSettled: (data) => {                
-                console.log(data)
+            onSettled: (data) => {
                 setcity(data)
                 setfoundcity(true)
-                setdatos({ ...datos, localidad: data })  
+                setdatos({ ...datos, localidad: data })
             },
-            onError: (error) => {
-                setenabledNewCity(true)
-            },           
+            enabled: Boolean(foundProvince),
             staleTime: Infinity
         },
-    )
-    const querynewCity = useQuery(['newcity', enabledNewCity], newCity,
-        {
-            onSettled: (data) => {
-                console.log(data)
-                setcity(data)
-                setfoundcity(true)                
-                setdatos({ ...datos, localidad: data })  
-            },
-            enabled: Boolean(enabledNewCity),
-            staleTime: Infinity
-        }
-    )
+    )  
 
-    // if (province !== null && city) {
-    //     console.log(data)
-    //     setFormValues({ provincia: province, city: city })
-    //     console.log(data)
-    // }
+    
 
-    const registerUser = async () => {
-        console.log(datos)
+    const registerUser = async () => {        
         const { data } = await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${datos.id}`,
-            { data: datos },
+            datos,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -161,128 +106,27 @@ export default function FormCompleted() {
                 }
             }
         )
-
-        return data.data
+        return data
     }
 
 
+    // console.log('objeto ciudad', city)
+    // console.log('objeto provinca', province)
+    // console.log('register', querycity)
 
-    // let cityobj
-    // if (querycity.data) {
-    //     cityobj = querycity.data
-    // }
-    // else {
-    //     cityobj = querynewCity.data ? querynewCity.data : 'no hay nada  '
-    // }
-    
-    // console.log('odatos', datos)
-    console.log('objeto ciudad', city)
-    console.log('objeto provinca', province)
-    // console.log('provincia encontrada', foundProvince)
-    // let registerallowed
-    // if (cityobj !== undefined && provinceObj) {
-    //     setFormValues({ provincia: provinceObj, localidad: cityobj })
-    //     registerallowed = true
-    //     data.provincia = provinceObj
-    //     data.localidad = cityobj
-    // }
-    
-    
-    // const queryregisterUser = useQuery(['newcity', enabledNewCity], registerUser,
-    //     {
-    //         enabled: Boolean(finish),
-    //         staleTime: Infinity
-    //     }
-    // )
 
-    
-    //  console.log('datos', queryregisterUser)
-    const register = async () => {  
-        console.log('datos nuevos', datos)    
-        if (foundProvince === true && foundcity === true) {
-             try {
-              const responseData = await fetcher(
-                  `${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${data.id}`,
-                  {
-                      headers: {
-                          'Content-Type': 'application/json',
-                          Authorization: `Bearer ${data.jwt}`,
-                      },
-                      body: JSON.stringify(datos),
-                      method: 'PUT',
-                  }
-              );
-              console.log(responseData)
-              router.replace('/')
-
-          } catch (error) {
-              console.error(error);
+    const queryregisterUser = useQuery(['putUser', foundcity], registerUser,
+          {
+              onSettled: (data) => {
+                   router.replace('/profile')
+              },
+              enabled: Boolean(foundcity),
+              staleTime: Infinity
           }
-        }
-        // getProvince()
-        // console.log('ciudad con su provincia', province)        
-        // getCity()
-        // console.log('ciudad con su provincia', province)
-
-        // getprovince()
-        // console.log(province,city)
-        // try {
-        //     const responseData = await fetcher(
-        //         `${process.env.NEXT_PUBLIC_STRAPI_URL}/cities`,
-        //         {
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //             },
-        //             body: JSON.stringify({ data: city }),
-        //             method: 'POST',
-        //         }
-        //     );
-
-        //     console.log(responseData)
-        // } catch (error) {
-        //     console.error(error);
-        // }
-        // try {
-        //     const responseData = await fetcher(
-        //         `${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces`,
-        //         {
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //             },
-        //             body: JSON.stringify({data:province}),
-        //             method: 'POST',
-        //         }
-        //     );
-
-        //     console.log(responseData)
-        // } catch (error) {
-        //     console.error(error);
-        // }
+      )
 
 
-
-        // try {
-        //      const responseData = await fetcher(
-        //          `${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${data.id}`,
-        //          {
-        //              headers: {
-        //                  'Content-Type': 'application/json',
-        //                  Authorization: `Bearer ${data.jwt}`,
-        //              },
-        //              body: JSON.stringify({data: data}),
-        //              method: 'PUT',
-        //          }
-        //      );
-        //      console.log(responseData)
-
-        //  } catch (error) {
-        //      console.error(error);
-        //  }
-
-    };
-
-
-    // promiseOptions()
+    
     return (
         <>
             <h1 className="text-5xl text-center font-bold">

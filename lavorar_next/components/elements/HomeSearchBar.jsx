@@ -12,26 +12,40 @@ const HomeSearchBar = (props) => {
         const { data } = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/categories`)
         return data
     }
+    const qs = require('qs');
 
     const categories = useQuery(['categories'], getCategories, { staleTime: Infinity })
     // console.log(categories.data?.data)
 
     const getCitys = async (value) => {
-        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/cities?populate=*`)    
-        const options = []
-        data.data.map((city) => (            
-            options.push({
-                value: city.id,
+        
+        const query = qs.stringify({
+            filters: {
+                name: {
+                    $contains: value,
+                },                
+            },
+            populate:{
+                province :{
+                    fields: 'name'
+                }
+            }            
+        }, {
+            encodeValuesOnly: true, // prettify URL
+        });
+        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/cities?${query}`)
+        const options = []     
+        data.data.map(function (city) {             
+            let option = {
+                value: city.attributes.slug,
                 label: city.attributes.name + ' (' + city.attributes.province.data.attributes.name + ' )',
                 id: city.id,
                 name: city.attributes.name,
                 province: city.attributes.province
-            })
-        ))
-        const filteroptions = options.filter(function (city) {
-            return city.name.toLowerCase().includes(value.toLowerCase())
+            }            
+            options.push(option)
         })        
-        return filteroptions
+        return options
     }
     const loadOptions = inputValue => {
         return new Promise((resolve, reject) => {
@@ -43,7 +57,7 @@ const HomeSearchBar = (props) => {
     };
     const search = async (e) => {
         console.log(e)
-        const {data} = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users?populate=*`)        
+        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users?populate=*`)
     }
     const colorstylesSizes = {
         control: (styles) => ({
@@ -157,7 +171,7 @@ const HomeSearchBar = (props) => {
         }),
         dropdownIndicator: (provided, state) => ({
             ...provided,
-            backgroundColor: 'rgb(255 255 255 0)',            
+            backgroundColor: 'rgb(255 255 255 0)',
             color: 'rgb(255 255 255)',
             '&:hover': {
                 color: '#93c5fd',
