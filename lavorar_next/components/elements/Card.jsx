@@ -19,15 +19,15 @@ const Card = ({ user }) => {
             />
 
             <div className="flex flex-col ml-1">
-              <Link href={'/prestadores/'+user?.Slug} >
-              <a>
+              <Link href={'/prestadores/' + user?.Slug} >
+                <a>
                   <div className="flex justify-between text-sm ml-1">
-                    {user?.name }
+                    {user?.name}
                     <VerifiedIcon fontSize="small" className="pl-1" />
                   </div>
-              </a>
+                </a>
               </Link>
-              
+
               <div className="flex justify-between pt-2">
                 <LocationOnIcon fontSize="small" /> <div className="text-sm">{(user?.provincia ? user.provincia.name + ', ' : 'Provincia , ') + (user?.localidad ? user.localidad.name : 'Ciudad')}</div>
               </div>
@@ -46,7 +46,7 @@ const Card = ({ user }) => {
         <div>
           {
             user?.categories.map((categorie) => (
-              <ButtonCard key={categorie.id + user.id} text={categorie.name} />
+              <ButtonCard key={categorie.id + user.id} href={'/buscar/' + categorie?.Slug} text={categorie.name} />
             ))
           }
 

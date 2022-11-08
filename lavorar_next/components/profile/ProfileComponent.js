@@ -61,7 +61,7 @@ const ProfileComponent = ({user}) => {
                               <div className='flex'>
                                   {user.categories ?
                                       user.categories.map((categorie) => (
-                                          <ButtonCard key={categorie.id} text={categorie.name} />
+                                          <ButtonCard key={categorie.id} href={'/buscar/' + categorie?.Slug} text={categorie.name} />
                                       ))
                                       :
                                       <>
