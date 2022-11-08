@@ -63,12 +63,6 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "firstName": {
-      "type": "string"
-    },
-    "lastName": {
-      "type": "string"
-    },
     "categories": {
       "type": "relation",
       "relation": "oneToMany",
@@ -115,6 +109,14 @@
       "relation": "manyToOne",
       "target": "api::city.city",
       "inversedBy": "users"
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "Slug": {
+      "type": "uid",
+      "targetField": "name"
     }
   }
 }

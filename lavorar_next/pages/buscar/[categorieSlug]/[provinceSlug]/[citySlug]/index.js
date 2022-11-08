@@ -1,12 +1,12 @@
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import React from 'react'
 import { useState } from 'react';
 import { useQuery } from 'react-query';
-import { useFetchUser } from '../../lib/authContext';
 import Card from "/components/elements/Card";
 import HomeSearchBar from "/components/elements/HomeSearchBar";
 import Layout from "/components/Layouts/mainLayout";
-const Search = ({users}) => {
+const SearchProvince = ({ users }) => {
 
     console.log(users)
     return (
@@ -15,8 +15,8 @@ const Search = ({users}) => {
                 <HomeSearchBar />
                 <div className="mt-10 flex flex-wrap  justify-evenly  gap-4 lg:gap-8 w-full lg:px-5">
                     {
-                        users.map((user) => (
-                           <Card key={user.id} user={user} />
+                        users?.map((user) => (
+                            <Card key={user.id} user={user} />
                         ))
                     }
 
@@ -26,21 +26,33 @@ const Search = ({users}) => {
     )
 }
 
-export default Search
+export default SearchProvince
 
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps(context) {
+
+    const { categorieSlug } = context.query
+    const { citySlug } = context.query
     const us = true
     const qs = require('qs');
     let users
 
     const query = qs.stringify({
         filters: {
+            categories: {
+                Slug: {
+                    $eq: categorieSlug
+                }
+            },
+            localidad: {
+                slug: {
+                    $eq: citySlug
+                }
+            },
             role: {
                 id: {
                     $eq: 3,
                 }
             },
-
         },
         populate: '*',
     }, {
@@ -48,7 +60,7 @@ export async function getServerSideProps({ req }) {
     });
     await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users?${query}`).then((data) => {
         users = data.data
-    }).catch((data) => {
+    }).catch((error) => {
         users = null
     })
 

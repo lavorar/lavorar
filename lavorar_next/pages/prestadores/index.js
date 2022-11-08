@@ -6,17 +6,16 @@ import { useFetchUser } from '../../lib/authContext';
 import Card from "/components/elements/Card";
 import HomeSearchBar from "/components/elements/HomeSearchBar";
 import Layout from "/components/Layouts/mainLayout";
-const Search = ({users}) => {
+const Search = ({ users }) => {
 
     console.log(users)
     return (
         <Layout>
-            <div className="flex flex-col  items-center w-full p-1 text-black">
-                <HomeSearchBar />
+            <div className="flex flex-col  items-center w-full p-1 text-black">                
                 <div className="mt-10 flex flex-wrap  justify-evenly  gap-4 lg:gap-8 w-full lg:px-5">
                     {
                         users.map((user) => (
-                           <Card key={user.id} user={user} />
+                            <Card key={user.id} user={user} />
                         ))
                     }
 

@@ -6,12 +6,14 @@ import axios from 'axios'
 import { components } from "react-select";
 import AsyncSelect from 'react-select/async';
 import { useForm, Controller } from 'react-hook-form';
+import { useRouter } from 'next/router';
 
 const HomeSearchBar = (props) => {
     const getCategories = async (user) => {
         const { data } = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/categories`)
         return data
     }
+    const router = useRouter()
     const qs = require('qs');
 
     const categories = useQuery(['categories'], getCategories, { staleTime: Infinity })
@@ -27,7 +29,7 @@ const HomeSearchBar = (props) => {
             },
             populate:{
                 province :{
-                    fields: 'name'
+                    fields: ['name','Slug'],
                 }
             }            
         }, {
@@ -41,6 +43,7 @@ const HomeSearchBar = (props) => {
                 label: city.attributes.name + ' (' + city.attributes.province.data.attributes.name + ' )',
                 id: city.id,
                 name: city.attributes.name,
+                slug: city.attributes.slug,
                 province: city.attributes.province
             }            
             options.push(option)
@@ -57,7 +60,15 @@ const HomeSearchBar = (props) => {
     };
     const search = async (e) => {
         console.log(e)
-        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users?populate=*`)
+        let url = '/buscar'
+        if (e.categorie){
+            url = url + '/' + e.categorie.attributes.Slug 
+        }
+        if (e.location) {
+            url = url + '/' +  e.location.province.data.attributes.Slug + '/' + e.location.slug
+        }
+        console.log(url)
+        router.push(url)
     }
     const colorstylesSizes = {
         control: (styles) => ({
@@ -204,15 +215,15 @@ const HomeSearchBar = (props) => {
                                 {...field}
                                 isClearable
                                 options={categories.data?.data}
-                                id="categories"
+                                id="categorie"
                                 styles={colorstylesSizes}
-                                instanceId="categories"
+                                instanceId="categorie"
                                 placeholder='Qué buscas?'
                                 getOptionLabel={(option) => option.attributes.name}
                                 getOptionValue={(option) => option.id}
                             />
                         )}
-                        name="categories"
+                        name="categorie"
                         control={control}
                     />
                 </div>

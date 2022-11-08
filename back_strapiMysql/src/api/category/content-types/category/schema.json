@@ -4,7 +4,8 @@
   "info": {
     "singularName": "category",
     "pluralName": "categories",
-    "displayName": "category"
+    "displayName": "category",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -40,6 +41,11 @@
       "relation": "manyToMany",
       "target": "api::province.province",
       "inversedBy": "categories"
+    },
+    "Slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
     }
   }
 }

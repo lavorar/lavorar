@@ -3,8 +3,9 @@ import VerifiedIcon from "@mui/icons-material/Verified";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Rating from "./Rating";
 import ButtonCard from "./ButtonCard";
+import Link from 'next/Link'
 
-const Card = (props) => {
+const Card = ({ user }) => {
   return (
     <div className="inline-block mt-3  overflow-ellipsis w-72 bg-white rounded-lg border border-gray-200 shadow-md ">
 
@@ -17,13 +18,18 @@ const Card = (props) => {
               alt="img"
             />
 
-            <div className="flex flex-col">
-              <div className="flex justify-center text-sm">
-                Rubilar Francisco
-                <VerifiedIcon fontSize="small" className="pl-1" />
-              </div>
+            <div className="flex flex-col ml-1">
+              <Link href={'/prestadores/'+user?.Slug} >
+              <a>
+                  <div className="flex justify-between text-sm ml-1">
+                    {user?.name }
+                    <VerifiedIcon fontSize="small" className="pl-1" />
+                  </div>
+              </a>
+              </Link>
+              
               <div className="flex justify-between pt-2">
-                <LocationOnIcon fontSize="small" /> <div className="text-sm">Neuquen,neuquen</div>
+                <LocationOnIcon fontSize="small" /> <div className="text-sm">{(user?.provincia ? user.provincia.name + ', ' : 'Provincia , ') + (user?.localidad ? user.localidad.name : 'Ciudad')}</div>
               </div>
             </div>
           </div>
@@ -35,14 +41,15 @@ const Card = (props) => {
         <Rating />
 
         <h5 className=" border-0 pt-2 border-t mx-2  border-gray-500 mb-1 px-1 text-base font-medium text-gray-900 dark">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumenda
-          laboriosam, quod aut officiis ea deleniti repellat nisi delectus
-          magnam reiciendis?
+          {user?.aboutme ? user.aboutme : 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumend    laboriosam, quod aut officiis ea deleniti repellat nisi delectus magnam reiciendis?'}
         </h5>
         <div>
-          <ButtonCard text="Categoria" />
-          <ButtonCard text="Categoria" />
-          <ButtonCard text="Categoria" />
+          {
+            user?.categories.map((categorie) => (
+              <ButtonCard key={categorie.id + user.id} text={categorie.name} />
+            ))
+          }
+
         </div>
 
         <div className="flex flex-wrap mx-2 border-0 pt-2 border-t  border-gray-500 justify-end space-x-3 ">

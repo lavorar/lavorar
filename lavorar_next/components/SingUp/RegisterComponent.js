@@ -44,6 +44,9 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
     const { errors } = formState;
     const onSubmit = async (values) => {        
         // setFormValues(data);
+        let name = values.firstName.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+        name = name + ' ' + values.lastName.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+        
          try {
              const responseData = await fetcher(
                  `${process.env.NEXT_PUBLIC_STRAPI_URL}/auth/local/register`,
@@ -55,8 +58,7 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
                          email: values.email,
                          password: values.password,
                          username: values.email,
-                         name: values.name,
-                         surname: values.surname,
+                         name: name,                         
                          birth: values.birth,
                      }),
                      method: 'POST',

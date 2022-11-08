@@ -13,7 +13,7 @@ import ButtonCard from '../components/elements/ButtonCard';
 
 const Profile = ({ avatar }) => {
     const { user, loading } = useFetchUser();
-    console.log(user)
+    
     const [image, setImage] = useState(null);
     const router = useRouter();
 
@@ -49,7 +49,7 @@ const Profile = ({ avatar }) => {
                             <h1 className="text-5xl text-center font-bold">
                                 Bienvenido {' '}
                                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">
-                                    {user.firstName + ' ' + user.lastName}
+                                    {user?.name }
                                 </span>
                                 <span>👋</span>
                             </h1>
@@ -66,7 +66,7 @@ const Profile = ({ avatar }) => {
 
                                         <div className="pl-5 flex flex-col">
                                             <div className="flex justify-start items-end text-3xl ">
-                                                {user.firstName + ' ' + user.lastName}
+                                                {user.name }
                                                 <VerifiedIcon sx={{ fontSize: 30 }} className="ml-2" />
                                             </div>
                                             <div className="flex justify-start items-center pt-2">
@@ -159,7 +159,7 @@ const Profile = ({ avatar }) => {
 
 export default Profile;
 
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps({ req }) {   
     const jwt = getTokenFromServerCookie(req);
     if (!jwt) {
         return {
