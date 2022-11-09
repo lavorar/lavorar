@@ -16,7 +16,12 @@ export default function FormCompleted() {
 
     const [datos, setdatos] = useState(data)
 
-
+    let provinceUp
+    let registerUp = true
+    if (data?.categories) {
+        provinceUp = true
+        registerUp = false
+    }
 
 
     const [province, setprovince] = useState(null)    
@@ -49,6 +54,7 @@ export default function FormCompleted() {
                 setdatos({ ...datos, provincia: data })
                 setcityForm({ ...cityForm, province: data })
             },
+            enabled: Boolean(provinceUp),
             staleTime: Infinity
         }
     )
@@ -120,7 +126,7 @@ export default function FormCompleted() {
               onSettled: (data) => {
                    router.replace('/profile')
               },
-              enabled: Boolean(foundcity),
+              enabled: Boolean(foundcity || registerUp),
               staleTime: Infinity
           }
       )
