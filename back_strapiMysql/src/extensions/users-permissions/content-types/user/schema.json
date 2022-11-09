@@ -117,6 +117,14 @@
     "Slug": {
       "type": "uid",
       "targetField": "name"
+    },
+    "profile_pic": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
     }
   }
 }

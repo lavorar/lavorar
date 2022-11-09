@@ -7,7 +7,7 @@ import Link from 'next/Link'
 
 const Card = ({ user }) => {
   return (
-    <div className="inline-block mt-3  overflow-ellipsis w-72 bg-white rounded-lg border border-gray-200 shadow-md ">
+    <div className="inline-block mt-3  overflow-ellipsis w-72 bg-gray-200 rounded-lg border border-gray-200 shadow-md ">
 
       <div className="flex flex-col  mx-1 pb-2 mt-3">
         <div className="flex  justify-between  mx-2">
