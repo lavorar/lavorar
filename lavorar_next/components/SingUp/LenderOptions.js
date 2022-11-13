@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, useController } from 'react-hook-form';
 import { useFormData } from '../../context/FormContext'
 import Select from 'react-select'
 import { useQuery } from 'react-query';
@@ -35,7 +35,7 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
 
     const { setFormValues } = useFormData();
 
-    const { handleSubmit, control, formState } = useForm({
+    const { handleSubmit, register, control, formState } = useForm({
     });
     const { errors } = formState;
     
@@ -141,6 +141,7 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
                             getOptionValue={(option) => option.id} // It should be unique value in the options. E.g. ID
                         />
                     )}
+                    
                     name="categories"
                     control={control}
                 />
@@ -162,7 +163,7 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
                         // getOptionLabel={(option) => option.nombre}
                         // getOptionValue={(option) => option.nombre} // It should be unique value in the options. E.g. ID
                         />
-                    )}
+                    )}                    
                     name="provincia"
                     control={control}
                 />
@@ -187,11 +188,12 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
                             // getOptionValue={(option) => option.nombre}
                         />
                     )}
+                    onChange={(e) => { setcityValue(e) }}
                     name="localidad"
                     control={control}
                 />
                 <p className={` ${errors.localidad ? 'text-orange-high block' : 'invisible'}  `}>{'Debes seleccionar una ciudad'}</p>
-            </div>
+            </div>           
             <button
                 className='block mb-6 text-gray-900 bg-orange-pastel text-lg rounded py-2.5 w-full'
                 type="submit"

@@ -15,12 +15,18 @@ export default function FormCompleted() {
     const { setFormValues } = useFormData();
 
     const formData = new FormData();
-    formData.append("files", data.profile_pic[0])
-    // console.log('formdata', formData)    
+     
+        
     const [datos, setdatos] = useState(data)
-
+    console.log('formdata', datos) 
     let provinceUp
+    let imageup
     let registerUp = true
+    if (data?.profile_pic){
+        formData.append("files", data.profile_pic[0])
+        imageup = true        
+        registerUp = false        
+    }
     if (data?.categories) {
         provinceUp = true
         registerUp = false
@@ -88,12 +94,13 @@ export default function FormCompleted() {
 
     const [city, setcity] = useState(null)
 
-    const [foundcity, setfoundcity] = useState(undefined)
+    const [foundcity, setfoundcity] = useState(data.categories ? undefined : true )
     const querycity = useQuery(
         ['city'],
         getCity,
         {
             onSettled: (data) => {
+                console.log('datos a actualizar', datos)
                 setcity(data)
                 setfoundcity(true)
                 setdatos({ ...datos, localidad: data })
@@ -110,21 +117,22 @@ export default function FormCompleted() {
         )
         return data
     }
-     const queryuploadimg = useQuery(['putUser', foundcity, provinceUp], uploadimg,
+     const queryuploadimg = useQuery(['putUser', foundcity, imageup], uploadimg,
          {
              onSettled: (data) => {
-                 console.log(data)
-                 setimguploaded(true)                
-
+                 console.log("imagen del servidor", data)
+                 setdatos({ ...datos, profile_pic: data })
+                 setimguploaded(true)                             
              },
-             enabled: Boolean(foundcity || registerUp),
+             enabled: Boolean(imageup),
              staleTime: Infinity
          }
      )
 
     const registerUser = async () => {
-        formData.append("data", datos)
-        console.log('datos put', formData)
+        // formData.append("data", datos)
+        // console.log('datos put', formData)
+        
         const { data } = await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/56`,
             datos,
             {
@@ -145,18 +153,20 @@ export default function FormCompleted() {
 
 
 
-    const queryregisterUser = useQuery(['putUser', foundcity, provinceUp], registerUser,
+    const queryregisterUser = useQuery(['putUser', foundcity, registerUp, imguploaded], registerUser,
         {
             onSettled: (data) => {
                 //    router.replace('/profile')
             },
-            enabled: Boolean(imguploaded),
+            enabled: Boolean(registerUp || (foundcity  && imguploaded) || (foundcity && !imageup)),
             staleTime: Infinity
         }
     )
 
+    console.log('queryprovince', queryprovince)
+    console.log('querycity', querycity)
     console.log('register', queryregisterUser)
-    // console.log('img', queryuploadimg)
+     console.log('img', queryuploadimg)
 
     return (
         <>

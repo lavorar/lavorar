@@ -19,13 +19,13 @@ const options = [
     { value: 2500, label: '2500 pesos' },
 ]
 
-const DonateComponent = () => {   
+const DonateComponent = () => {
 
     const router = useRouter();
 
     const { handleSubmit, control, formState } = useForm({
     });
-    const { errors } = formState;     
+    const { errors } = formState;
 
     const mercadopagoPreference = async (unitprice) => {
         const endpoint = 'https://api.mercadopago.com/checkout/preferences'
@@ -52,20 +52,20 @@ const DonateComponent = () => {
                 "Authorization": `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
             }
         }).then((data) => {
-             console.log(data)
-              router.replace(data.data.init_point)  
-                        
+            console.log(data)
+            // router.replace(data.data.init_point)
+
         }).catch((data) => {
             console.log(data)
             return data
         })
         return
-        
+
     }
 
     const submitDonate = async (values) => {
-        console.log(values);      
-        let preference = mercadopagoPreference(values.unit_price.value)        
+        console.log(values);
+        let preference = mercadopagoPreference(values.unit_price.value)
     };
 
 
@@ -92,7 +92,7 @@ const DonateComponent = () => {
                                     placeholder='Elige la cantidad a Donar'
                                     id="unit_price" instanceId="unit_price"
                                 />
-                            )}                            
+                            )}
                             name="unit_price"
                             control={control}
                         />

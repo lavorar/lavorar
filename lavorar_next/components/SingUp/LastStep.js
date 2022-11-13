@@ -1,11 +1,15 @@
 import React, { useState } from 'react'
 import Image  from 'next/image'
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form'; 
 import { useFormData } from '../../context/FormContext'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { fetcher } from '../../lib/api';
 import { setToken } from '../../lib/auth';
+import axios from 'axios';
+import Select from 'react-select'
+import { useQuery } from 'react-query';
+
 
 const lastStep = ({ formStep, nextFormStep }) => {
     const validationSchema = Yup.object().shape({
@@ -25,27 +29,85 @@ const lastStep = ({ formStep, nextFormStep }) => {
 
     const { setFormValues } = useFormData();
 
-    const { register, handleSubmit, reset, formState } = useForm(formOptions);
+    const { register, handleSubmit, control, formState } = useForm(formOptions);
     const { errors } = formState;
 
 
     const { data } = useFormData();
 
-    const onSubmit = async (values) => {                
+
+    const getProvinces = async () => {
+        const { data } = await axios.get(`https://apis.datos.gob.ar/georef/api/provincias?campos=nombre`)
+        const options = []
+        data.provincias.map((provice) => (
+            options.push({
+                value: provice.id,
+                label: provice.nombre,
+                identificador: provice.id,
+                name: provice.nombre,
+            })
+        ))
+        return options
+
+    }
+
+    const provinces = useQuery(['provinces'], getProvinces, { staleTime: Infinity })
+    const [cityId, setcityId] = useState(null)
+    const [cityValue, setcityValue] = useState({ id: 1, name: 'ingresa una cuidad', label: 'ingresa una cuidad' })
+
+    const getCitys = async (cityId) => {
+        if (cityId) {
+            const { data } = await axios.get(`https://apis.datos.gob.ar/georef/api/localidades?provincia=${cityId}&campos=nombre&max=400`)
+            const options = []
+            data.localidades.map((city) => (
+                city.nombre = city.nombre.toLowerCase(),
+                city.nombre = city.nombre.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()),
+                options.push({
+                    value: city.id,
+                    label: city.nombre,
+                    identificador: city.id,
+                    name: city.nombre,
+                })
+            ))
+            return options
+        }
+        return
+    }
+
+    const citys = useQuery(
+        ['citys', cityId],
+        () => getCitys(cityId),
+        {
+            enabled: Boolean(cityId),
+            staleTime: Infinity
+        }
+    )
+    // console.log(citys)
+    const handleProvinceChange = (e) => {
+        control._formValues.provincia = e
+        setcityId(e.identificador)
+        control._formValues.localidad = undefined
+        setcityValue({ id: 1, name: 'ingresa una cuidad', label: 'ingresa una cuidad' })
+    }
+
+    const onSubmit = async (values) => {
+               
+        if (values.profile_pic.length < 1 ){
+            delete values.profile_pic
+        }        
         setFormValues(values);
-        nextFormStep();
+          nextFormStep();
     };
 
+
+
     const [image, setImage] = useState(null);
-    const uploadToClient = (event) => {
-        console.log(image)
-        if (event.target.files && event.target.files[0]) {
-            console.log(event.target.files[0])
+    const uploadToClient = (event) => {        
+        if (event.target.files && event.target.files[0]) {            
             const tmpImage = event.target.files[0];
             setImage(URL.createObjectURL(tmpImage));
         }
-    };
-    console.log(image)
+    };    
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
@@ -54,6 +116,7 @@ const lastStep = ({ formStep, nextFormStep }) => {
             <div className={'flex-col'}>
 
                 <div>
+                    
                     <label htmlFor="profile_pic" className="font-bold text-lg mb-2">
                         Foto de perfil
                     </label>
@@ -61,7 +124,7 @@ const lastStep = ({ formStep, nextFormStep }) => {
                         id="profile_pic"
                         name="profile_pic"
                         type="file"
-                        
+                        accept="image/*"
                         className={` ${errors.profile_pic ? 'text-orange-high border-orange-high ' : 'border-gray-500 dark:border-gray-400'} border-2 py-1 px-2 rounded-md outline-none focus:border-blue-500 bg-transparent`}
                         {...register("profile_pic", {
                             onChange: (e) => uploadToClient(e)
@@ -70,13 +133,15 @@ const lastStep = ({ formStep, nextFormStep }) => {
                     <p className={` ${errors.profile_pic ? 'text-orange-high block' : 'invisible'}  `}>{errors.profile_pic?.message + ''}</p>
                     {
                         image ?
-                            <Image src={image} alt="preview image" width={250} height={250} />
+                        <div className=" rounded-full overflow-hidden w-[50px] h-[50px] ">
+                                <Image src={image} alt="preview image" width={50} height={50} objectFit="cover" />
+                        </div>
                             :
                             <></>
                     }
 
-                </div>
-
+                </div>             
+               
                 <div className="flex flex-col ">
                     <label className="font-bold text-lg mb-2" htmlFor="aboutme">
                         Sobre mi

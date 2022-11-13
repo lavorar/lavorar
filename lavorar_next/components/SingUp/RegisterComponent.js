@@ -40,7 +40,7 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
     //     province: '',
     // });
 
-    const { register, handleSubmit, reset, formState } = useForm(formOptions);
+    const { register, handleSubmit, formState } = useForm(formOptions);
     const { errors } = formState;
     const onSubmit = async (values) => {        
         // setFormValues(data);
