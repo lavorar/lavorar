@@ -38,17 +38,7 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
     //     birth: '',
     //     city: '',
     //     province: '',
-    // });
-    const slugify = str =>
-        str
-            .toLowerCase()
-            .trim()
-            .normalize('NFD')
-            .replace(/([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi, "$1")
-            .replace(/[^\w\s-]/g, '')
-            .replace(/[\s_-]+/g, '-')
-            .replace(/^-+|-+$/g, '')
-            .normalize();
+    // });   
     const { register, handleSubmit, formState } = useForm(formOptions);
     const { errors } = formState;
     const onSubmit = async (values) => {
@@ -56,8 +46,7 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
         let firstname = values.firstName.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
         let lastname = values.lastName.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
         let name = firstname + lastname;
-
-        let slug = slugify(name)
+        
 
         try {
             const responseData = await fetcher(
@@ -71,7 +60,6 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
                         password: values.password,
                         username: values.email,
                         name: name,
-                        Slug: slug,
                         lastName: lastname,
                         firstName: firstname,
                         birth: values.birth,
