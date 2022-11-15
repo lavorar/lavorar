@@ -16,7 +16,9 @@ import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { useRouter } from 'next/router';
 import IconWithButton from '../elements/IconWithButton';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { slugify } from '../SingUp/LenderOptions';
+import { Avatar } from '@mui/material';
 
 
 export default function MyModal({ isOpen, setIsOpen, user }) {
@@ -51,6 +53,10 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
         }
     };
 
+    const deleteImg = (event) => {
+        setImage(null)
+        onChange(null)
+    };
 
     const isValidNewOption = (inputValue, selectValue) =>
         inputValue.length > 0 && selectValue.length < 3;
@@ -144,77 +150,121 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
     };
 
     const onSubmit = async (values) => {
-        if (values.profile_pic.length < 1) {
-            // console.log('profilepic', values.profile_pic)
-            delete values.profile_pic
+        console.log(values.profile_pic, image)
+        if (image === null) {
+            values.profile_pic = null
         }
         else {
-            const formData = new FormData();
-            formData.append("files", values.profile_pic[0])
-            let img = await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/upload/`,
-                formData,
-            )
-                .then(({ data }) => {
-                    // console.log(data)
-                    return data
-                })
-                .catch((error) => {
-                    return error
-                })
+             if (values.profile_pic.length < 1) {
+                 // console.log('profilepic', values.profile_pic)
+                 delete values.profile_pic
+             }
+             else {
+                 const formData = new FormData();
+                 formData.append("files", values.profile_pic[0])
+                 let img = await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/upload/`,
+                     formData,
+                 )
+                     .then(({ data }) => {
+                          //console.log(data)
+            
+                                       return data
+            
+                 })
+            
+                     .catch((error) => {
+            
+                         return error
+            
+                 })
 
-            values.profile_pic = img
+            
+                 values.profile_pic = img
+            
+         }
         }
 
-        let slugprovince = slugify(values.provincia.label)
-        let slugcity = slugify(values.localidad.label)
-        let localidad = { name: values.localidad.label, identificador: values.localidad.identificador, slug: slugcity }
-        let provincia = { name: values.provincia.label, identificador: values.provincia.identificador, Slug: slugprovince }
+        
+         let slugprovince = slugify(values.provincia.label)
+        
+         let slugcity = slugify(values.localidad.label)
+        
+         let localidad = { name: values.localidad.label, identificador: values.localidad.identificador, slug: slugcity }
+        
+         let provincia = { name: values.provincia.label, identificador: values.provincia.identificador, Slug: slugprovince }
 
-        let responseProvince = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces1/${provincia.Slug}`)
-            .then(({ data }) => {
-                return data.data
-            }).catch(async (error) => {
-                return await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/cities`, { data: provincia })
-                    .then(({ data }) => {
-                        return data.data
-                    })
-                    .catch((error) => {
-                        return error
-                    })
-            })
-        values.provincia = responseProvince
-        let responseCity = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/citys1/${localidad.slug}`)
-            .then(({ data }) => {
-                return data.data
-            }).catch(async (error) => {
+        
+         let responseProvince = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces1/${provincia.Slug}`)
+        
+             .then(({ data }) => {
+        
+                 return data.data
+        
+         }).catch(async (error) => {
+        
+                 return await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/cities`, { data: provincia })
+        
+                     .then(({ data }) => {
+        
+                         return data.data
+        
+                 })
+        
+                     .catch((error) => {
+        
+                         return error
+        
+                 })
+        
+         })
+        
+         values.provincia = responseProvince
+        
+         let responseCity = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/citys1/${localidad.slug}`)
+        
+             .then(({ data }) => {
+        
+                 return data.data
+        
+         }).catch(async (error) => {
 
-                return await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/cities`, { data: localidad })
-                    .then(({ data }) => {
-                        return data.data
-                    })
-                    .catch((error) => {
-                        return error
-                    })
-            })
-        values.localidad = responseCity
-        // console.log('profilepic', values.profile_pic)
-        const jwt = getTokenFromLocalCookie();
-        const responsePut = await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${user.id}`,
-            values,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${jwt}`,
-                }
-            }
-        ).then((data) => {
-            router.reload()
-            return data
-        }).catch((error) => {
-            router.reload()
-            return error
-        });
-        // console.log('data', responsePut)
+        
+                 return await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/cities`, { data: localidad })
+        
+                     .then(({ data }) => {
+        
+                         return data.data
+        
+                 })
+        
+                     .catch((error) => {
+        
+                         return error
+        
+                 })
+        
+         })
+        
+         values.localidad = responseCity
+        
+         // console.log('profilepic', values.profile_pic)
+         const jwt = getTokenFromLocalCookie();
+         const responsePut = await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${user.id}`,
+             values,
+             {
+                 headers: {
+                     'Content-Type': 'application/json',
+                     'Authorization': `Bearer ${jwt}`,
+                 }
+             }
+         ).then((data) => {
+             router.reload()
+             return data
+         }).catch((error) => {
+             router.reload()
+             return error
+         });
+         console.log('data', responsePut)
     }
     const [phone, setphone] = useState(user.phone)
     const [aboutme, setaboutme] = useState(user.aboutme)
@@ -277,37 +327,50 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
                                             <div className={'inline-block'}>
                                                 {
                                                     image ?
+                                                        <div>
+                                                            <div
+                                                                className="h-20 w-20 relative aspect-square cursor-pointer"
+                                                                onClick={handleClick}
+                                                            >
+                                                                <Image
+                                                                    alt="Picture of the user"
+                                                                    layout="fill" // required                   
+                                                                    objectFit="cover" // change to suit your needs
+                                                                    className="rounded-full w-full"
+                                                                    src={image}
 
-                                                        <div
-                                                            className="relative cursor-pointer "
-                                                            onClick={handleClick}
-                                                        >
-                                                            <Image
-                                                                width={72}
-                                                                height={72}
-                                                                className="rounded-full"
-                                                                src={image}
-                                                                alt="img"
-                                                            />
-                                                            <div className="absolute bottom-0 left-14">
-                                                                <AddAPhoto />
+                                                                />
+                                                                <div className="absolute bottom-0 left-14">
+                                                                    <AddAPhoto />
+                                                                </div>
+                                                                <input
+                                                                    {...rest}
+                                                                    type="file"
+                                                                    accept="image/*"
+                                                                    className={`hidden`}
+                                                                    name="profile_pic"
+                                                                    ref={(e) => {
+                                                                        ref(e)
+                                                                        profile_pic.current = e // you can still assign to ref
+                                                                    }}
+                                                                // onChange={(e) => {
+                                                                //     uploadToClient(e)
+                                                                //     ref(e)
+                                                                //     profile_pic.current = e.target.files
+                                                                // }}
+                                                                />
                                                             </div>
-                                                            <input
-                                                                {...rest}
-                                                                type="file"
-                                                                accept="image/*"
-                                                                className={`hidden`}
-                                                                name="profile_pic"
-                                                                ref={(e) => {
-                                                                    ref(e)
-                                                                    profile_pic.current = e // you can still assign to ref
+                                                            <div className="absolute top-32 left-40 cursor-pointer flex-row flex items-center gap-2 "
+                                                                onClick={(e) => {
+                                                                    setImage(null)
+                                                                    onChange(e)
                                                                 }}
-                                                            // onChange={(e) => {
-                                                            //     uploadToClient(e)
-                                                            //     ref(e)
-                                                            //     profile_pic.current = e.target.files
-                                                            // }}
-                                                            />
+                                                            >
+                                                                <Avatar sx={{ background: '#111827' }}>
+                                                                    <DeleteRoundedIcon sx={{ color: '#ef4444' }} fontSize='large' />
+                                                                </Avatar>
+                                                                Eliminar Foto
+                                                            </div>
                                                         </div>
                                                         :
                                                         <div
