@@ -3,6 +3,8 @@ import VerifiedIcon from "@mui/icons-material/Verified";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import BasicRating from '/components/elements/Rating';
 import ButtonCard from '/components/elements/ButtonCard';
+import Image from 'next/image';
+import BackgroundLetterAvatars from '../elements/AvatarInitials';
 
 const ProfileComponent = ({user}) => {
   return (
@@ -13,11 +15,25 @@ const ProfileComponent = ({user}) => {
                       <div className='flex flex-col gap-2 border-b dark:border-gray-400  p-5'>
                           <div className="flex flex-row justify-between">
                               <div className="flex flex-row">
-                                  <img
-                                      className="self-center w-14 h-14 p-4 rounded-full shadow-lg bg-zinc-500 "
-                                      src="vercel.svg"
-                                      alt="img"
-                                  />
+                                  {
+                                      user.profile_pic ?
+
+                                          <div className="h-20 w-20 relative aspect-square cursor-pointer"
+                                          // onClick={router.replace( '/prestadores/' + user?.Slug )}
+                                          >
+                                              <Image
+                                                  src={'http://localhost:1337' + user.profile_pic.url}
+                                                  alt="Picture of the user"
+                                                  layout="fill" // required                   
+                                                  objectFit="cover" // change to suit your needs
+
+                                                  className="rounded-full w-full" // just an example
+                                              />
+                                          </div>
+                                          :
+                                          <BackgroundLetterAvatars
+                                              width={72} fontSize='xx-large' firtsName={user?.firstName} lastName={user?.lastName} />
+                                  }
 
                                   <div className="pl-5 flex flex-col">
                                       <div className="flex justify-start items-end text-3xl ">

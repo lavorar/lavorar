@@ -91,7 +91,7 @@ const Layout = ({ user, loading = false, children }) => {
                                 } `}
                                     >
                                         <div
-                                            onClick={() => { Menu.href ? router.push(Menu.href) : '' }}
+                                            onClick={() => { Menu.href ? router.replace(Menu.href) : '' }}
                                             className={`cursor-pointer  duration-300  text-gray-900  dark:text-white-ghost`}>
                                             <IconWithButton
                                             >
@@ -131,10 +131,10 @@ const Layout = ({ user, loading = false, children }) => {
                     </div>
                     <div className={'lg:w-[310px] float-right overflow-auto lg:flex-col hidden lg:flex lg:fixed h-screen right-0 bg-transparent ml-2 p-1 border-l  border-gray-500 dark:border-gray-100'} >
                        <div className='pt-16' >
+                        {/* <Card />
                         <Card />
                         <Card />
-                        <Card />
-                        <Card />
+                        <Card /> */}
                         </div>         
                     </div>
                 </div >

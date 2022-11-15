@@ -31,8 +31,8 @@ const MyProfileComponent = ({ user }) => {
                             <span>👋</span>
                         </h1>
                     </div>
-                    <ModalEditProfile isOpen={isOpen} 
-                    user={user}
+                    <ModalEditProfile isOpen={isOpen}
+                        user={user}
                         setIsOpen={setIsOpen}
                     // closeModal={closeModal}
                     >
@@ -45,16 +45,21 @@ const MyProfileComponent = ({ user }) => {
                                     {
                                         user.profile_pic ?
 
-                                            <Image
-                                                width={72}
-                                                height={72}
-                                                className="rounded-full"
-                                                src={'http://localhost:1337' + user.profile_pic.formats.thumbnail.url}
-                                                alt="img"
-                                            />
+                                            <div className="h-20 w-20 relative aspect-square cursor-pointer"
+                                            // onClick={router.replace( '/prestadores/' + user?.Slug )}
+                                            >
+                                                <Image
+                                                    src={'http://localhost:1337' + user.profile_pic.url}
+                                                    alt="Picture of the user"
+                                                    layout="fill" // required                   
+                                                    objectFit="cover" // change to suit your needs
+
+                                                    className="rounded-full w-full" // just an example
+                                                />
+                                            </div>
                                             :
-                                            <BackgroundLetterAvatars 
-                                                width={72} fontSize='xx-large' firtsName={user?.firstName} lastName={user?.lastName} />                                            
+                                            <BackgroundLetterAvatars
+                                                width={72} fontSize='xx-large' firtsName={user?.firstName} lastName={user?.lastName} />
                                     }
 
                                     <div className="pl-5 flex flex-col">
@@ -85,7 +90,7 @@ const MyProfileComponent = ({ user }) => {
                                 {user.aboutme ? user.aboutme : 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumend    laboriosam, quod aut officiis ea deleniti repellat nisi delectus magnam reiciendis?'}
                             </h5>
                         </div>
-                        {user.categories ?
+                        {user.role?.id === 3 ?
                             <div className='flex p-5 flex-col '>
                                 <div className='flex flex-row gap-20  py-3 justify-start items-center'>
                                     <span>
@@ -93,8 +98,11 @@ const MyProfileComponent = ({ user }) => {
                                     </span>
                                     <div className='flex'>
                                         {user.categories ?
-                                            user.categories.map((categorie) => (
-                                                <ButtonCard key={categorie.id} text={categorie.name} />
+                                            user.categories.map((categorie) => (                                                
+                                                <ButtonCard
+                                                    key={categorie.id}
+                                                    href={'/buscar/' + categorie.Slug}
+                                                    text={categorie.name} />
                                             ))
                                             :
                                             <>
@@ -148,28 +156,3 @@ const MyProfileComponent = ({ user }) => {
 }
 
 export default MyProfileComponent
-
-export async function getServerSideProps({ req }) {
-    const jwt = getTokenFromServerCookie(req);
-    if (!jwt) {
-        return {
-            redirect: {
-                destination: '/',
-            },
-        };
-    } else {
-        const user = await fetcher(
-            `${process.env.NEXT_PUBLIC_STRAPI_URL}/users/me`,
-            {
-                headers: {
-                    Authorization: `Bearer ${jwt}`,
-                },
-            }
-        );
-        return {
-            props: {
-                user,
-            },
-        };
-    }
-}

@@ -6,7 +6,16 @@ import { useQuery } from 'react-query';
 import axios from 'axios'
 import { components } from "react-select";
 
-
+export const slugify = str =>
+    str
+        .toLowerCase()
+        .trim()
+        .normalize('NFD')
+        .replace(/([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi, "$1")
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_-]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .normalize();
 
 const LenderOptions = ({ formStep, nextFormStep }) => {
 
@@ -39,16 +48,7 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
     });
     const { errors } = formState;
     
-    const slugify = str =>
-        str
-            .toLowerCase()
-            .trim()            
-            .normalize('NFD')
-            .replace(/([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi, "$1")            
-            .replace(/[^\w\s-]/g, '')
-            .replace(/[\s_-]+/g, '-')
-            .replace(/^-+|-+$/g, '')
-            .normalize();
+    
 
     const onSubmit = (values) => {
         let slugprovince = slugify(values.provincia.name )

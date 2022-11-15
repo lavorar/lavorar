@@ -4,19 +4,47 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Rating from "./Rating";
 import ButtonCard from "./ButtonCard";
 import Link from 'next/Link'
+import BackgroundLetterAvatars from "./AvatarInitials";
+import Image from "next/image";
+import { useRouter } from "next/router";
 
 const Card = ({ user }) => {
+
+  const router = useRouter()
+  console.log(user)
   return (
     <div className="inline-block mt-3  overflow-ellipsis w-72 bg-gray-200 rounded-lg border border-gray-200 shadow-md ">
 
       <div className="flex flex-col  mx-1 pb-2 mt-3">
         <div className="flex  justify-between  mx-2">
           <div className="flex flex-row">
-            <img
-              className="mb-5 w-14 h-14 p-4 rounded-full shadow-lg bg-zinc-500 "
-              src="vercel.svg"
-              alt="img"
-            />
+            {
+              user?.profile_pic ?
+                <div className="h-14 w-14 relative aspect-square cursor-pointer"
+                  // onClick={router.replace( '/prestadores/' + user?.Slug )}
+                  >
+                  <Image
+                    src={'http://localhost:1337' + user.profile_pic.url}
+                    alt="Picture of the user"
+                    layout="fill" // required                   
+                    objectFit="cover" // change to suit your needs
+
+                    className="rounded-full w-full" // just an example
+                  />
+                </div>
+                :
+                <>
+                  {
+                    user ?
+                      <BackgroundLetterAvatars
+                        width={55} fontSize='x-large' firtsName={user?.firstName} lastName={user?.lastName} />
+                      :
+
+                      <> </>
+                  }
+                </>
+
+            }
 
             <div className="flex flex-col ml-1">
               <Link href={'/prestadores/' + user?.Slug} >

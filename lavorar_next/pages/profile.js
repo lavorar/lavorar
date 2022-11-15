@@ -14,8 +14,8 @@ import MyProfileComponent from '../components/profile/MyProfile'
 // import BackgroundLetterAvatars from '../components/elements/AvatarInitials';
 // import Image from 'next/image';
 
-const Profile = ({ avatar }) => {
-    const { user, loading } = useFetchUser();
+const Profile = ({ user }) => {
+    // const { user, loading } = useFetchUser();
 
     const [image, setImage] = useState(null);
     const router = useRouter();
@@ -61,18 +61,17 @@ export async function getServerSideProps({ req }) {
             },
         };
     } else {
-        const responseData = await fetcher(
-            `${process.env.NEXT_PUBLIC_STRAPI_URL}/users/me`,
+        const user = await fetcher(
+            `${process.env.NEXT_PUBLIC_STRAPI_URL}/users/me?populate=*`,
             {
                 headers: {
                     Authorization: `Bearer ${jwt}`,
                 },
             }
         );
-        const avatar = responseData.avatar ? responseData.avatar : 'default_avatar';
         return {
             props: {
-                avatar,
+                user,
             },
         };
     }

@@ -15,7 +15,7 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
             .matches(/^[a-zA-ZÀ-ÿ\s]{1,50}$/, 'Solo se permiten letras!'),
         lastName: Yup.string()
             .required('Ingresa un apellido!')
-            .matches(/^[a-zA-ZÀ-ÿ\s]{1,50}$/, 'Solo se permiten letras!'),        
+            .matches(/^[a-zA-ZÀ-ÿ\s]{1,50}$/, 'Solo se permiten letras!'),
         email: Yup.string()
             .required('Ingresa una email!')
             .email('Email invalido'),
@@ -39,53 +39,67 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
     //     city: '',
     //     province: '',
     // });
-
+    const slugify = str =>
+        str
+            .toLowerCase()
+            .trim()
+            .normalize('NFD')
+            .replace(/([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi, "$1")
+            .replace(/[^\w\s-]/g, '')
+            .replace(/[\s_-]+/g, '-')
+            .replace(/^-+|-+$/g, '')
+            .normalize();
     const { register, handleSubmit, formState } = useForm(formOptions);
     const { errors } = formState;
-    const onSubmit = async (values) => {        
+    const onSubmit = async (values) => {
         // setFormValues(data);
-        let name = values.firstName.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
-        name = name + ' ' + values.lastName.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
-        
-         try {
-             const responseData = await fetcher(
-                 `${process.env.NEXT_PUBLIC_STRAPI_URL}/auth/local/register`,
-                 {
-                     headers: {
-                         'Content-Type': 'application/json',
-                     },
-                     body: JSON.stringify({
-                         email: values.email,
-                         password: values.password,
-                         username: values.email,
-                         name: name,                         
-                         birth: values.birth,
-                     }),
-                     method: 'POST',
-                 }
-             );  
-             console.log('response', responseData)
-             if (responseData.user)
-             {
-                 console.log('user', responseData.user)
-                 values.jwt = responseData.jwt
-                 values.id = responseData.user.id
-                 setFormValues(values);
-                 nextFormStep();
-                 //setregistration(true)
-                 console.log(responseData)
-                 setToken(responseData);  
-             }
-             else{
+        let firstname = values.firstName.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+        let lastname = values.lastName.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+        let name = firstname + lastname;
+
+        let slug = slugify(name)
+
+        try {
+            const responseData = await fetcher(
+                `${process.env.NEXT_PUBLIC_STRAPI_URL}/auth/local/register`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: values.email,
+                        password: values.password,
+                        username: values.email,
+                        name: name,
+                        Slug: slug,
+                        lastName: lastname,
+                        firstName: firstname,
+                        birth: values.birth,
+                    }),
+                    method: 'POST',
+                }
+            );
+            console.log('response', responseData)
+            if (responseData.user) {
+                console.log('user', responseData.user)
+                values.jwt = responseData.jwt
+                values.id = responseData.user.id
+                setFormValues(values);
+                nextFormStep();
+                //setregistration(true)
+                console.log(responseData)
+                setToken(responseData);
+            }
+            else {
                 alert('el email ya esta tomado')
-             }
-                       
+            }
+
             //  setUser({ ...user, user: responseData.user, jwt: responseData.jwt })
-              
-         } catch (error) {
-             console.error(error);
-         }
-        
+
+        } catch (error) {
+            console.error(error);
+        }
+
     };
 
     // const handleLender = async (e) => {
@@ -148,7 +162,7 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
                         <p className={` ${errors.lastName ? 'text-orange-high block' : 'invisible'}  `}>{errors.lastName?.message + ''}</p>
                     </div>
                 </div>
-                
+
                 <div className="flex flex-col  ">
                     <label className="font-bold text-lg mb-1" htmlFor="email">
                         Email
@@ -161,7 +175,7 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
                     />
                     <p className={` ${errors.email ? 'text-orange-high block' : 'invisible'} `}>{errors.email?.message + ''}</p>
                 </div>
-               
+
                 <div className="flex flex-col mb-4 ">
                     <label className="font-bold text-lg mb-1" htmlFor="password">
                         Contraseña
@@ -175,13 +189,13 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
                     />
                     <p className={` ${errors.password ? 'text-orange-high block' : 'invisible'}   `}>{errors.password?.message + ''}</p>
                 </div>
-                
+
                 <button
                     className='block mb-6 text-gray-900 bg-orange-pastel text-lg rounded py-2.5 w-full'
                     type="submit"
                 >
                     Siguiente
-                </button>                
+                </button>
             </div>
         </form>
     );

@@ -28,11 +28,12 @@ function stringAvatar(firtsName, lastName, width, fontSize) {
         sx: {
             width: width ? width : 50,
             height: width ? width : 50,
-            fontSize: fontSize ? fontSize : 'medium', 
-            bgcolor: stringToColor(name),
+            fontSize: fontSize ? fontSize : 'medium',
+            bgcolor: "#c1c4c7",
+            color: "#111827"
 
         },
-        children: `${firtsName.split(' ')[0][0]}${lastName.split(' ')[0][0]}`,
+        children: `${firtsName.split(' ')[0][0].toUpperCase()}${lastName.split(' ')[0][0].toUpperCase()}`,
     };
 }
 

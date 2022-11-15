@@ -3,15 +3,17 @@ import React from 'react'
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import ProfileComponent from '../../components/profile/ProfileComponent';
+import { fetcher } from '../../lib/api';
+import { getTokenFromServerCookie } from '../../lib/auth';
 import { useFetchUser } from '../../lib/authContext';
 import Card from "/components/elements/Card";
 import HomeSearchBar from "/components/elements/HomeSearchBar";
 import Layout from "/components/Layouts/mainLayout";
-const Search = ({ users }) => {
+const Search = ({ users, user }) => {
 
     console.log(users)
     return (
-        <Layout>            
+        <Layout user={user}>            
             <ProfileComponent user={users[0]} />
         </Layout>
     )
@@ -24,7 +26,18 @@ export async function getServerSideProps(context) {
     const us = true
     const qs = require('qs');
     let users
-
+    const jwt = getTokenFromServerCookie(context.req);
+    let user
+    if (jwt) {
+        user = await fetcher(
+            `${process.env.NEXT_PUBLIC_STRAPI_URL}/users/me`,
+            {
+                headers: {
+                    Authorization: `Bearer ${jwt}`,
+                },
+            }
+        );
+    } 
     const query = qs.stringify({
         filters: {
             Slug: {
@@ -47,10 +60,19 @@ export async function getServerSideProps(context) {
         users = null
     })
 
-    return {
-        props: {
-            users,
-        },
-    };
+    if (user) {
+        return {
+            props: {
+                users, user
+            },
+        };
+    }
+    else {
+        return {
+            props: {
+                users
+            },
+        };
+    }
 
 }
