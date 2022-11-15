@@ -9,11 +9,14 @@ import Card from "/components/elements/Card";
 import HomeSearchBar from "/components/elements/HomeSearchBar";
 import Layout from "/components/Layouts/mainLayout";
 const SearchProvince = ({ users , user}) => {
-
+    const router = useRouter()
     console.log(users)
     return (
-        <Layout user={user}>
+        <Layout user={user}>            
             <div className="flex flex-col  items-center w-full p-1 text-black">
+                <h1 className="text-center text-gray-900 dark:text-gray-100 font-bold text-4xl pt-5">
+                    {'BUSCAR SERVICIOS DE' + ' ' + router.query.categorieSlug?.toUpperCase() + ' EN ' + router.query.provinceSlug?.toUpperCase()}
+                </h1>
                 <HomeSearchBar />
                 <div className="mt-10 flex flex-wrap  justify-evenly  gap-4 lg:gap-8 w-full lg:px-5">
                     {
