@@ -24,7 +24,7 @@ const Card = ({ user }) => {
                   // onClick={router.replace( '/prestadores/' + user?.Slug )}
                   >
                   <Image
-                    src={'http://localhost:1337' + user.profile_pic.url}
+                    src={process.env.NEXT_PUBLIC_STRAPI_URL_IMAGE + user.profile_pic.url}
                     alt="Picture of the user"
                     layout="fill" // required                   
                     objectFit="cover" // change to suit your needs

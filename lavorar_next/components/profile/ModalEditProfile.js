@@ -44,7 +44,7 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
     const { errors } = formState;
     const { ref, onChange, name, type, ...rest } = register('profile_pic');
 
-    const [image, setImage] = useState(user?.profile_pic ? 'http://localhost:1337' + user.profile_pic.formats.thumbnail.url : null);
+    const [image, setImage] = useState(user?.profile_pic ? process.env.NEXT_PUBLIC_STRAPI_URL_IMAGE + user.profile_pic.formats.thumbnail.url : null);
     const uploadToClient = (event) => {
         if (event.target.files && event.target.files[0]) {
             const tmpImage = event.target.files[0];
@@ -271,7 +271,7 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
 
     function closeModal() {
         setIsOpen(false)
-        setImage(user?.profile_pic ? 'http://localhost:1337' + user.profile_pic.formats.thumbnail.url : null)
+        setImage(user?.profile_pic ? process.env.NEXT_PUBLIC_STRAPI_URL_IMAGE + user.profile_pic.formats.thumbnail.url : null)
     }
     return (
         <>
