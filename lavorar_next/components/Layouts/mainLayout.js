@@ -52,10 +52,10 @@ const Layout = ({ user, loading = false, children }) => {
 
 
             <main>
-                <div className="flex md:flex-row h-auto ">
+                <div className="flex md:flex-row min-h-screen h-auto ">
                     <div
                         className={` ${open ? "w-64" : "w-24 "
-                            } hidden md:flex z-50  flex-col bg-transparent border-0  text-gray-900 dark:text-white-ghost h-full p-3  fixed pt-8  duration-500`}
+                            } hidden md:flex z-50  flex-col bg-transparent border-0  text-gray-900 dark:text-white-ghost h-full p-3  fixed pt-8  duration-500 `}
                     >
                         <div
                             className={`absolute  cursor-pointer group -right-5 top-10
