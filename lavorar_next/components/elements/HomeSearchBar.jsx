@@ -249,7 +249,7 @@ const HomeSearchBar = (props) => {
                     />
                 </div>
                 <div className="flex space-x-12 items-center w-full justify-center h-full md:ml-2 md:w-52 bg-orange-brand rounded-full">
-                    <button type='submit' className=" text-3xl font-medium text-white">Buscar</button>
+                    <button type='submit' className=" text-3xl font-medium text-gray-900">Buscar</button>
                 </div>
             </div>
         </form>

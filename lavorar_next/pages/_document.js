@@ -5,7 +5,7 @@ export default function Document() {
         <Html>
             <Head />
             <body
-                className="bg-gray-100 
+                className="bg-gray-50 
       dark:bg-gray-800
       text-gray-700  dark:text-gray-100"
             >

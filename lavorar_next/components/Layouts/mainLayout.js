@@ -55,12 +55,12 @@ const Layout = ({ user, loading = false, children }) => {
                 <div className="flex md:flex-row h-auto ">
                     <div
                         className={` ${open ? "w-64" : "w-24 "
-                            } hidden md:flex z-50  flex-col bg-transparent border-0 border-r border-gray-500 dark:border-gray-100  text-gray-900 dark:text-white-ghost h-full p-3  fixed pt-8  duration-500`}
+                            } hidden md:flex z-50  flex-col bg-transparent border-0  text-gray-900 dark:text-white-ghost h-full p-3  fixed pt-8  duration-500`}
                     >
                         <div
                             className={`absolute  cursor-pointer group -right-5 top-10
                             rounded-full duration-300  ${!open && "rotate-180"}`}>
-                            <IconWithButton
+                            <IconWithButton                            
                                 onClick={() => setOpen(!open)}
                             >
                                 <ArrowBackIosNewRoundedIcon fontSize="small" />
@@ -116,12 +116,12 @@ const Layout = ({ user, loading = false, children }) => {
                             >Donar</a>
                         </p>
                     </div>
-                    <div className={`${open ? 'md:pl-64' : 'md:pl-24'}  z-10 lg:mr-[310px] h-auto flex flex-around p-2 md:p-0  duration-500 w-full md:ml-2   md:flex-1 `}>
+                    <div className={`${open ? 'md:ml-64' : 'md:ml-24'}  z-10 lg:mr-[310px] h-auto flex flex-around p-2 md:p-0  duration-500 w-full md:ml-2   md:flex-1 border-l border-gray-500 dark:border-gray-100 `}>
                         <div className="w-full  ">
                             <Header user={user} >
 
                             </Header>
-                            <div className='pt-5 md:p-10'>
+                            <div className='pt-5 md:p-10 '>
 
                             {children}
                             </div>
@@ -129,7 +129,7 @@ const Layout = ({ user, loading = false, children }) => {
                         </div>
                         {/* <AppHeader /> */}
                     </div>
-                    <div className={'lg:w-[310px] float-right overflow-auto lg:flex-col hidden lg:flex lg:fixed h-screen right-0 bg-transparent ml-2 p-1 border-l  border-gray-500 dark:border-gray-100'} >
+                    <div className={'lg:w-[310px] float-right overflow-auto lg:flex-col hidden lg:flex lg:fixed h-screen right-0 bg-transparent ml-2 p-1 border-l   border-gray-500 dark:border-gray-100'} >
                        <div className='pt-16' >
                         {/* <Card />
                         <Card />

@@ -51,14 +51,9 @@ const Header = (props) => {
 
   return (
     <>
-      <nav className="bg-gradient-to-r
-      from-gray-100
-      via-gray-400
-      to-gray-200 
-      dark:bg-gradient-to-r
-      dark:from-[#1B2232]
-      dark:via-gray-600
-      dark:to-gray-800 text-gray-900  dark:text-white-ghost px-2 sm:px-4 p-0 sticky w-full z-10 top-0 py-1 left-0">
+      <nav className="bg-gray-200
+      dark:bg-[#13192b]
+       text-gray-900  dark:text-white-ghost px-2 sm:px-4 p-0 sticky w-full z-10 top-0 py-1 left-0">
         <div className="container flex justify-between md:justify-end h-16 items-center mx-auto px-2">
           <a href="/" className="flex items-center md:invisible ">
             <img src="/Lavorar-logo-negativo.svg" className="mr-2 w-16" alt="LAvorar Logo" />
@@ -70,7 +65,7 @@ const Header = (props) => {
               <button
                 type="button"
                 onClick={(e) => router.replace('/donate')}
-                className="focus:outline-none text-white bg-orange-brand hover:bg-yellow-500 focus:ring-2 focus:ring-orange-high dark:focus:ring-orange-high font-medium rounded-lg text-base px-3 py-2 mr-2 my-2 "
+                className="focus:outline-none text-gray-900 bg-orange-brand hover:bg-yellow-500 focus:ring-2 focus:ring-orange-high dark:focus:ring-orange-high font-medium rounded-lg text-base px-3 py-2 mr-2 my-2 "
               >
                 Dona 
               </button>
