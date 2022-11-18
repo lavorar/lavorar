@@ -116,7 +116,8 @@
     },
     "Slug": {
       "type": "uid",
-      "targetField": "name"
+      "targetField": "name",
+      "minLength": 1
     },
     "profile_pic": {
       "type": "media",

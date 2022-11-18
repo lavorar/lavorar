@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { useFormData } from '../../context/FormContext'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 const RegisterComponent = ({ formStep, nextFormStep }) => {
     const validationSchema = Yup.object().shape({
@@ -43,80 +44,81 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
     const { errors } = formState;
     const onSubmit = async (values) => {
         // setFormValues(data);
-        let firstname = values.firstName.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
-        let lastname = values.lastName.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
-        let name = firstname + lastname;
-        
+        // let firstname = values.firstName.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+        // let lastname = values.lastName.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+        // let name = firstname + lastname;
+        const qs = require('qs');
+        const query = qs.stringify({
+            filters: {
+                email: {
+                    $eq: values.email,
+                },
 
-        try {
-            const responseData = await fetcher(
-                `${process.env.NEXT_PUBLIC_STRAPI_URL}/auth/local/register`,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: values.email,
-                        password: values.password,
-                        username: values.email,
-                        name: name,
-                        lastName: lastname,
-                        firstName: firstname,
-                        birth: values.birth,
-                    }),
-                    method: 'POST',
-                }
-            );
-            console.log('response', responseData)
-            if (responseData.user) {
-                console.log('user', responseData.user)
-                values.jwt = responseData.jwt
-                values.id = responseData.user.id
-                setFormValues(values);
-                nextFormStep();
-                //setregistration(true)
-                console.log(responseData)
-                setToken(responseData);
             }
-            else {
+        }, {
+            encodeValuesOnly: true, // prettify URL
+        });
+        await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users?${query}`).then(({ data }) => {
+            console.log('primer paso', data)
+            if (data.length > 0) {
                 alert('el email ya esta tomado')
             }
+            else {
+                let firstname = values.firstName.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+                let lastname = values.lastName.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+                let name = firstname + ' ' + lastname;
+                values.firstName = firstname
+                values.lastName = lastname
+                values.name = name
+                values.username = values.email
+                console.log('primer paso', values)
+                setFormValues(values);
+                nextFormStep();
+            }
+        }).catch((data) => {
+            console.log(data)
+        })
+        // try {
+        //     const responseData = await fetcher(
+        //         `${process.env.NEXT_PUBLIC_STRAPI_URL}/auth/local/register`,
+        //         {
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //             },
+        //             body: JSON.stringify({
+        //                 email: values.email,
+        //                 password: values.password,
+        //                 username: values.email,
+        //                 name: name,
+        //                 lastName: lastname,
+        //                 firstName: firstname,
+        //                 birth: values.birth,
+        //             }),
+        //             method: 'POST',
+        //         }
+        //     );
+        //     console.log('response', responseData)
+        //     if (responseData.user) {
+        //         console.log('user', responseData.user)
+        //         values.jwt = responseData.jwt
+        //         values.id = responseData.user.id
+        //         setFormValues(values);
+        //         nextFormStep();
+        //         //setregistration(true)
+        //         console.log(responseData)
+        //         setToken(responseData);
+        //     }
+        //     else {
+        //         alert('el email ya esta tomado')
+        //     }
 
-            //  setUser({ ...user, user: responseData.user, jwt: responseData.jwt })
+        //     //  setUser({ ...user, user: responseData.user, jwt: responseData.jwt })
 
-        } catch (error) {
-            console.error(error);
-        }
+        // } catch (error) {
+        //     console.error(error);
+        // }
 
     };
-
-    // const handleLender = async (e) => {
-    //     const id = user.user.id
-    //     console.log('id user', user)
-    //     const jwt = user.jwt;
-    //     try {
-    //         const responseData = await fetcher(
-    //             `${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${id}`,
-    //             {
-    //                 headers: {
-    //                     'Content-Type': 'application/json',
-    //                     Authorization: `Bearer ${jwt}`,
-    //                 },
-    //                 body: JSON.stringify({
-    //                     is_lender: true,
-    //                     province: userData.province,
-    //                     city: userData.city,
-    //                 }),
-    //                 method: 'PUT',
-    //             }
-    //         );
-    //         console.log(responseData)
-
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    //     router.replace('/')
-    // }
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}

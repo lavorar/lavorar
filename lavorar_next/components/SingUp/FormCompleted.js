@@ -15,17 +15,17 @@ export default function FormCompleted() {
     const { setFormValues } = useFormData();
 
     const formData = new FormData();
-     
-        
+
+
     const [datos, setdatos] = useState(data)
-    console.log('formdata', datos) 
+    console.log('formdata', datos)
     let provinceUp
     let imageup
     let registerUp = true
-    if (data?.profile_pic){
+    if (data?.profile_pic) {
         formData.append("files", data.profile_pic[0])
-        imageup = true        
-        registerUp = false        
+        imageup = true
+        registerUp = false
     }
     if (data?.categories) {
         provinceUp = true
@@ -94,7 +94,7 @@ export default function FormCompleted() {
 
     const [city, setcity] = useState(null)
 
-    const [foundcity, setfoundcity] = useState(data.categories ? undefined : true )
+    const [foundcity, setfoundcity] = useState(data.categories ? undefined : true)
     const querycity = useQuery(
         ['city'],
         getCity,
@@ -117,56 +117,105 @@ export default function FormCompleted() {
         )
         return data
     }
-     const queryuploadimg = useQuery(['putUser', foundcity, imageup], uploadimg,
-         {
-             onSettled: (data) => {
-                 console.log("imagen del servidor", data)
-                 setdatos({ ...datos, profile_pic: data })
-                 setimguploaded(true)                             
-             },
-             enabled: Boolean(imageup),
-             staleTime: Infinity
-         }
-     )
+    const queryuploadimg = useQuery(['putUser', foundcity, imageup], uploadimg,
+        {
+            onSettled: (data) => {
+                console.log("imagen del servidor", data)
+                setdatos({ ...datos, profile_pic: data })
+                setimguploaded(true)
+            },
+            enabled: Boolean(imageup),
+            staleTime: Infinity
+        }
+    )
 
     const registerUser = async () => {
         // formData.append("data", datos)
         // console.log('datos put', formData)
-        
-        const { data } = await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/56`,
+
+        const { data } = await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/auth/local/register`,
             datos,
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTYsImlhdCI6MTY2NzI1ODg2MSwiZXhwIjoxNjY5ODUwODYxfQ.aAU1UgLU77bZj5N4GFX31exagX963INGaEDhHK5Wu90`,
                 }
             }
-        );
-
-
+        )
         return data
+
     }
+
+
+
+    const queryregisterUser = useQuery(['putUser', foundcity, registerUp, imguploaded, imageup], registerUser,
+        {
+            onSettled: async (data) => {
+                setToken(data);
+                console.log('datos id', data.user)
+                setdatos({ ...datos, profile_pic: data })
+                setdatos({ ...datos, id: data.user.id, jwt: data.jwt })               
+                // if (datos?.role) {
+                //     await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${data.user.id}`,
+                //         {
+                //             role: datos.role,
+                //             name: data.user.name
+                //         },
+                //         {
+                //             headers: {
+                //                 'Content-Type': 'application/json',
+                //                 Authorization: `Bearer ${data.jwt}`
+                //             }
+                //         })
+                // }
+                //router.replace('/profile')
+            },
+            enabled: Boolean(registerUp || (querycity.isSuccess && queryuploadimg.isSuccess) || (querycity.isSuccess && !imageup) ||
+                (querycity.isIdle && queryuploadimg.isSuccess)),
+            staleTime: Infinity
+        })
+
+    const putuser = async () => {
+        // formData.append("data", datos)
+        // console.log('datos put', formData)
+        console.log('datos update', datos)
+        const { data } = await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${datos.id}`,
+            {
+                role: datos.role,
+                name: datos.firstName + ' ' +datos.lastName + " "
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${datos.jwt}`
+                }
+            })
+        return data
+
+    }
+
+    const queryupdateUser = useQuery(['putUser'], putuser,
+        {
+            onSettled: (data) => {
+                router.replace('/')
+            },
+            enabled: Boolean(queryregisterUser.isSuccess && datos?.role && datos?.id && datos?.jwt),
+            staleTime: Infinity
+        }
+    )
 
 
     // console.log('objeto ciudad', city)
     // console.log('objeto provinca', province)
 
+    
+    console.log('datos update', datos.jwt)
+    console.log('datos update', datos.id)
 
 
-    const queryregisterUser = useQuery(['putUser', foundcity, registerUp, imguploaded], registerUser,
-        {
-            onSettled: (data) => {
-                //    router.replace('/profile')
-            },
-            enabled: Boolean(registerUp || (foundcity  && imguploaded) || (foundcity && !imageup)),
-            staleTime: Infinity
-        }
-    )
-
-    console.log('queryprovince', queryprovince)
+    console.log('queryupdateUser', queryupdateUser)
     console.log('querycity', querycity)
     console.log('register', queryregisterUser)
-     console.log('img', queryuploadimg)
+    console.log('img', queryuploadimg)
 
     return (
         <>

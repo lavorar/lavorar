@@ -122,10 +122,11 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
     )
 
     const handleProvinceChange = (e) => {
-        // console.log(e.identificador)
+        console.log(e)
         control._formValues.provincia = e
-        control._formValues.localidad = null
-        // setcityId(e.identificador)
+        control._formValues.localidad = undefined
+        setcityId(e.identificador)
+        setprovinceValue(e)
         setcityValue(null)
 
     }
@@ -150,122 +151,124 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
     };
 
     const onSubmit = async (values) => {
-        console.log(values.profile_pic, image)
+        console.log('data', values)
         if (image === null) {
             values.profile_pic = null
         }
         else {
-             if (values.profile_pic.length < 1) {
-                 // console.log('profilepic', values.profile_pic)
-                 delete values.profile_pic
-             }
-             else {
-                 const formData = new FormData();
-                 formData.append("files", values.profile_pic[0])
-                 let img = await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/upload/`,
-                     formData,
-                 )
-                     .then(({ data }) => {
-                          //console.log(data)
-            
-                                       return data
-            
-                 })
-            
-                     .catch((error) => {
-            
-                         return error
-            
-                 })
+            if (values.profile_pic.length < 1) {
+                // console.log('profilepic', values.profile_pic)
+                delete values.profile_pic
+            }
+            else {
+                const formData = new FormData();
+                formData.append("files", values.profile_pic[0])
+                let img = await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/upload/`,
+                    formData,
+                )
+                    .then(({ data }) => {
+                        //console.log(data)
 
-            
-                 values.profile_pic = img
-            
-         }
+                        return data
+
+                    })
+
+                    .catch((error) => {
+
+                        return error
+
+                    })
+
+
+                values.profile_pic = img
+
+            }
         }
 
-        
-         let slugprovince = slugify(values.provincia.label)
-        
-         let slugcity = slugify(values.localidad.label)
-        
-         let localidad = { name: values.localidad.label, identificador: values.localidad.identificador, slug: slugcity }
-        
-         let provincia = { name: values.provincia.label, identificador: values.provincia.identificador, Slug: slugprovince }
 
-        
-         let responseProvince = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces1/${provincia.Slug}`)
-        
-             .then(({ data }) => {
-        
-                 return data.data
-        
-         }).catch(async (error) => {
-        
-                 return await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/cities`, { data: provincia })
-        
-                     .then(({ data }) => {
-        
-                         return data.data
-        
-                 })
-        
-                     .catch((error) => {
-        
-                         return error
-        
-                 })
-        
-         })
-        
-         values.provincia = responseProvince
-        
-         let responseCity = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/citys1/${localidad.slug}`)
-        
-             .then(({ data }) => {
-        
-                 return data.data
-        
-         }).catch(async (error) => {
+        let slugprovince = slugify(values.provincia.label)
 
-        
-                 return await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/cities`, { data: localidad })
-        
-                     .then(({ data }) => {
-        
-                         return data.data
-        
-                 })
-        
-                     .catch((error) => {
-        
-                         return error
-        
-                 })
-        
-         })
-        
-         values.localidad = responseCity
-        
-         // console.log('profilepic', values.profile_pic)
-         const jwt = getTokenFromLocalCookie();
-         const responsePut = await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${user.id}`,
-             values,
-             {
-                 headers: {
-                     'Content-Type': 'application/json',
-                     'Authorization': `Bearer ${jwt}`,
-                 }
-             }
-         ).then((data) => {
-             router.reload()
-             return data
-         }).catch((error) => {
-             router.reload()
-             return error
-         });
-         console.log('data', responsePut)
+        let slugcity = slugify(values.localidad.label)
+
+
+
+        let provincia = { name: values.provincia.label, identificador: values.provincia.identificador, Slug: slugprovince }
+
+        console.log('provicnes', values.provincia)
+        let responseProvince = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces1/${provincia.Slug}`)
+
+            .then(({ data }) => {
+
+                return data.data
+
+            }).catch(async (error) => {
+
+                return await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces`, { data: provincia })
+
+                    .then(({ data }) => {
+
+                        return data.data
+
+                    })
+
+                    .catch((error) => {
+
+                        return error
+
+                    })
+
+            })
+
+
+        values.provincia = responseProvince
+        let localidad = { name: values.localidad.label, identificador: values.localidad.identificador, slug: slugcity, province: values.provincia }
+        let responseCity = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/citys1/${localidad.slug}`)
+
+            .then(({ data }) => {
+
+                return data.data
+
+            }).catch(async (error) => {
+
+
+                return await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/cities`, { data: localidad })
+
+                    .then(({ data }) => {
+
+                        return data.data
+
+                    })
+
+                    .catch((error) => {
+
+                        return error
+
+                    })
+
+            })
+
+        values.localidad = responseCity
+
+        // console.log('profilepic', values.profile_pic)
+        const jwt = getTokenFromLocalCookie();
+        const responsePut = await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${user.id}`,
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwt}`,
+                }
+            }
+        ).then((data) => {
+            router.reload()
+            return data
+        }).catch((error) => {
+            router.reload()
+            return error
+        });
+        console.log('data', responsePut)
     }
+    const [provinceValue, setprovinceValue] = useState({ value: user.provincia?.identificador, label: user.provincia?.name })
     const [phone, setphone] = useState(user.phone)
     const [aboutme, setaboutme] = useState(user.aboutme)
 
@@ -491,7 +494,7 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
                                                                         placeholder='Provincia'
                                                                         options={provinces.data}
                                                                         isDisabled={provinces.isLoading}
-
+                                                                        value={provinceValue}
                                                                         onChange={handleProvinceChange}
                                                                         id="provincia" instanceId="provincia"
                                                                     // getOptionLabel={(option) => option.nombre}
