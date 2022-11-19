@@ -53,8 +53,7 @@ const DonateComponent = () => {
             }
         }).then((data) => {
             console.log(data)
-            // router.replace(data.data.init_point)
-
+            router.replace(data.data.init_point)
         }).catch((data) => {
             console.log(data)
             return data
