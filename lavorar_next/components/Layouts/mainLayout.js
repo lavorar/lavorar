@@ -78,7 +78,7 @@ const Layout = ({ user, loading = false, children }) => {
                                 className={`text-orange-brand origin-left font-medium text-xl duration-200 ${!open && "scale-0"
                                     }`}
                             >
-                                Lavorar
+                                LavorAr
                             </h1>
                         </div>
                         <ul className="pt-6">

@@ -22,7 +22,7 @@ const SignUpLayout = ({ user, loading = false, children }) => {
                  dark:bg-gray-700 text-gray-900  dark:text-white-ghost px-2 sm:px-4 p-0 sticky w-full z-10 top-0 py-1 left-0">
                     <a href="/" className="flex items-center  ">
                         <img src="/Lavorar-logo-negativo.svg" className="mr-6 w-16" alt="LAvorar Logo" />
-                        <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Lavorar</span>
+                        <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">LavorAr</span>
                     </a>
                 </nav>
                 <div className='mt-3 p-2 md:p-5'>
