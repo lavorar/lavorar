@@ -132,6 +132,9 @@
     },
     "lastName": {
       "type": "string"
+    },
+    "avatar": {
+      "type": "string"
     }
   }
 }

@@ -19,16 +19,15 @@ const Card = ({ user }) => {
         <div className="flex  justify-between  mx-2">
           <div className="flex flex-row">
             {
-              user?.profile_pic ?
-                <div className="h-14 w-14 relative aspect-square cursor-pointer"
+              user?.avatar ?
+                <div className="h-16 w-16 relative aspect-square cursor-pointer"
                   // onClick={router.replace( '/prestadores/' + user?.Slug )}
                   >
                   <Image
-                    src={process.env.NEXT_PUBLIC_STRAPI_URL_IMAGE + user.profile_pic.url}
+                    src={`/f_auto,q_auto,c_thumb/v${user.avatar}`}
                     alt="Picture of the user"
                     layout="fill" // required                   
                     objectFit="cover" // change to suit your needs
-
                     className="rounded-full w-full" // just an example
                   />
                 </div>
@@ -37,7 +36,7 @@ const Card = ({ user }) => {
                   {
                     user ?
                       <BackgroundLetterAvatars
-                        width={55} fontSize='x-large' firtsName={user?.firstName} lastName={user?.lastName} />
+                        width={60} fontSize='x-large' firtsName={user?.firstName} lastName={user?.lastName} />
                       :
 
                       <> </>

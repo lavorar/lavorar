@@ -16,7 +16,7 @@ import MyProfileComponent from '../components/profile/MyProfile'
 
 const Profile = ({ user }) => {
     // const { user, loading } = useFetchUser();
-
+    
     const [image, setImage] = useState(null);
     const router = useRouter();
 
@@ -54,6 +54,7 @@ export default Profile;
 
 export async function getServerSideProps({ req }) {
     const jwt = getTokenFromServerCookie(req);
+    
     if (!jwt) {
         return {
             redirect: {
@@ -61,6 +62,7 @@ export async function getServerSideProps({ req }) {
             },
         };
     } else {
+        console.log(jwt)
         const user = await fetcher(
             `${process.env.NEXT_PUBLIC_STRAPI_URL}/users/me?populate=*`,
             {

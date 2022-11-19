@@ -41,28 +41,38 @@ const MyProfileComponent = ({ user }) => {
                     <div className='flex relative flex-col rounded-md bg-gray-300 dark:bg-gray-700' >
                         <div className='flex flex-col gap-2 border-b dark:border-gray-400  p-5'>
                             <div className="flex flex-row justify-between">
-                                <div className="flex flex-row">
+                                <div className="flex flex-row flex-wrap">
                                     {
-                                        user.profile_pic ?
+                                        user.avatar ?
 
-                                            <div className="h-20 w-20 relative aspect-square cursor-pointer"
+                                            <div className="h-[100px] w-[100px] md:w-[150px] md:h-[150px] relative aspect-square cursor-pointer"
                                             // onClick={router.replace( '/prestadores/' + user?.Slug )}
                                             >
                                                 <Image
-                                                    src={process.env.NEXT_PUBLIC_STRAPI_URL_IMAGE + user.profile_pic.url}
+                                                    src={`/f_auto,q_auto,c_thumb/v${user.avatar}`}
                                                     alt="Picture of the user"
                                                     layout="fill" // required                   
-                                                    objectFit="cover" // change to suit your needs
-
-                                                    className="rounded-full w-full" // just an example
+                                                    objectFit="cover"// change to suit your needs
+                                                    className="rounded-full w-full"
+                                                    // quality={100} // just an example
                                                 />
+                                                
                                             </div>
                                             :
                                             <BackgroundLetterAvatars
-                                                width={72} fontSize='xx-large' firtsName={user?.firstName} lastName={user?.lastName} />
+                                                width={150} fontSize='xx-large' firtsName={user?.firstName} lastName={user?.lastName} />
                                     }
+                                    {/* {user.avatar ? (
+                                        <img
+                                            src={`https://res.cloudinary.com/dozjn0kxw/image/upload/f_auto,q_auto,w_150,h_150,c_thumb,r_max/v${user.avatar}`}
+                                            alt="Profile"
+                                        />
+                                    )
+                                        :
+                                        <></>
+                                    } */}
 
-                                    <div className="pl-5 flex flex-col">
+                                    <div className="md:pl-5 flex flex-col">
                                         <div className="flex justify-start items-end text-3xl ">
                                             {user?.firstName + ' ' + user?.lastName}
                                             <VerifiedIcon sx={{ fontSize: 30 }} className="ml-2" />
@@ -96,7 +106,7 @@ const MyProfileComponent = ({ user }) => {
                                     <span>
                                         Skills
                                     </span>
-                                    <div className='flex'>
+                                    <div className='flex flex-wrap'>
                                         {user.categories ?
                                             user.categories.map((categorie) => (
                                                 <ButtonCard

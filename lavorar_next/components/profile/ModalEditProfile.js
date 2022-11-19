@@ -42,21 +42,17 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
     const formOptions = { resolver: yupResolver(validationSchema) };
     const { register, handleSubmit, control, formState } = useForm(formOptions);
     const { errors } = formState;
-    const { ref, onChange, name, type, ...rest } = register('profile_pic');
+    const { ref, onChange, name, type, ...rest } = register('avatar');
 
-    const [image, setImage] = useState(user?.profile_pic ? process.env.NEXT_PUBLIC_STRAPI_URL_IMAGE + user.profile_pic.formats.thumbnail.url : null);
+    const [image, setImage] = useState(user.avatar ? '/f_auto,q_auto,c_thumb,r_max/v' + user.avatar : null);
     const uploadToClient = (event) => {
         if (event.target.files && event.target.files[0]) {
             const tmpImage = event.target.files[0];
-            profile_pic.current = event.target.files
+            avatar.current = event.target.files
             setImage(URL.createObjectURL(tmpImage));
         }
     };
 
-    const deleteImg = (event) => {
-        setImage(null)
-        onChange(null)
-    };
 
     const isValidNewOption = (inputValue, selectValue) =>
         inputValue.length > 0 && selectValue.length < 3;
@@ -144,112 +140,72 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
         );
     };
 
-    const profile_pic = useRef(null);
+    const avatar = useRef(null);
 
     const handleClick = event => {
-        profile_pic.current.click();
+        avatar.current.click();
+    };
+
+    const uploadToServer = async (file) => {
+        const formData = new FormData();
+        formData.append('inputFile', file);
+        formData.append('user_id', user.id);
+        console.log(formData)
+        await axios.post(`/api/upload/`,
+            formData,
+        )
+            .then(({ data }) => {
+                console.log(data)
+                router.reload('/profile')
+                // return data
+            })
+
+            .catch((error) => {
+                console.error(JSON.stringify(error));
+                router.reload('/profile')
+            })
     };
 
     const onSubmit = async (values) => {
         console.log('data', values)
+        const files = values.avatar        
         if (image === null) {
-            values.profile_pic = null
+            values.avatar = ''
         }
-        else {
-            if (values.profile_pic.length < 1) {
-                // console.log('profilepic', values.profile_pic)
-                delete values.profile_pic
-            }
-            else {
-                const formData = new FormData();
-                formData.append("files", values.profile_pic[0])
-                let img = await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/upload/`,
-                    formData,
-                )
-                    .then(({ data }) => {
-                        //console.log(data)
-
-                        return data
-
-                    })
-
-                    .catch((error) => {
-
-                        return error
-
-                    })
-
-
-                values.profile_pic = img
-
-            }
+        else{
+            delete values.avatar
         }
-
-
         let slugprovince = slugify(values.provincia.label)
-
         let slugcity = slugify(values.localidad.label)
-
-
-
         let provincia = { name: values.provincia.label, identificador: values.provincia.identificador, Slug: slugprovince }
-
         console.log('provicnes', values.provincia)
         let responseProvince = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces1/${provincia.Slug}`)
-
             .then(({ data }) => {
-
                 return data.data
-
             }).catch(async (error) => {
-
                 return await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces`, { data: provincia })
-
                     .then(({ data }) => {
-
                         return data.data
-
                     })
-
                     .catch((error) => {
-
                         return error
-
                     })
-
             })
-
-
         values.provincia = responseProvince
         let localidad = { name: values.localidad.label, identificador: values.localidad.identificador, slug: slugcity, province: values.provincia }
         let responseCity = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/citys1/${localidad.slug}`)
-
             .then(({ data }) => {
-
                 return data.data
-
             }).catch(async (error) => {
-
-
                 return await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/cities`, { data: localidad })
-
                     .then(({ data }) => {
-
                         return data.data
-
                     })
-
                     .catch((error) => {
-
                         return error
-
                     })
-
             })
-
         values.localidad = responseCity
-
-        // console.log('profilepic', values.profile_pic)
         const jwt = getTokenFromLocalCookie();
         const responsePut = await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${user.id}`,
             values,
@@ -260,13 +216,21 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
                 }
             }
         ).then((data) => {
-            router.reload()
+            if (image === null) {
+                router.reload('/profile')
+            }
+            // router.reload('/profile')
             return data
         }).catch((error) => {
-            router.reload()
+            if (image === null) {
+                router.reload('/profile')
+            }
             return error
         });
-        console.log('data', responsePut)
+        if (image !== null && files.length > 0) {
+            uploadToServer(files[0])
+        }
+        // console.log('data', responsePut)
     }
     const [provinceValue, setprovinceValue] = useState({ value: user.provincia?.identificador, label: user.provincia?.name })
     const [phone, setphone] = useState(user.phone)
@@ -274,7 +238,7 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
 
     function closeModal() {
         setIsOpen(false)
-        setImage(user?.profile_pic ? process.env.NEXT_PUBLIC_STRAPI_URL_IMAGE + user.profile_pic.formats.thumbnail.url : null)
+        setImage(user.avatar ? '/f_auto,q_auto,c_thumb,r_max/v' + user.avatar : null);
     }
     return (
         <>
@@ -351,16 +315,15 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
                                                                     type="file"
                                                                     accept="image/*"
                                                                     className={`hidden`}
-                                                                    name="profile_pic"
+                                                                    name="avatar"
                                                                     ref={(e) => {
                                                                         ref(e)
-                                                                        profile_pic.current = e // you can still assign to ref
+                                                                        avatar.current = e // you can still assign to ref
                                                                     }}
-                                                                // onChange={(e) => {
-                                                                //     uploadToClient(e)
-                                                                //     ref(e)
-                                                                //     profile_pic.current = e.target.files
-                                                                // }}
+                                                                    onChange={(e) => {
+                                                                        uploadToClient(e)
+                                                                        onChange(e)
+                                                                    }}
                                                                 />
                                                             </div>
                                                             <div className="absolute top-32 left-40 cursor-pointer flex-row flex items-center gap-2 "
@@ -393,16 +356,16 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
                                                                 type="file"
                                                                 accept="image/*"
                                                                 className={`hidden`}
-                                                                name="profile_pic"
+                                                                name="avatar"
                                                                 ref={(e) => {
                                                                     ref(e)
-                                                                    profile_pic.current = e // you can still assign to ref
+                                                                    avatar.current = e // you can still assign to ref
                                                                 }}
                                                                 onChange={(e) => {
                                                                     uploadToClient(e)
                                                                     onChange(e)
                                                                 }}
-                                                            // {...register("profile_pic", {
+                                                            // {...register("avatar", {
                                                             //     onChange: (e) => uploadToClient(e)
                                                             // })}
                                                             />

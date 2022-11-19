@@ -25,28 +25,40 @@ export default async function upload(req, res) {
                 resolve({ fields, files });
             });
         });
-        const file = data?.files?.inputFile.filepath;
         const { user_id } = data.fields;
-        try {
-            const response = await cloudinary.v2.uploader.upload(file, {
-                public_id: user_id,
-            });
-            const { public_id } = response;
-            const jwt = getTokenFromServerCookie(req);
+        // console.log(data)
+        //  return res.json(user_id );
+         const file = data?.files?.inputFile.filepath;
 
-            const userResponse = await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${user_id}`,
-                { avatar: public_id, },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${jwt}`
-                    }
-                })
-            const data = await userResponse.json();
-            return res.json({ data });
-        } catch (error) {
-            console.error(JSON.stringify(error));
-        }
+         try {
+             const response = await cloudinary.v2.uploader.upload(file, {
+                 public_id: user_id,
+                 width: 150,
+                 heigth: 150,
+                 crop: 'scale',
+                 invalidate: true
+             });
+             const { public_id, version } = response;
+             let img = version + '/' + public_id
+             const jwt = getTokenFromServerCookie(req);
+
+             const responseUpdateAvatar = await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${user_id}`,
+                 {
+                     avatar: img
+                 },
+                 {
+                     headers: {
+                         'Content-Type': 'application/json',
+                         Authorization: `Bearer ${jwt}`
+                     }
+                 })
+             return res.json({ message: 'success', data: data });
+
+
+         } catch (error) {
+             console.error(JSON.stringify(error));
+             return res.json(error)
+         }
     } else {
         return res.status(403).send('Forbidden');
     }

@@ -3,9 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['localhost'],
-    formats: ['image/avif', 'image/webp'],
-  },
+    loader: 'cloudinary',
+    path: 'https://res.cloudinary.com/dozjn0kxw/image/upload'
+  }
 }
 
 module.exports = nextConfig
