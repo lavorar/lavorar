@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import React, { Children } from 'react'
 import FormProvider from '../../context/FormContext'
-import { UserProvider } from '../../lib/authContext'
+import { UserProvider } from '../../lib/AuthContext'
 
 const SignUpLayout = ({ user, loading = false, children }) => {
     return (

@@ -5,11 +5,11 @@ import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { fetcher } from '../../lib/api';
 import { getTokenFromServerCookie } from '../../lib/auth';
-import { useFetchUser } from '../../lib/authContext';
+import { useFetchUser } from '../../lib/AuthContext';
 import Card from "/components/elements/Card";
 import HomeSearchBar from "/components/elements/HomeSearchBar";
 import Layout from "/components/Layouts/mainLayout";
-const Search = ({users, user}) => {    
+const Search = ({ users, user }) => {
     console.log(users)
     return (
         <Layout user={user}>
@@ -18,11 +18,11 @@ const Search = ({users, user}) => {
             </h1>
             <div className="flex flex-col  items-center w-full p-1 text-black">
                 <HomeSearchBar />
-                
+
                 <div className="mt-10 flex flex-wrap  justify-evenly  gap-4 lg:gap-8 w-full lg:px-5">
                     {
                         users.map((user) => (
-                           <Card key={user.id} user={user} />
+                            <Card key={user.id} user={user} />
                         ))
                     }
 
@@ -41,16 +41,16 @@ export async function getServerSideProps({ req }) {
     const jwt = getTokenFromServerCookie(req);
     let user
     if (jwt) {
-         user = await fetcher(
-             `${process.env.NEXT_PUBLIC_STRAPI_URL}/users/me`,
+        user = await fetcher(
+            `${process.env.NEXT_PUBLIC_STRAPI_URL}/users/me`,
             {
                 headers: {
                     Authorization: `Bearer ${jwt}`,
                 },
             }
         );
-    } 
-       
+    }
+
     const query = qs.stringify({
         filters: {
             role: {
@@ -70,14 +70,14 @@ export async function getServerSideProps({ req }) {
         users = null
     })
 
-    if(user){
+    if (user) {
         return {
             props: {
                 users, user
             },
         };
     }
-    else{
+    else {
         return {
             props: {
                 users
@@ -85,6 +85,6 @@ export async function getServerSideProps({ req }) {
         };
     }
 
-    
+
 
 }

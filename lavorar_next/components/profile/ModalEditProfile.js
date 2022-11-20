@@ -8,7 +8,7 @@ import { useQuery } from 'react-query';
 import axios from 'axios'
 import * as Yup from 'yup';
 import BackgroundLetterAvatars from '../elements/AvatarInitials';
-import { useFetchUser } from '../../lib/authContext';
+import { useFetchUser } from '../../lib/AuthContext';
 import AddAPhoto from '@mui/icons-material/AddAPhoto';
 import Image from 'next/image';
 import { getTokenFromLocalCookie } from '../../lib/auth';
@@ -168,11 +168,11 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
 
     const onSubmit = async (values) => {
         console.log('data', values)
-        const files = values.avatar        
+        const files = values.avatar
         if (image === null) {
             values.avatar = ''
         }
-        else{
+        else {
             delete values.avatar
         }
         let slugprovince = slugify(values.provincia.label)

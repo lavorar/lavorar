@@ -1,4 +1,4 @@
-import Link from 'next/Link'
+import Link from 'next/link'
 
 function ButtonCard({ text, href }) {
     return <Link href={href ? href : ''} >

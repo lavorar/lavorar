@@ -3,7 +3,7 @@ import VerifiedIcon from "@mui/icons-material/Verified";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Rating from "./Rating";
 import ButtonCard from "./ButtonCard";
-import Link from 'next/Link'
+import Link from 'next/link'
 import BackgroundLetterAvatars from "./AvatarInitials";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -21,8 +21,8 @@ const Card = ({ user }) => {
             {
               user?.avatar ?
                 <div className="h-16 w-16 relative aspect-square cursor-pointer"
-                  // onClick={router.replace( '/prestadores/' + user?.Slug )}
-                  >
+                // onClick={router.replace( '/prestadores/' + user?.Slug )}
+                >
                   <Image
                     src={`/f_auto,q_auto,c_thumb/v${user.avatar}`}
                     alt="Picture of the user"

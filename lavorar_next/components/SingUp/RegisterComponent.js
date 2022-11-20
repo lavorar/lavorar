@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { getIdFromLocalCookie, getTokenFromLocalCookie, setToken } from '../../lib/auth';
 import { fetcher } from '../../lib/api';
-import { useFetchUser } from '../../lib/authContext';
+import { useFetchUser } from '../../lib/AuthContext';
 import { useForm } from 'react-hook-form';
 import { useFormData } from '../../context/FormContext'
 import { yupResolver } from '@hookform/resolvers/yup';

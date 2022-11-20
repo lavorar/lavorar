@@ -5,7 +5,7 @@ import { useQuery } from 'react-query';
 import ProfileComponent from '../../components/profile/ProfileComponent';
 import { fetcher } from '../../lib/api';
 import { getTokenFromServerCookie } from '../../lib/auth';
-import { useFetchUser } from '../../lib/authContext';
+import { useFetchUser } from '../../lib/AuthContext';
 import Card from "/components/elements/Card";
 import HomeSearchBar from "/components/elements/HomeSearchBar";
 import Layout from "/components/Layouts/mainLayout";
@@ -13,7 +13,7 @@ const Search = ({ users, user }) => {
 
     console.log(users)
     return (
-        <Layout user={user}>            
+        <Layout user={user}>
             <ProfileComponent user={users[0]} />
         </Layout>
     )
@@ -37,7 +37,7 @@ export async function getServerSideProps(context) {
                 },
             }
         );
-    } 
+    }
     const query = qs.stringify({
         filters: {
             Slug: {

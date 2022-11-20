@@ -5,7 +5,7 @@ import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import { useRouter } from 'next/router';
-import { useUser } from '../../lib/authContext';
+import { useUser } from '../../lib/AuthContext';
 import { unsetToken } from '../../lib/auth';
 // import { useAuth } from "../../../context/authContext";
 // import { useNavigate } from 'react-router-dom';

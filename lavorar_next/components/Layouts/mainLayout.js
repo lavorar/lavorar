@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-import { UserProvider } from '../../lib/authContext';
+import { UserProvider } from '../../lib/AuthContext';
 import { useState } from "react";
 import { useRouter } from 'next/router'
 import Header from "../elements/Header";
@@ -25,7 +25,7 @@ const Layout = ({ user, loading = false, children }) => {
     const Menus = [
         { title: "Inicio", src: <HomeRoundedIcon fontSize={'large'} />, always: true, href: '/' },
         { title: "Explorar", src: <ExploreRoundedIcon fontSize={'large'} />, always: true },
-        { title: "Mi Perfil", src: <PersonRoundedIcon fontSize={'large'} />, always: user ? true : false, gap: true , href: '/profile'},
+        { title: "Mi Perfil", src: <PersonRoundedIcon fontSize={'large'} />, always: user ? true : false, gap: true, href: '/profile' },
         { title: "Guardado", src: <BookmarkOutlinedIcon fontSize={'large'} />, always: user ? true : false },
         { title: "Mis Trabajos", src: <WorkRoundedIcon fontSize={'large'} />, always: user ? true : false },
         { title: "Horario y Agenda", src: <EventAvailableRoundedIcon fontSize={'large'} />, always: user ? true : false },
@@ -60,7 +60,7 @@ const Layout = ({ user, loading = false, children }) => {
                         <div
                             className={`absolute  cursor-pointer group -right-5 top-10
                             rounded-full duration-300  ${!open && "rotate-180"}`}>
-                            <IconWithButton                            
+                            <IconWithButton
                                 onClick={() => setOpen(!open)}
                             >
                                 <ArrowBackIosNewRoundedIcon fontSize="small" />
@@ -123,19 +123,19 @@ const Layout = ({ user, loading = false, children }) => {
                             </Header>
                             <div className='pt-5 md:p-10 '>
 
-                            {children}
+                                {children}
                             </div>
 
                         </div>
                         {/* <AppHeader /> */}
                     </div>
                     <div className={'lg:w-[310px] float-right overflow-auto lg:flex-col hidden lg:flex lg:fixed h-screen right-0 bg-transparent ml-2 p-1 border-l   border-gray-500 dark:border-gray-100'} >
-                       <div className='pt-16' >
-                        {/* <Card />
+                        <div className='pt-16' >
+                            {/* <Card />
                         <Card />
                         <Card />
                         <Card /> */}
-                        </div>         
+                        </div>
                     </div>
                 </div >
                 <NavMobile />
