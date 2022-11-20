@@ -116,7 +116,7 @@ const Layout = ({ user, loading = false, children }) => {
                             >Donar</a>
                         </p>
                     </div>
-                    <div className={`${open ? 'md:ml-64' : 'md:ml-24'}  z-10 lg:mr-[310px] h-auto flex flex-around p-2 md:p-0  duration-500 w-full md:ml-2   md:flex-1  `}>
+                    <div className={`${open ? 'md:ml-64' : 'md:ml-24'}  z-30 lg:mr-[310px] h-auto flex flex-around p-2 md:p-0  duration-500 w-full md:ml-2   md:flex-1  `}>
                         <div className="w-full  ">
                             <Header user={user} >
 
