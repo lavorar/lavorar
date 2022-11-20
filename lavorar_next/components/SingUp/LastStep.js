@@ -11,7 +11,7 @@ import Select from 'react-select'
 import { useQuery } from 'react-query';
 
 
-const lastStep = ({ formStep, nextFormStep }) => {
+const LastStep = ({ formStep, nextFormStep }) => {
     const validationSchema = Yup.object().shape({
         aboutme: Yup.string()
             .required('Ingresa una descripcion sobre vos!'),
@@ -168,4 +168,4 @@ const lastStep = ({ formStep, nextFormStep }) => {
 }
 
 
-export default lastStep
+export default LastStep
