@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Image  from 'next/image'
 import { useForm, Controller } from 'react-hook-form'; 
-import { useFormData } from '../../context/FormContext'
+import { UseFormData } from '../../context/FormContext'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { fetcher } from '../../lib/api';
@@ -27,7 +27,7 @@ const lastStep = ({ formStep, nextFormStep }) => {
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
 
-    const { setFormValues } = useFormData();
+    const { setFormValues } = UseFormData();
 
     const { register, handleSubmit, control, formState } = useForm(formOptions);
     const { errors } = formState;

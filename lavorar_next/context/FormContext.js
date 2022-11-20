@@ -21,4 +21,4 @@ export default function FormProvider({ children }) {
     );
 }
 
-export const useFormData = () => useContext(FormContext);
+export const UseFormData = () => useContext(FormContext);
