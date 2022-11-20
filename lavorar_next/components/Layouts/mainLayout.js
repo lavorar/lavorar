@@ -55,7 +55,7 @@ const Layout = ({ user, loading = false, children }) => {
                 <div className="flex md:flex-row min-h-screen h-auto ">
                     <div
                         className={` ${open ? "w-64" : "w-24 "
-                            } hidden md:flex z-50  flex-col bg-transparent border-0  text-gray-900 dark:text-white-ghost h-full p-3  fixed pt-8  duration-500 `}
+                            } hidden md:flex z-50  flex-col bg-transparent border-0  text-gray-900 dark:text-white-ghost h-full p-3  fixed pt-8  duration-500 border-r border-gray-500 dark:border-gray-100`}
                     >
                         <div
                             className={`absolute  cursor-pointer group -right-5 top-10
@@ -116,7 +116,7 @@ const Layout = ({ user, loading = false, children }) => {
                             >Donar</a>
                         </p>
                     </div>
-                    <div className={`${open ? 'md:ml-64' : 'md:ml-24'}  z-10 lg:mr-[310px] h-auto flex flex-around p-2 md:p-0  duration-500 w-full md:ml-2   md:flex-1 border-l border-gray-500 dark:border-gray-100 `}>
+                    <div className={`${open ? 'md:ml-64' : 'md:ml-24'}  z-10 lg:mr-[310px] h-auto flex flex-around p-2 md:p-0  duration-500 w-full md:ml-2   md:flex-1  `}>
                         <div className="w-full  ">
                             <Header user={user} >
 
