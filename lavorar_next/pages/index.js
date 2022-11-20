@@ -6,7 +6,7 @@ import HomeSearchBar from "../components/elements/HomeSearchBar";
 import Layout from "../components/Layouts/mainLayout";
 import { fetcher } from "../lib/api";
 import { getTokenFromServerCookie } from "../lib/auth";
-import { useFetchUser, useUser } from "../lib/authContext";
+import { useFetchUser, useUser } from "../lib/AuthContext";
 
 export default function Home({user, users}) {
   // const { user, loading } = useFetchUser();

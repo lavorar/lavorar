@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Layout from '../components/Layouts/mainLayout';
 import { fetcher } from '../lib/api';
 import { getIdFromLocalCookie, getTokenFromServerCookie } from '../lib/auth';
-import { useFetchUser } from '../lib/authContext';
+import { useFetchUser } from '../lib/AuthContext';
 import MyProfileComponent from '../components/profile/MyProfile'
 
 // import VerifiedIcon from "@mui/icons-material/Verified";
@@ -16,7 +16,7 @@ import MyProfileComponent from '../components/profile/MyProfile'
 
 const Profile = ({ user }) => {
     // const { user, loading } = useFetchUser();
-    
+
     const [image, setImage] = useState(null);
     const router = useRouter();
 
@@ -54,7 +54,7 @@ export default Profile;
 
 export async function getServerSideProps({ req }) {
     const jwt = getTokenFromServerCookie(req);
-    
+
     if (!jwt) {
         return {
             redirect: {

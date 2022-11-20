@@ -1,4 +1,4 @@
-import { useFetchUser } from '../lib/authContext';
+import { useFetchUser } from '../lib/AuthContext';
 import LoginComponent from '../components/SingUp/LoginComponent';
 import { getTokenFromServerCookie } from '../lib/auth';
 import SignUpLayout from '../components/Layouts/SignUpLayout';
@@ -19,7 +19,7 @@ export default Donate;
 
 
 export async function getServerSideProps({ req }) {
-    const us= true
+    const us = true
     const jwt = getTokenFromServerCookie(req);
     if (!jwt) {
         return {
@@ -28,7 +28,7 @@ export async function getServerSideProps({ req }) {
             },
         };
     } else {
-        
+
         return {
             props: {
                 us,
