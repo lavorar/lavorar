@@ -1,8 +1,8 @@
 import React, { Children } from 'react'
-import { useFormData } from '../../context/FormContext'
+import { UseFormData } from '../../context/FormContext'
 
 const Progress = ({ currentStep, prevFormStep, back2FormStep, children }) => {
-    const { data } = useFormData()
+    const { data } = UseFormData()
     return (
         <div className="items-center w-full">
             <div className="w-full p-2 md:max-w-md md:mx-auto">
@@ -16,24 +16,24 @@ const Progress = ({ currentStep, prevFormStep, back2FormStep, children }) => {
                         <button
                             className={` ${currentStep > 0 ? 'block' : 'invisible'} justify-self-start  `}
                             onClick={currentStep === 3 && !data.is_lender ? back2FormStep : prevFormStep}
-                        type="button"
+                            type="button"
                         >
-                        Volver
-                    </button>
+                            Volver
+                        </button>
 
 
-                    <span className={'flex justify-self-center '}>Paso {currentStep + 1} de 5</span>
-                    <span className={''}></span>
+                        <span className={'flex justify-self-center '}>Paso {currentStep + 1} de 5</span>
+                        <span className={''}></span>
+                    </div>
                 </div>
+                {children}
+                <p className={`${currentStep === 0 ? 'block' : 'hidden'} text-center space-x-6`}>
+                    <span className="text-gray-700 dark:text-gray-300 text-sm font-semibold">Ya tienes una cuenta? </span>
+                    <a className="text-blue-600 dark:text-[#039be5] cursor-pointer text-sm font-semibold"
+                        onClick={() => router.replace('/login')}
+                    >Inicia Sesion</a>
+                </p>
             </div>
-            {children}
-            <p className={`${currentStep === 0 ? 'block' : 'hidden'} text-center space-x-6`}>
-                <span className="text-gray-700 dark:text-gray-300 text-sm font-semibold">Ya tienes una cuenta? </span>
-                <a className="text-blue-600 dark:text-[#039be5] cursor-pointer text-sm font-semibold"
-                    onClick={() => router.replace('/login')}
-                >Inicia Sesion</a>
-            </p>
-        </div>
         </div >
     )
 }

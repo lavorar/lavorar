@@ -4,7 +4,7 @@ import { fetcher } from '../../lib/api';
 
 import React, { useState } from 'react'
 import { useForm, Controller } from 'react-hook-form';
-import { useFormData } from '../../context/FormContext'
+import { UseFormData } from '../../context/FormContext'
 import Select from 'react-select'
 import { useQuery } from 'react-query';
 import axios from 'axios'

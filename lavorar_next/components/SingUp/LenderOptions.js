@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useForm, Controller, useController } from 'react-hook-form';
-import { useFormData } from '../../context/FormContext'
+import { UseFormData } from '../../context/FormContext'
 import Select from 'react-select'
 import { useQuery } from 'react-query';
 import axios from 'axios'
@@ -42,21 +42,21 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
     const { data, isFetching, error } = useQuery(['todos'], getCategories, { staleTime: Infinity })
 
 
-    const { setFormValues } = useFormData();
+    const { setFormValues } = UseFormData();
 
     const { handleSubmit, register, control, formState } = useForm({
     });
     const { errors } = formState;
-    
-    
+
+
 
     const onSubmit = (values) => {
-        let slugprovince = slugify(values.provincia.name )
-        
-        let slugcity= slugify(values.localidad.name)
+        let slugprovince = slugify(values.provincia.name)
+
+        let slugcity = slugify(values.localidad.name)
         values.localidad = { name: values.localidad.name, identificador: values.localidad.identificador, slug: slugcity }
         values.provincia = { name: values.provincia.name, identificador: values.provincia.identificador, Slug: slugprovince }
-        
+
         console.log('submit', values)
         setFormValues(values);
         nextFormStep();
@@ -141,7 +141,7 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
                             getOptionValue={(option) => option.id} // It should be unique value in the options. E.g. ID
                         />
                     )}
-                    
+
                     name="categories"
                     control={control}
                 />
@@ -163,7 +163,7 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
                         // getOptionLabel={(option) => option.nombre}
                         // getOptionValue={(option) => option.nombre} // It should be unique value in the options. E.g. ID
                         />
-                    )}                    
+                    )}
                     name="provincia"
                     control={control}
                 />
@@ -184,8 +184,8 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
                             id="localidad" instanceId="localidad"
                             defaultOptions={[{ id: 0, label: "ingresa una provincia", value: '' }]}
                             isDisabled={!citys.isSuccess}
-                            // getOptionLabel={(option) => option.nombre}
-                            // getOptionValue={(option) => option.nombre}
+                        // getOptionLabel={(option) => option.nombre}
+                        // getOptionValue={(option) => option.nombre}
                         />
                     )}
                     onChange={(e) => { setcityValue(e) }}
@@ -193,7 +193,7 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
                     control={control}
                 />
                 <p className={` ${errors.localidad ? 'text-orange-high block' : 'invisible'}  `}>{'Debes seleccionar una ciudad'}</p>
-            </div>           
+            </div>
             <button
                 className='block mb-6 text-gray-900 bg-orange-pastel text-lg rounded py-2.5 w-full'
                 type="submit"

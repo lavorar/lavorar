@@ -41,7 +41,7 @@ const MyProfileComponent = ({ user }) => {
                     <div className='flex relative flex-col rounded-md bg-gray-300 dark:bg-gray-700' >
                         <div className='flex flex-col gap-2 border-b dark:border-gray-400  p-5'>
                             <div className="flex flex-row justify-between">
-                                <div className="flex flex-row flex-wrap">
+                                <div className="flex flex-row  gap-2 flex-wrap">
                                     {
                                         user.avatar ?
 
@@ -54,13 +54,16 @@ const MyProfileComponent = ({ user }) => {
                                                     layout="fill" // required                   
                                                     objectFit="cover"// change to suit your needs
                                                     className="rounded-full w-full"
-                                                    // quality={100} // just an example
+                                                // quality={100} // just an example
                                                 />
-                                                
+
                                             </div>
                                             :
-                                            <BackgroundLetterAvatars
-                                                width={150} fontSize='xx-large' firtsName={user?.firstName} lastName={user?.lastName} />
+                                            <div className="h-[100px] w-[100px] md:w-[150px] md:h-[150px] aspect-square cursor-pointer"
+                                            // onClick={router.replace( '/prestadores/' + user?.Slug )}
+                                            >
+                                                <BackgroundLetterAvatars                                                     fontSize='xxx-large' firtsName={user?.firstName} lastName={user?.lastName} />
+                                            </div>
                                     }
                                     {/* {user.avatar ? (
                                         <img
@@ -72,7 +75,7 @@ const MyProfileComponent = ({ user }) => {
                                         <></>
                                     } */}
 
-                                    <div className="md:pl-5 flex flex-col">
+                                    <div className="flex flex-col">
                                         <div className="flex justify-start items-end text-3xl ">
                                             {user?.firstName + ' ' + user?.lastName}
                                             <VerifiedIcon sx={{ fontSize: 30 }} className="ml-2" />

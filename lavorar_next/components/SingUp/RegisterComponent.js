@@ -4,7 +4,7 @@ import { getIdFromLocalCookie, getTokenFromLocalCookie, setToken } from '../../l
 import { fetcher } from '../../lib/api';
 import { useFetchUser } from '../../lib/AuthContext';
 import { useForm } from 'react-hook-form';
-import { useFormData } from '../../context/FormContext'
+import { UseFormData } from '../../context/FormContext'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -26,7 +26,7 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
 
-    const { setFormValues } = useFormData()
+    const { setFormValues } = UseFormData()
     // const [user, setUser] = useState({ user: null, jwt: '' })
     // const router = useRouter();
     // const [registration, setregistration] = useState(false)

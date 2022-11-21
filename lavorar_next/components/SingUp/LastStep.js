@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import Image  from 'next/image'
-import { useForm, Controller } from 'react-hook-form'; 
+import Image from 'next/image'
+import { useForm, Controller } from 'react-hook-form';
 import { UseFormData } from '../../context/FormContext'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -33,7 +33,7 @@ const LastStep = ({ formStep, nextFormStep }) => {
     const { errors } = formState;
 
 
-    const { data } = useFormData();
+    const { data } = UseFormData();
 
 
     const getProvinces = async () => {
@@ -91,23 +91,23 @@ const LastStep = ({ formStep, nextFormStep }) => {
     }
 
     const onSubmit = async (values) => {
-               
-        if (values.profile_pic.length < 1 ){
+
+        if (values.profile_pic.length < 1) {
             delete values.profile_pic
-        }        
+        }
         setFormValues(values);
-          nextFormStep();
+        nextFormStep();
     };
 
 
 
     const [image, setImage] = useState(null);
-    const uploadToClient = (event) => {        
-        if (event.target.files && event.target.files[0]) {            
+    const uploadToClient = (event) => {
+        if (event.target.files && event.target.files[0]) {
             const tmpImage = event.target.files[0];
             setImage(URL.createObjectURL(tmpImage));
         }
-    };    
+    };
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
@@ -116,7 +116,7 @@ const LastStep = ({ formStep, nextFormStep }) => {
             <div className={'flex-col'}>
 
                 <div>
-                    
+
                     <label htmlFor="profile_pic" className="font-bold text-lg mb-2">
                         Foto de perfil
                     </label>
@@ -133,15 +133,15 @@ const LastStep = ({ formStep, nextFormStep }) => {
                     <p className={` ${errors.profile_pic ? 'text-orange-high block' : 'invisible'}  `}>{errors.profile_pic?.message + ''}</p>
                     {
                         image ?
-                        <div className=" rounded-full overflow-hidden w-[50px] h-[50px] ">
+                            <div className=" rounded-full overflow-hidden w-[50px] h-[50px] ">
                                 <Image src={image} alt="preview image" width={50} height={50} objectFit="cover" />
-                        </div>
+                            </div>
                             :
                             <></>
                     }
 
-                </div>             
-               
+                </div>
+
                 <div className="flex flex-col ">
                     <label className="font-bold text-lg mb-2" htmlFor="aboutme">
                         Sobre mi

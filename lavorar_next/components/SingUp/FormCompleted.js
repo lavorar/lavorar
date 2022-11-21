@@ -2,17 +2,17 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { useFormData } from "../../context/FormContext";
+import { UseFormData } from "../../context/FormContext";
 import { fetcher } from "../../lib/api";
 import { setToken } from "../../lib/auth";
 
 
 export default function FormCompleted() {
-    const { data } = useFormData();
+    const { data } = UseFormData();
     const router = useRouter();
     const provinceForm = data.provincia
     const [cityForm, setcityForm] = useState(data.localidad)
-    const { setFormValues } = useFormData();
+    const { setFormValues } = UseFormData();
 
     const formData = new FormData();
 
@@ -153,7 +153,7 @@ export default function FormCompleted() {
                 setToken(data);
                 console.log('datos id', data.user)
                 setdatos({ ...datos, profile_pic: data })
-                setdatos({ ...datos, id: data.user.id, jwt: data.jwt })               
+                setdatos({ ...datos, id: data.user.id, jwt: data.jwt })
                 // if (datos?.role) {
                 //     await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${data.user.id}`,
                 //         {
@@ -181,7 +181,7 @@ export default function FormCompleted() {
         const { data } = await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${datos.id}`,
             {
                 role: datos.role,
-                name: datos.firstName + ' ' +datos.lastName + " "
+                name: datos.firstName + ' ' + datos.lastName + " "
             },
             {
                 headers: {
@@ -207,7 +207,7 @@ export default function FormCompleted() {
     // console.log('objeto ciudad', city)
     // console.log('objeto provinca', province)
 
-    
+
     console.log('datos update', datos.jwt)
     console.log('datos update', datos.id)
 

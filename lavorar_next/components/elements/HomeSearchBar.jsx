@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useFormData } from '../../context/FormContext'
+import { UseFormData } from '../../context/FormContext'
 import Select from 'react-select'
 import { useQuery } from 'react-query';
 import axios from 'axios'
@@ -20,24 +20,24 @@ const HomeSearchBar = (props) => {
     // console.log(categories.data?.data)
 
     const getCitys = async (value) => {
-        
+
         const query = qs.stringify({
             filters: {
                 name: {
                     $contains: value,
-                },                
+                },
             },
-            populate:{
-                province :{
-                    fields: ['name','Slug'],
+            populate: {
+                province: {
+                    fields: ['name', 'Slug'],
                 }
-            }            
+            }
         }, {
             encodeValuesOnly: true, // prettify URL
         });
         const { data } = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/cities?${query}`)
-        const options = []     
-        data.data.map(function (city) {             
+        const options = []
+        data.data.map(function (city) {
             let option = {
                 value: city.attributes.slug,
                 label: city.attributes.name + ' (' + city.attributes.province.data.attributes.name + ' )',
@@ -45,9 +45,9 @@ const HomeSearchBar = (props) => {
                 name: city.attributes.name,
                 slug: city.attributes.slug,
                 province: city.attributes.province
-            }            
+            }
             options.push(option)
-        })        
+        })
         return options
     }
     const loadOptions = inputValue => {
@@ -61,11 +61,11 @@ const HomeSearchBar = (props) => {
     const search = async (e) => {
         console.log(e)
         let url = '/buscar'
-        if (e.categorie){
-            url = url + '/' + e.categorie.attributes.Slug 
+        if (e.categorie) {
+            url = url + '/' + e.categorie.attributes.Slug
         }
         if (e.location) {
-            url = url + '/' +  e.location.province.data.attributes.Slug + '/' + e.location.slug
+            url = url + '/' + e.location.province.data.attributes.Slug + '/' + e.location.slug
         }
         console.log(url)
         router.push(url)

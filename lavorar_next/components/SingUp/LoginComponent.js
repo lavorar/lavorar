@@ -18,8 +18,9 @@ const LoginComponent = () => {
             identifier: userData.identifier,
             password: userData.password,
         })
-        .        then(({data}) =>{
-            setToken(responseData);
+        . then(({data}) =>{
+            setToken(data);
+            console.log(data)
             router.replace('/') 
         })
         .catch((error) =>{

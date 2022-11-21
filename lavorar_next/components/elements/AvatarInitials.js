@@ -26,8 +26,8 @@ function stringAvatar(firtsName, lastName, width, fontSize) {
     const name = firtsName + lastName
     return {
         sx: {
-            width: width ? width : 50,
-            height: width ? width : 50,
+            width: '100%',
+            height: '100%',
             fontSize: fontSize ? fontSize : 'medium',
             bgcolor: "#c1c4c7",
             color: "#111827"

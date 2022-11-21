@@ -5,6 +5,7 @@ import BasicRating from '/components/elements/Rating';
 import ButtonCard from '/components/elements/ButtonCard';
 import Image from 'next/image';
 import BackgroundLetterAvatars from '../elements/AvatarInitials';
+import Link from 'next/link';
 
 const ProfileComponent = ({ user }) => {
     return (
@@ -16,23 +17,27 @@ const ProfileComponent = ({ user }) => {
                             <div className="flex flex-row justify-between">
                                 <div className="flex flex-row">
                                     {
-                                        user.profile_pic ?
+                                        user.avatar ?
 
-                                            <div className="h-20 w-20 relative aspect-square cursor-pointer"
+                                            <div className="h-[100px] w-[100px] md:w-[150px] md:h-[150px] relative aspect-square cursor-pointer"
                                             // onClick={router.replace( '/prestadores/' + user?.Slug )}
                                             >
                                                 <Image
-                                                    src={process.env.NEXT_PUBLIC_STRAPI_URL_IMAGE + user.profile_pic.url}
+                                                    src={`/f_auto,q_auto,c_thumb/v${user.avatar}`}
                                                     alt="Picture of the user"
                                                     layout="fill" // required                   
-                                                    objectFit="cover" // change to suit your needs
-
-                                                    className="rounded-full w-full" // just an example
+                                                    objectFit="cover"// change to suit your needs
+                                                    className="rounded-full w-full"
+                                                // quality={100} // just an example
                                                 />
+
                                             </div>
                                             :
-                                            <BackgroundLetterAvatars
-                                                width={72} fontSize='xx-large' firtsName={user?.firstName} lastName={user?.lastName} />
+                                            <div className="h-[100px] w-[100px] md:w-[150px] md:h-[150px] aspect-square cursor-pointer"
+                                            // onClick={router.replace( '/prestadores/' + user?.Slug )}
+                                            >
+                                                <BackgroundLetterAvatars fontSize='xxx-large' firtsName={user?.firstName} lastName={user?.lastName} />
+                                            </div>
                                     }
 
                                     <div className="pl-5 flex flex-col">
@@ -53,12 +58,16 @@ const ProfileComponent = ({ user }) => {
                                     >
                                         Contratar
                                     </button>
-                                    <button
-                                        type="button"
-                                        className="py-2 px-3 mr-2 my-2 focus:outline-none text-white bg-orange-brand hover:bg-yellow-500 focus:ring-2 focus:ring-orange-high dark:focus:ring-orange-high font-medium rounded-lg text-base  "
-                                    >
-                                        Mensaje
-                                    </button>
+                                    {user.phone &&
+                                        <Link href={'https://api.whatsapp.com/send?phone=' + user.phone} >
+                                            <button
+                                                type="button"
+                                                className="focus:outline-none text-gray-900 bg-orange-brand hover:bg-yellow-500 focus:ring-2 focus:ring-orange-high dark:focus:ring-orange-high font-medium rounded-lg text-base px-3 py-2 mr-2 my-2 "
+                                            >
+                                                Mensaje
+                                            </button>
+                                        </Link>
+                                    }
                                 </div>
                             </div>
                             <div>

@@ -1,13 +1,13 @@
 import React from 'react'
 
 import { useForm } from 'react-hook-form';
-import { useFormData } from '../../context/FormContext'
+import { UseFormData } from '../../context/FormContext'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
-const plans = ['Quiero Ofrecer mis servicios',  'Omitir']
+const plans = ['Quiero Ofrecer mis servicios', 'Omitir']
 
-const SecondStep = ({ formStep, nextFormStep }) => {  
+const SecondStep = ({ formStep, nextFormStep }) => {
   const validationSchema = Yup.object().shape({
     phone: Yup.string()
       .required('Ingresa una telefono!'),
@@ -19,21 +19,21 @@ const SecondStep = ({ formStep, nextFormStep }) => {
   });
   const formOptions = { resolver: yupResolver(validationSchema) };
 
-  const { setFormValues } = useFormData();
+  const { setFormValues } = UseFormData();
 
   const { register, handleSubmit, reset, formState } = useForm(formOptions);
   const { errors } = formState;
 
   const onSubmit = (values) => {
     console.log('values', values.is_lender)
-    values.is_lender ? values.role = { id: 3} : ''
+    values.is_lender ? values.role = { id: 3 } : ''
     setFormValues(values);
-    if(!values.is_lender){
+    if (!values.is_lender) {
       nextFormStep();
       nextFormStep();
     }
     else nextFormStep();
-   
+
   };
   return (
     <form
@@ -65,14 +65,14 @@ const SecondStep = ({ formStep, nextFormStep }) => {
             {...register("birth")}
           />
           <p className={` ${errors.birth ? 'text-orange-high block' : 'invisible'}  `}>{errors.birth?.message + ''}</p>
-        </div>        
+        </div>
         <div>
           <label
             htmlFor="small-toggle"
             className="inline-flex relative items-center mb-2 mt-2 cursor-pointer"
           >
             <input
-              type="checkbox"              
+              type="checkbox"
               id="small-toggle"
               name="is_lender"
               className="sr-only peer"
