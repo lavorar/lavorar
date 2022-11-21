@@ -18,30 +18,15 @@ const LoginComponent = () => {
             identifier: userData.identifier,
             password: userData.password,
         })
-        . then(({data}) =>{
-            setToken(data);
-            console.log(data)
-            router.replace('/') 
-        })
-        .catch((error) =>{
-            alert('credenciales invalidas')
-            console.error(error)
-        })
-        // const responseData = await fetcher(
-        //     `${process.env.NEXT_PUBLIC_STRAPI_URL}/auth/local`,
-        //     {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify({
-        //             identifier: userData.identifier,
-        //             password: userData.password,
-        //         }),
-        //     }
-        // );
-        
-          
+            .then(({ data }) => {
+                setToken(data);
+                console.log(data)
+                router.replace('/')
+            })
+            .catch((error) => {
+                alert('credenciales invalidas')
+                console.error(error)
+            })
     };
 
     const handleChange = (e) => {
@@ -83,7 +68,7 @@ const LoginComponent = () => {
                             onChange={(e) => handleChange(e)}
 
                         />
-                    </div>                    
+                    </div>
                     <button
                         className="block mb-6 text-gray-900 bg-orange-pastel text-lg rounded py-2.5 w-full"
                         type="submit"
@@ -92,8 +77,8 @@ const LoginComponent = () => {
                     </button>
                     <p className="text-center space-x-6">
                         <span className="text-gray-700 dark:text-gray-300 text-sm font-semibold">Aun tienes una cuenta? </span>
-                        <a className="text-blue-600 dark:text-[#039be5] cursor-pointer text-sm font-semibold" 
-                        onClick={() => router.replace('/register')}
+                        <a className="text-blue-600 dark:text-[#039be5] cursor-pointer text-sm font-semibold"
+                            onClick={() => router.replace('/register')}
                         >Registrate</a>
                     </p>
                 </form>
