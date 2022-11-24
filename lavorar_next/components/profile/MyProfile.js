@@ -97,7 +97,7 @@ const MyProfileComponent = ({ user }) => {
                                 </div>
                             </div>
                             <div>
-                                <BasicRating />
+                                <BasicRating readOnly={true} />
                             </div>
                             <h5 className="  pt-2 mx-2  mb-1 px-1 text-base font-medium ">
                                 {user.aboutme ? user.aboutme : 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumend    laboriosam, quod aut officiis ea deleniti repellat nisi delectus magnam reiciendis?'}

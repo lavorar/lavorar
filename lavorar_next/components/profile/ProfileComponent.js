@@ -7,15 +7,15 @@ import Image from 'next/image';
 import BackgroundLetterAvatars from '../elements/AvatarInitials';
 import Link from 'next/link';
 
-const ProfileComponent = ({ user }) => {
+const ProfileComponent = ({ user, review }) => {
     return (
         <div className='flex flex-col'>
             {user ?
                 <>
                     <div className='flex flex-col rounded-md bg-gray-300 dark:bg-gray-700' >
                         <div className='flex flex-col gap-2 border-b dark:border-gray-400  p-5'>
-                            <div className="flex flex-row justify-between">
-                                <div className="flex flex-row">
+                            <div className="flex flex-row flex-wrap justify-between">
+                                <div className="flex flex-row flex-wrap">
                                     {
                                         user.avatar ?
 
@@ -28,6 +28,8 @@ const ProfileComponent = ({ user }) => {
                                                     layout="fill" // required                   
                                                     objectFit="cover"// change to suit your needs
                                                     className="rounded-full w-full"
+                                                    loading="eager"
+                                                    priority={true}
                                                 // quality={100} // just an example
                                                 />
 
@@ -71,7 +73,11 @@ const ProfileComponent = ({ user }) => {
                                 </div>
                             </div>
                             <div>
-                                <BasicRating />
+                                <BasicRating
+                                    hover={-1}
+                                    counts={review.reviewsCount}
+                                    value={review.averageScore}
+                                    readOnly={true} />
                             </div>
                             <h5 className="  pt-2 mx-2  mb-1 px-1 text-base font-medium ">
                                 {user.aboutme ? user.aboutme : 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumend    laboriosam, quod aut officiis ea deleniti repellat nisi delectus magnam reiciendis?'}
@@ -83,7 +89,7 @@ const ProfileComponent = ({ user }) => {
                                 <span>
                                     Skills
                                 </span>
-                                <div className='flex'>
+                                <div className='flex flex-wrap'>
                                     {user.categories ?
                                         user.categories.map((categorie) => (
                                             <ButtonCard key={categorie.id} href={'/buscar/' + categorie?.Slug} text={categorie.name} />

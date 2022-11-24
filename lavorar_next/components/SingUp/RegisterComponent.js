@@ -26,27 +26,11 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
 
-    const { setFormValues } = UseFormData()
-    // const [user, setUser] = useState({ user: null, jwt: '' })
-    // const router = useRouter();
-    // const [registration, setregistration] = useState(false)
-    // const [userData, setUserData] = useState({
-    //     username: '',
-    //     email: '',
-    //     password: '',
-    //     name: '',
-    //     surname: '',
-    //     birth: '',
-    //     city: '',
-    //     province: '',
-    // });   
+    const { setFormValues } = UseFormData()       
     const { register, handleSubmit, formState } = useForm(formOptions);
     const { errors } = formState;
     const onSubmit = async (values) => {
-        // setFormValues(data);
-        // let firstname = values.firstName.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
-        // let lastname = values.lastName.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
-        // let name = firstname + lastname;
+        
         const qs = require('qs');
         const query = qs.stringify({
             filters: {
@@ -77,46 +61,7 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
             }
         }).catch((data) => {
             console.log(data)
-        })
-        // try {
-        //     const responseData = await fetcher(
-        //         `${process.env.NEXT_PUBLIC_STRAPI_URL}/auth/local/register`,
-        //         {
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //             },
-        //             body: JSON.stringify({
-        //                 email: values.email,
-        //                 password: values.password,
-        //                 username: values.email,
-        //                 name: name,
-        //                 lastName: lastname,
-        //                 firstName: firstname,
-        //                 birth: values.birth,
-        //             }),
-        //             method: 'POST',
-        //         }
-        //     );
-        //     console.log('response', responseData)
-        //     if (responseData.user) {
-        //         console.log('user', responseData.user)
-        //         values.jwt = responseData.jwt
-        //         values.id = responseData.user.id
-        //         setFormValues(values);
-        //         nextFormStep();
-        //         //setregistration(true)
-        //         console.log(responseData)
-        //         setToken(responseData);
-        //     }
-        //     else {
-        //         alert('el email ya esta tomado')
-        //     }
-
-        //     //  setUser({ ...user, user: responseData.user, jwt: responseData.jwt })
-
-        // } catch (error) {
-        //     console.error(error);
-        // }
+        })        
 
     };
     return (

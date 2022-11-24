@@ -8,11 +8,9 @@ import { useQuery } from 'react-query';
 import axios from 'axios'
 import * as Yup from 'yup';
 import BackgroundLetterAvatars from '../elements/AvatarInitials';
-import { useFetchUser } from '../../lib/AuthContext';
 import AddAPhoto from '@mui/icons-material/AddAPhoto';
 import Image from 'next/image';
 import { getTokenFromLocalCookie } from '../../lib/auth';
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { useRouter } from 'next/router';
 import IconWithButton from '../elements/IconWithButton';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';

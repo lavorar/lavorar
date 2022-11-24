@@ -53,6 +53,7 @@ export async function getServerSideProps(context) {
         );
     } 
     const query = qs.stringify({
+        sort: ['countsReview:desc', 'averageScore:desc'],
         filters: {
             categories: {
                 Slug: {

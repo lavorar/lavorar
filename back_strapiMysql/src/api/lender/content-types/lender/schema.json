@@ -28,12 +28,6 @@
       "relation": "oneToOne",
       "target": "api::service.service",
       "inversedBy": "lender"
-    },
-    "reviews": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::review.review",
-      "mappedBy": "lender"
     }
   }
 }

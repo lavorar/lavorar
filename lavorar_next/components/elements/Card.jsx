@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import Rating from "./Rating";
+import HoverRating from "./Rating";
 import ButtonCard from "./ButtonCard";
 import Link from 'next/link'
 import BackgroundLetterAvatars from "./AvatarInitials";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useQuery } from "react-query";
+import axios from "axios";
 
-const Card = ({ user }) => {
+const Card = ({ user, slug }) => {
 
-  const router = useRouter()
-  console.log(user)
   return (
     <div className="inline-block mt-3  overflow-ellipsis w-72 bg-gray-200 rounded-lg border border-gray-200 shadow-md ">
 
@@ -49,7 +49,10 @@ const Card = ({ user }) => {
             }
 
             <div className="flex flex-col ml-1">
-              <Link href={'/prestadores/' + user?.Slug} >
+              <Link href={{
+                pathname: '/prestadores/[userSlug]',
+                query: { userSlug: user?.Slug, },
+              }} >
                 <a>
                   <div className="flex justify-between text-sm ml-1">
                     {user?.name}
@@ -68,8 +71,10 @@ const Card = ({ user }) => {
           </div>
         </div>
 
-        <Rating />
-
+        <HoverRating
+          counts={user?.countsReview ? user?.countsReview : 0}
+          value={user?.averageScore}
+          readOnly={true} />
         <h5 className=" border-0 pt-2 border-t mx-2  border-gray-500 mb-1 px-1 text-base font-medium text-gray-900 dark">
           {user?.aboutme ? user.aboutme : 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumend    laboriosam, quod aut officiis ea deleniti repellat nisi delectus magnam reiciendis?'}
         </h5>

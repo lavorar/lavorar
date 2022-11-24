@@ -35,12 +35,6 @@
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "service_recruiter"
-    },
-    "review": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::review.review",
-      "inversedBy": "service"
     }
   }
 }

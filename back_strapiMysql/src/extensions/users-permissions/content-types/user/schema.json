@@ -80,12 +80,6 @@
       "target": "api::lender.lender",
       "inversedBy": "users_lender"
     },
-    "reviews": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::review.review",
-      "mappedBy": "users_review_creator"
-    },
     "phone": {
       "type": "biginteger"
     },
@@ -135,6 +129,20 @@
     },
     "avatar": {
       "type": "string"
+    },
+    "ratings_reviews": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::ratings.review",
+      "mappedBy": "user"
+    },
+    "averageScore": {
+      "type": "decimal",
+      "default": 0
+    },
+    "countsReview": {
+      "type": "integer",
+      "default": 0
     }
   }
 }

@@ -10,7 +10,7 @@ module.exports = (plugin) => {
         }).then((res) => {
             ctx.response.status = 200;
         })
-    }
+    }   
 
     /*******************************  CUSTOM ROUTES  ********************************/
     plugin.routes["content-api"].routes.push(

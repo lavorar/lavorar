@@ -6,12 +6,15 @@ module.exports = ({ env }) => ({
             contentTypes: {
                 user: {
                     field: 'Slug',
-                    references: 'name',                    
-                },                
+                    references: 'name',
+                },
             },
             slugifyWithCount: true,
-            shouldUpdateSlug: true,            
+            shouldUpdateSlug: true,
         },
+    },
+    "custom-api": {
+        enabled: true,
     },
     // ...
 });

@@ -2,15 +2,22 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React from 'react'
 import { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQueries, useQuery } from 'react-query';
 import { fetcher } from '../../lib/api';
 import { getTokenFromServerCookie } from '../../lib/auth';
 import { useFetchUser } from '../../lib/AuthContext';
 import Card from "/components/elements/Card";
 import HomeSearchBar from "/components/elements/HomeSearchBar";
 import Layout from "/components/Layouts/mainLayout";
+
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
+
+const DynamicCard = dynamic(() => import("/components/elements/Card"), {
+    suspense: true,
+})
 const Search = ({ users, user }) => {
-    console.log(users)
+
     return (
         <Layout user={user}>
             <h1 className="text-center text-gray-900 dark:text-gray-100 font-bold text-4xl pt-5">
@@ -21,14 +28,15 @@ const Search = ({ users, user }) => {
 
                 <div className="mt-10 flex flex-wrap  justify-evenly  gap-4 lg:gap-8 w-full lg:px-5">
                     {
-                        users.map((user) => (
-                            <Card key={user.id} user={user} />
+                        users.map((user, index) => (
+                            <Card key={user.id} user={user} slug={user.Slug}
+                            />
                         ))
                     }
 
                 </div>
             </div>
-        </Layout>
+        </Layout >
     )
 }
 
@@ -52,6 +60,7 @@ export async function getServerSideProps({ req }) {
     }
 
     const query = qs.stringify({
+        sort: ['countsReview:desc', 'averageScore:desc'],
         filters: {
             role: {
                 id: {
@@ -60,7 +69,10 @@ export async function getServerSideProps({ req }) {
             },
 
         },
-        populate: '*',
+        populate: {
+            ratings_reviews: '*',
+            categories: '*',
+        },
     }, {
         encodeValuesOnly: true, // prettify URL
     });
@@ -69,7 +81,6 @@ export async function getServerSideProps({ req }) {
     }).catch((data) => {
         users = null
     })
-
     if (user) {
         return {
             props: {
