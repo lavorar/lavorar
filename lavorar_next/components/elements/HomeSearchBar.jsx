@@ -68,7 +68,10 @@ const HomeSearchBar = (props) => {
             url = url + '/' + e.location.province.data.attributes.Slug + '/' + e.location.slug
         }
         console.log(url)
-        router.push(url)
+        router.push({
+            pathname: url,
+            query: { categorieSlug: e.categorie?.attributes.Slug, citySlug: e.location?.slug, },
+        })
     }
     const colorstylesSizes = {
         control: (styles) => ({

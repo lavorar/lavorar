@@ -8,7 +8,8 @@ import { fetcher } from "../lib/api";
 import { getTokenFromServerCookie } from "../lib/auth";
 import { useFetchUser, useUser } from "../lib/AuthContext";
 
-export default function Home({user, users}) {
+export default function Home({ user, users }) {
+  console.log(users)
   // const { user, loading } = useFetchUser();
   // const qs = require('qs');
   // const query = qs.stringify({
@@ -98,20 +99,21 @@ export async function getServerSideProps({ req }) {
     );
   }
   const query = qs.stringify({
+    sort: ['countsReview:desc', 'averageScore:desc'],
     filters: {
       role: {
         id: {
           $eq: 3,
         }
       },
-
     },
+    limit: 6,
     populate: '*',
   }, {
     encodeValuesOnly: true, // prettify URL
   });
   await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users?${query}`).then((data) => {
-    users = data.data.splice(0, 6)
+    users = data.data
   }).catch((data) => {
     users = null
   })

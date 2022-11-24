@@ -19,7 +19,7 @@ const MyProfileComponent = ({ user }) => {
         setIsOpen(true)
     }
     return (
-        <div className='flex flex-col'>
+        <div className='flex flex-col '>
             {user ?
                 <>
                     <div className='mb-10'>
@@ -38,14 +38,14 @@ const MyProfileComponent = ({ user }) => {
                     >
 
                     </ModalEditProfile>
-                    <div className='flex relative flex-col rounded-md bg-gray-300 dark:bg-gray-700' >
-                        <div className='flex flex-col gap-2 border-b dark:border-gray-400  p-5'>
+                    <div className='flex  relative flex-col rounded-md bg-gray-300 dark:bg-gray-700' >
+                        <div className='flex flex-col gap-2 border-b dark:border-gray-400  p-5 '>
                             <div className="flex flex-row justify-between">
-                                <div className="flex flex-row  gap-2 flex-wrap">
+                                <div className="flex flex-row mt-8 gap-4 flex-wrap">
                                     {
                                         user.avatar ?
 
-                                            <div className="h-[100px] w-[100px] md:w-[150px] md:h-[150px] relative aspect-square cursor-pointer"
+                                            <div className=" -mt-8 h-[100px] w-[100px] md:w-[150px] md:h-[150px] relative aspect-square cursor-pointer"
                                             // onClick={router.replace( '/prestadores/' + user?.Slug )}
                                             >
                                                 <Image
@@ -59,7 +59,7 @@ const MyProfileComponent = ({ user }) => {
 
                                             </div>
                                             :
-                                            <div className="h-[100px] w-[100px] md:w-[150px] md:h-[150px] aspect-square cursor-pointer"
+                                            <div className=" -mt-8 h-[100px] w-[100px] md:w-[150px] md:h-[150px] aspect-square cursor-pointer"
                                             // onClick={router.replace( '/prestadores/' + user?.Slug )}
                                             >
                                                 <BackgroundLetterAvatars                                                     fontSize='xxx-large' firtsName={user?.firstName} lastName={user?.lastName} />
@@ -75,7 +75,7 @@ const MyProfileComponent = ({ user }) => {
                                         <></>
                                     } */}
 
-                                    <div className="flex flex-col">
+                                    <div className="flex flex-col ">
                                         <div className="flex justify-start items-end text-3xl ">
                                             {user?.firstName + ' ' + user?.lastName}
                                             <VerifiedIcon sx={{ fontSize: 30 }} className="ml-2" />
@@ -90,7 +90,7 @@ const MyProfileComponent = ({ user }) => {
                                     <button
                                         type="button"
                                         onClick={openModal}
-                                        className="py-2 px-3 mr-2 my-2 text-base font-medium text-gray-900 focus:outline-none bg-white rounded-lg hover:bg-gray-100 hover:text-blue-700  dark:bg-gray-800 dark:text-gray-400  dark:hover:text-white dark:hover:bg-gray-600"
+                                        className="py-2 px-3   text-base font-medium text-gray-900 focus:outline-none bg-white rounded-lg hover:bg-gray-100 hover:text-blue-700  dark:bg-gray-800 dark:text-gray-400  dark:hover:text-white dark:hover:bg-gray-600"
                                     >
                                         Editar Perfil
                                     </button>

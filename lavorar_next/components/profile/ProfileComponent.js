@@ -117,26 +117,6 @@ const ProfileComponent = ({ user, review }) => {
                 :
                 <>
                 </>}
-            {/* {avatar && (
-                    <img
-                        src={`https://res.cloudinary.com/tamas-demo/image/upload/f_auto,q_auto,w_150,h_150,g_face,c_thumb,r_max/${avatar}`}
-                        alt="Profile"
-                    />
-                )}
-                {avatar === 'default_avatar' && (
-                    <div>
-                        <h4>Selecciona una imagen</h4>
-                        <input type="file" onChange={uploadToClient} />
-                        <button
-                            className="md:p-2 rounded py-2 text-black bg-purple-200 p-2"
-                            type="submit"
-                            onClick={uploadToServer}
-                        >
-                            Set Profile Image
-                        </button>
-                    </div>
-                )} */}
-            {/* eslint-disable @next/next/no-img-element */}
 
         </div>
     )

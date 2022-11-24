@@ -154,18 +154,18 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
         )
             .then(({ data }) => {
                 console.log(data)
-                router.reload('/profile')
+                // router.reload('/profile')
                 // return data
             })
 
             .catch((error) => {
                 console.error(JSON.stringify(error));
-                router.reload('/profile')
+                // router.reload('/profile')
             })
     };
 
     const onSubmit = async (values) => {
-        console.log('data', values)
+        console.log('values', values)
         const files = values.avatar
         if (image === null) {
             values.avatar = ''
@@ -215,20 +215,20 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
             }
         ).then((data) => {
             if (image === null) {
-                router.reload('/profile')
+                // router.reload('/profile')
             }
-            // router.reload('/profile')
+            // // router.reload('/profile')
             return data
         }).catch((error) => {
             if (image === null) {
-                router.reload('/profile')
+                // router.reload('/profile')
             }
             return error
         });
         if (image !== null && files.length > 0) {
             uploadToServer(files[0])
         }
-        // console.log('data', responsePut)
+        console.log('data response', responsePut)
     }
     const [provinceValue, setprovinceValue] = useState({ value: user.provincia?.identificador, label: user.provincia?.name })
     const [phone, setphone] = useState(user.phone)
@@ -338,11 +338,11 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
                                                         </div>
                                                         :
                                                         <div
-                                                            className="relative cursor-pointer "
+                                                            className="relative h-20 w-20 aspect-square cursor-pointer "
                                                             onClick={handleClick}
                                                         >
                                                             <BackgroundLetterAvatars
-                                                                width={72} fontSize='xx-large'
+                                                                width={80} fontSize='xx-large'
                                                                 firtsName={user?.firstName}
                                                                 lastName={user?.lastName}
                                                             />

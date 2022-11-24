@@ -4,8 +4,8 @@ import { UserProvider } from '../../lib/AuthContext';
 import { useState } from "react";
 import { useRouter } from 'next/router'
 import Header from "../elements/Header";
-import ExploreRoundedIcon from '@mui/icons-material/ExploreRounded';
 import IconWithButton from "../elements/IconWithButton"
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
@@ -25,14 +25,14 @@ const Layout = ({ user, loading = false, children }) => {
     const [open, setOpen] = useState(true);
     const Menus = [
         { title: "Inicio", src: <HomeRoundedIcon fontSize={'large'} />, always: true, href: '/' },
-        { title: "Explorar", src: <ExploreRoundedIcon fontSize={'large'} />, always: true },
+        { title: "Buscar", src: <SearchRoundedIcon fontSize={'large'} />, always: true },
         { title: "Mi Perfil", src: <PersonRoundedIcon fontSize={'large'} />, always: user ? true : false, gap: true, href: '/profile' },
-        { title: "Guardado", src: <BookmarkOutlinedIcon fontSize={'large'} />, always: user ? true : false },
-        { title: "Mis Trabajos", src: <WorkRoundedIcon fontSize={'large'} />, always: user ? true : false },
-        { title: "Horario y Agenda", src: <EventAvailableRoundedIcon fontSize={'large'} />, always: user ? true : false },
-        { title: "Ayuda", src: <HelpRoundedIcon fontSize={'large'} />, always: true },
-        { title: "Ganancias", src: <AddchartRoundedIcon fontSize={'large'} />, always: user ? true : false, gap: true },
-        { title: "Estadisticas", src: <TrendingUpRoundedIcon fontSize={'large'} />, always: user ? true : false },
+        { title: "Guardado (proximamente)", src: <BookmarkOutlinedIcon color="disabled" fontSize={'large'} />, always: user ? true : false },
+        { title: "Mis Trabajos (proximamente)", src: <WorkRoundedIcon color="disabled" fontSize={'large'} />, always: user ? true : false },
+        { title: "Horario y Agenda (proximamente)", src: <EventAvailableRoundedIcon color="disabled" fontSize={'large'} />, always: user ? true : false },
+        { title: "Ayuda (proximamente)", src: <HelpRoundedIcon color="disabled" fontSize={'large'} />, always: true },
+        { title: "Ganancias (proximamente)", src: <AddchartRoundedIcon color="disabled" fontSize={'large'} />, always: user ? true : false, gap: true },
+        { title: "Estadisticas (proximamente)", src: <TrendingUpRoundedIcon color="disabled" fontSize={'large'} />, always: user ? true : false },
 
     ];
     return (
@@ -98,7 +98,7 @@ const Layout = ({ user, loading = false, children }) => {
                                             </IconWithButton>
                                         </div>
 
-                                        <span className={`${open ? 'block' : "hidden"} whitespace-nowrap origin-left duration-700`}>
+                                        <span className={`${open ? 'block' : "hidden"} overflow-hidden whitespace-nowrap origin-left duration-700`}>
                                             {Menu.title}
                                         </span>
 
@@ -137,7 +137,7 @@ const Layout = ({ user, loading = false, children }) => {
                         </div>
                     </div>
                 </div >
-                <NavMobile />
+                <NavMobile user={user} />
             </main>
         </UserProvider>
     );

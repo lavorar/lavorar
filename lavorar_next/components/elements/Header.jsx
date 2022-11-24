@@ -2,16 +2,14 @@ import React, { useState } from 'react'
 import Dropdown from './Dropdown'
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
-import InputBase from '@mui/material/InputBase';
+import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import IconWithButton from "../elements/IconWithButton"
-import ChatRoundedIcon from '@mui/icons-material/ChatRounded';
-import Badge from '@mui/material/Badge';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { useRouter } from 'next/router';
+import { unsetToken } from '../../lib/auth';
 // import { useAuth } from "../../../context/authContext";
 
 const Header = (props) => {
@@ -44,6 +42,10 @@ const Header = (props) => {
     }
   }
 
+  const handleLogout = async () => {
+    console.log('logout')
+    unsetToken();
+  };
   const closeNotification = () => {
     console.log("blur")
     setopenNotification(false)
@@ -61,13 +63,13 @@ const Header = (props) => {
           </a>
           <div className="flex md:order-2 ">
 
-            <div className='mr-2 block '> 
+            <div className='mr-2 hidden md:block '>
               <button
                 type="button"
                 onClick={(e) => router.replace('/donate')}
                 className="focus:outline-none text-gray-900 bg-orange-brand hover:bg-yellow-500 focus:ring-2 focus:ring-orange-high dark:focus:ring-orange-high font-medium rounded-lg text-base px-3 py-2 mr-2 my-2 "
               >
-                Dona 
+                Dona
               </button>
             </div>
             {/* {user ?
@@ -113,7 +115,7 @@ const Header = (props) => {
               <></>
             } */}
 
-            <div className='mr-4 hidden md:block'>
+            <div className='mr-4 '>
               <Dropdown>
                 <PersonRoundedIcon fontSize='large' />
               </Dropdown>
@@ -162,47 +164,54 @@ const Header = (props) => {
         <div className={`${open ? "block" : "hidden"} md:hidden justify-between items-center w-full md:w-auto md:order-1`} id="navbar-sticky">
           <ul className="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-700 md:dark:bg-gray-900 dark:border-gray-700">
             <li>
-              <div className="px-1 py-1 ">
-
+              <div
+                onClick={handleLogout}
+                className="px-1 py-1 ">
                 <button
-                  className={`text-text-gray-900 dark:text-white-ghost group flex w-full items-center rounded-md px-2 py-2 text-md`}
-                >
-                  <div className={`rounded-full bg-gray-300 dark:bg-gray-700 mr-3 h-9 w-9 p-1`}>
 
-                    <SettingsRoundedIcon />
+                  className={`text-text-gray-900 dark:text-white-ghost group flex w-full  bg-gray-200 dark:bg-gray-800 items-center rounded-md px-2 py-2 text-md`}
+                >
+                  <div
+
+                    className={`rounded-full bg-gray-300 dark:bg-gray-700 mr-3 h-9 w-9 p-1`}>
+
+                    <LogoutRoundedIcon />
                   </div>
-                  Configuracion
+                  Cerrar sesion
                 </button>
               </div>
             </li>
             <li>
-              <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Servicios</a>
-            </li>
+              <div
+                onClick={handleLogout}
+                className="px-1 py-1 ">
+                <button
+
+                  className={`text-text-gray-900 dark:text-white-ghost group flex w-full  bg-gray-200 dark:bg-gray-800 items-center rounded-md px-2 py-2 text-md`}
+                >
+                  <div
+
+                    className={`rounded-full bg-gray-300 dark:bg-gray-700 mr-3 h-9 w-9 p-1`}>
+
+                    <HelpRoundedIcon />
+                  </div>
+                  Ayuda
+                </button>
+              </div>
+            </li>  
             <li>
-              <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Ayuda</a>
-            </li>
-            <li>
-              <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Cerrar sesion</a>
-            </li>
-          </ul>
-        </div>
-        <div className={`${openNotification ? "block " : "hidden "}  md:hidden justify-between items-center w-full `} id="notificationBar">
-          <ul className="flex flex-col p-4 mt-4 max-h-min  bg-gray-50 rounded-lg border border-gray-100  md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-            <li>
-              <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Notificacion 1</a>
-            </li>
-            <li>
-              <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Notificacion 4</a>
-            </li>
-            <li>
-              <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Notificacion 3</a>
-            </li>
-            <li>
-              <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Notificacion 2</a>
-            </li>
-            <li>
-              <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">ver mas</a>
-            </li>
+              <div
+                onClick={handleLogout}
+                className="px-1 py-1 ">
+                <button
+                  type="button"
+                  onClick={(e) => router.replace('/donate')}
+                  className="focus:outline-none text-gray-900 w-full bg-orange-brand hover:bg-yellow-500 focus:ring-2 focus:ring-orange-high dark:focus:ring-orange-high font-medium rounded-lg text-base px-3 py-2 "
+                >
+                  Dona
+                </button>
+              </div>
+            </li>                
           </ul>
         </div>
       </nav>
