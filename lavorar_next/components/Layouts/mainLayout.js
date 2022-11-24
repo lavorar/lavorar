@@ -84,13 +84,14 @@ const Layout = ({ user, loading = false, children }) => {
                             {Menus.map((Menu, index) => (
                                 Menu.always ?
                                     <li
+                                        onClick={() => { Menu.href ? router.replace(Menu.href) : '' }}
                                         key={index}
                                         className={`flex rounded-md p-2 ${open ? '' : ''} group cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-white-ghost text-md items-center gap-x-2
                         ${Menu.gap ? "mt-9" : "mt-2"}
                                 } `}
                                     >
                                         <div
-                                            onClick={() => { Menu.href ? router.replace(Menu.href) : '' }}
+                                            
                                             className={`cursor-pointer  duration-300  text-gray-900  dark:text-white-ghost`}>
                                             <IconWithButton
                                             >
@@ -115,12 +116,12 @@ const Layout = ({ user, loading = false, children }) => {
                             >Donar</a>
                         </p>
                     </div>
-                    <div className={`${open ? 'md:pl-64' : 'md:pl-24'}  z-10 lg:mr-[310px] h-auto flex flex-around p-2 md:p-0  duration-500 w-full   md:flex-1  `}>
+                    <div className={`${open ? 'md:pl-64' : 'md:pl-24'}  z-10 lg:mr-[310px] h-auto flex flex-around   duration-500 w-full   md:flex-1  `}>
                         <div className="w-full  ">
                             <Header user={user} >
 
                             </Header>
-                            <div className='pt-5 md:p-10 mb-20 md:mb-0 '>
+                            <div className='pt-5  mb-20 p-4  md:mb-0 '>
 
                                 {children}
                             </div>
