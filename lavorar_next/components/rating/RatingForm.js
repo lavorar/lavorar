@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react'
-import { useQuery } from 'react-query';
-import { ReviewsConfigContext } from 'strapi-ratings-client';
 import { getTokenFromLocalCookie } from '../../lib/auth';
 import HoverRating from '../elements/Rating'
 
