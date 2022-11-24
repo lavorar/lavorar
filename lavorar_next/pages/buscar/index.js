@@ -10,6 +10,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 const Search = ({ users, user, numberOfLenders }) => {
     const [lenders, setlenders] = useState(users)
     const [hasMore, sethasMore] = useState(true)
+    console.log(lenders)
     const qs = require('qs');
     const query = qs.stringify({
         sort: ['countsReview:desc', 'averageScore:desc'],
