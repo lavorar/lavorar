@@ -23,15 +23,16 @@ function getLabelText(value) {
 export default function HoverRating({ readOnly, value, hover, onChangeActive, onChange, counts }) {
   const countsReview = counts ? '(' + counts + ')' : 0.5
   let valLabel = 0.5 * Math.floor(value / 0.5)
-  console.log(counts)
-  let label = (value + ' (' + counts + ' )' + labels[counts ? valLabel : (hover !== -1 ? hover : value)])
+  // console.log(counts)
+  let label = ''
+  label = (value + ' (' + counts + ' )' + labels[counts ? valLabel : (hover !== -1 ? hover : value)])
   if (!counts) {
     label = 'no hay reseñas'
   }
   if (counts === 0) {
     label = labels[(hover !== -1 ? hover : value)]
   }
-  console.log(label)
+  //console.log(label)
   return (
     <Box
       sx={{

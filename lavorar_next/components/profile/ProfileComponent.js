@@ -75,8 +75,8 @@ const ProfileComponent = ({ user, review }) => {
                             <div>
                                 <BasicRating
                                     hover={-1}
-                                    counts={review.reviewsCount}
-                                    value={review.averageScore}
+                                    counts={review?.reviewsCount}
+                                    value={review?.averageScore}
                                     readOnly={true} />
                             </div>
                             <h5 className="  pt-2 mx-2  mb-1 px-1 text-base font-medium ">
