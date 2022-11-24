@@ -48,12 +48,15 @@ const RatingsComponent = ({ user, userReview }) => {
                         </div>
                 }
             </div>
-            <div className={'bg-gray-300  dark:bg-gray-700 mt-10 p-5 rounded-md flex flex-col gap-7'}>
 
+            <div className="mt-10 flex flex-wrap justify-evenly gap-4 lg:gap-8 w-full ">
                 {reviews.length > 0 ?
                     reviews.map((review, index) => (
-                        <Review key={index} counts={0} review={review} />
+                        <div className={'bg-gray-300 dark:bg-gray-700 w-50 p-5  rounded-md w-full'}>
+                            <Review key={index} counts={0} review={review} />
+                        </div>
                     ))
+
                     :
                     <div>Aun no hay reseñas</div>
                 }

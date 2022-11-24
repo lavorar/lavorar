@@ -7,6 +7,9 @@ import ModalEditRating from './ModalEditRating'
 const Review = ({ review, user }) => {
     let [isOpen, setIsOpen] = useState(false)
 
+    function formatMyDate(value, locale = 'en-es') {
+        return new Date(value).toLocaleDateString(locale);
+    }
     function closeModal() {
         setIsOpen(false)
     }
@@ -15,17 +18,21 @@ const Review = ({ review, user }) => {
         setIsOpen(true)
     }
     return (
-        <div className="flex flex-col items-start">
+        <div className=" items-start w-full">
             <div className="pb-1">
-                <div className="flex">
 
-                    <p
-                        className="text-bold text-orange-pastel mb-1 cursor-pointer">
-                        {review.author ? review.author.name : "User"}
-                    </p>
-                    <p className="ml-2 mb-0">
-                        {"\t"} on {(review.createdAt)}
-                    </p>
+                <div className="flex justify-between md:justify-start ">
+                    <div>
+                        <p
+                            className=" text-bold text-orange-pastel mb-1 cursor-pointer">
+                            {review.author ? review.author.name : "User"}
+                        </p>
+                    </div>
+                    <div>
+                        <p className="md:ml-5 mb-1">
+                            {"\t"} en {formatMyDate(review.createdAt)}
+                        </p>
+                    </div>
                 </div>
                 <HoverRating
                     value={review.score}
@@ -37,7 +44,7 @@ const Review = ({ review, user }) => {
             {
                 review.comment && (
                     <div className="rounded">
-                        <p className="mb-0">
+                        <p className="my-3">
                             {review.comment}
                         </p>
                     </div>
