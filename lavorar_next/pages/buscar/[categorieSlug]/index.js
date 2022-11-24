@@ -58,7 +58,9 @@ const SearchCategorie = ({ users, user, numberOfLenders }) => {
                             dataLength={lenders.length}
                             next={getMoreLenders}
                             hasMore={hasMore}
-                            loader={<h4>Loading...</h4>}
+                            loader={<h4 className='text-gray-900 dark:text-gray-50 text-center pt-10'
+                            >Cargando...
+                            </h4>}
                             endMessage={
                                 <p className=" text-gray-900 dark:text-gray-50 text-center pt-10">
                                     <b>Ya viste todos los prestadores de esta pagina!</b>
