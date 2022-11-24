@@ -25,7 +25,7 @@ const Layout = ({ user, loading = false, children }) => {
     const [open, setOpen] = useState(true);
     const Menus = [
         { title: "Inicio", src: <HomeRoundedIcon fontSize={'large'} />, always: true, href: '/' },
-        { title: "Buscar", src: <SearchRoundedIcon fontSize={'large'} />, always: true },
+        { title: "Buscar", src: <SearchRoundedIcon fontSize={'large'} />, always: true, href: '/buscar' },
         { title: "Mi Perfil", src: <PersonRoundedIcon fontSize={'large'} />, always: user ? true : false, gap: true, href: '/profile' },
         { title: "Guardado (proximamente)", src: <BookmarkOutlinedIcon color="disabled" fontSize={'large'} />, always: user ? true : false },
         { title: "Mis Trabajos (proximamente)", src: <WorkRoundedIcon color="disabled" fontSize={'large'} />, always: user ? true : false },

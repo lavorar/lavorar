@@ -9,8 +9,7 @@ import Layout from "/components/Layouts/mainLayout";
 import InfiniteScroll from 'react-infinite-scroll-component';
 const Search = ({ users, user, numberOfLenders }) => {
     const [lenders, setlenders] = useState(users)
-    const [hasMore, sethasMore] = useState(true)
-    console.log(lenders)
+    const [hasMore, sethasMore] = useState(true)    
     const qs = require('qs');
     const query = qs.stringify({
         sort: ['countsReview:desc', 'averageScore:desc'],
@@ -64,12 +63,10 @@ const Search = ({ users, user, numberOfLenders }) => {
                         }>
                         <div className="mt-10 flex flex-wrap   justify-evenly  gap-4 lg:gap-8 w-full lg:px-5">
                             {
-
-                                lenders.map((user, index) => (
+                                lenders.map((user) => (
                                     <Card key={user.id} user={user} slug={user.Slug}
                                     />
                                 ))
-
                             }
                         </div>
                     </InfiniteScroll>
