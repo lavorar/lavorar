@@ -24,9 +24,12 @@ export default function HoverRating({ readOnly, value, hover, onChangeActive, on
   const countsReview = counts ? '(' + counts + ')' : 0.5
   let valLabel = 0.5 * Math.floor(value / 0.5)
   console.log(counts)
-  let label = 'No hay reseñas'
-  if (counts > 0) {
-    label = (value + ' (' + counts + ' )' + labels[counts ? valLabel : (hover !== -1 ? hover : value)])
+  let label = (value + ' (' + counts + ' )' + labels[counts ? valLabel : (hover !== -1 ? hover : value)])
+  if (!counts) {
+    label = 'no hay reseñas'
+  }
+  if (counts === 0) {
+    label = labels[(hover !== -1 ? hover : value)]
   }
   console.log(label)
   return (

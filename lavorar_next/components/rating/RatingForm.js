@@ -59,6 +59,7 @@ const RatingForm = ({ user, review }) => {
                 onChangeActive={onChangeActive}
                 value={value}
                 hover={hover}
+                counts={0}
             />
             <div className={'flex-col mt-1'}>
                 <div className="flex flex-col mb-2 ">

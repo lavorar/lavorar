@@ -31,6 +31,7 @@ const Review = ({ review, user }) => {
                     value={review.score}
                     hover={-1}
                     readOnly={true}
+                    counts={0}
                 />
             </div>
             {

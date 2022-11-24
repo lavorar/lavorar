@@ -52,7 +52,7 @@ const RatingsComponent = ({ user, userReview }) => {
 
                 {reviews.length > 0 ?
                     reviews.map((review, index) => (
-                        <Review key={index} review={review} />
+                        <Review key={index} counts={0} review={review} />
                     ))
                     :
                     <div>Aun no hay reseñas</div>
