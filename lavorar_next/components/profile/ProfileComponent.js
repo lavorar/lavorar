@@ -23,7 +23,7 @@ const ProfileComponent = ({ user, review }) => {
                                             // onClick={router.replace( '/prestadores/' + user?.Slug )}
                                             >
                                                 <Image
-                                                    src={`/f_auto,q_auto,c_thumb/v${user.avatar}`}
+                                                    src={`/v${user.avatar}`}
                                                     alt={"Picture of the user " + user?.name}
                                                     layout="fill" // required                   
                                                     objectFit="cover"// change to suit your needs

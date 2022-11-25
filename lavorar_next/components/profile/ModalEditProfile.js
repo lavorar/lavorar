@@ -41,7 +41,7 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
     const { register, handleSubmit, control, formState } = useForm(formOptions);
     const { errors } = formState;
     const { ref, onChange, name, type, ...rest } = register('avatar');
-    const [image, setImage] = useState(user.avatar ? '/f_auto,c_thumb/v' + user.avatar : null);
+    const [image, setImage] = useState(user.avatar ? '/v' + user.avatar : null);
     const uploadToClient = (event) => {
         if (event.target.files && event.target.files[0]) {
             const tmpImage = event.target.files[0];

@@ -15,7 +15,7 @@ const RatingsComponent = ({ user, profileUser, userReview }) => {
     const getRatings = async () => {
         await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/ratings/reviews/${slug}`)
             .then(({ data }) => {
-                console.log(data)
+                // console.log(data)
                 setreviews(data.reviews)
             }).catch((error) => {
                 console.log(error)
