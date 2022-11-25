@@ -18,6 +18,7 @@ const MyProfileComponent = ({ user }) => {
     function openModal() {
         setIsOpen(true)
     }
+
     return (
         <div className='flex flex-col '>
             {user ?
@@ -62,7 +63,7 @@ const MyProfileComponent = ({ user }) => {
                                             <div className=" -mt-8 h-[100px] w-[100px] md:w-[150px] md:h-[150px] aspect-square cursor-pointer"
                                             // onClick={router.replace( '/prestadores/' + user?.Slug )}
                                             >
-                                                <BackgroundLetterAvatars                                                     fontSize='xxx-large' firtsName={user?.firstName} lastName={user?.lastName} />
+                                                <BackgroundLetterAvatars fontSize='xxx-large' firtsName={user?.firstName} lastName={user?.lastName} />
                                             </div>
                                     }
                                     {/* {user.avatar ? (
@@ -97,7 +98,11 @@ const MyProfileComponent = ({ user }) => {
                                 </div>
                             </div>
                             <div>
-                                <BasicRating readOnly={true} />
+                                <BasicRating
+                                    hover={-1}
+                                    counts={user?.countsReview}
+                                    value={user?.averageScore}
+                                    readOnly={true} />
                             </div>
                             <h5 className="  pt-2 mx-2  mb-1 px-1 text-base font-medium ">
                                 {user.aboutme ? user.aboutme : 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumend    laboriosam, quod aut officiis ea deleniti repellat nisi delectus magnam reiciendis?'}

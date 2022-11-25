@@ -9,44 +9,7 @@ import { getTokenFromServerCookie } from "../lib/auth";
 import { useFetchUser, useUser } from "../lib/AuthContext";
 
 export default function Home({ user, users }) {
-  console.log(users)
-  // const { user, loading } = useFetchUser();
-  // const qs = require('qs');
-  // const query = qs.stringify({
-  //   filters: {
-  //     role: {
-  //       id: {
-  //         $eq: 3,
-  //       }
-  //     },
-
-  //   },
-  //   populate: '*',
-  // }, {
-  //   encodeValuesOnly: true, // prettify URL
-  // });
-  // const [userslender, setuserslender] = useState([])
-  // // const users = async () => {
-  // //   const { data } = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users?${query}`)
-  // //   //  .then((data) => {      
-  // //   //    setuserslender(data.data.splice(0,6))
-  // //   //   }).catch((data) => {
-  // //   //     setuserslender(data.data)
-  // //   //   })
-  // //   return data
-  // // }
-
-  // const queryusers = useQuery(['users'], users, {
-  //   onSettled: (data) => {
-  //     setuserslender(data.splice(0, 5))
-  //   },
-
-  //   staleTime: Infinity
-  // })
-
-  // console.log(queryusers)
-  // console.log(userslender)
-  // console.log(user)
+  
   return (
     <Layout user={user} >
       <div className="flex flex-col  items-center w-full p-1 text-black">

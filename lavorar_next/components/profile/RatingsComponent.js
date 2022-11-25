@@ -8,13 +8,14 @@ import RatingForm from '../rating/RatingForm'
 import Review from '../rating/Review'
 
 
-const RatingsComponent = ({ user, userReview }) => {
+const RatingsComponent = ({ user, profileUser, userReview }) => {
     const router = useRouter()
-    let slug = router.query.userSlug
+    let slug = profileUser ? profileUser.Slug : router.query.userSlug
     const [reviews, setreviews] = useState([])
     const getRatings = async () => {
         await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/ratings/reviews/${slug}`)
             .then(({ data }) => {
+                console.log(data)
                 setreviews(data.reviews)
             }).catch((error) => {
                 console.log(error)
@@ -52,8 +53,8 @@ const RatingsComponent = ({ user, userReview }) => {
             <div className="mt-10 flex flex-wrap justify-evenly gap-4 lg:gap-8 w-full ">
                 {reviews.length > 0 ?
                     reviews.map((review, index) => (
-                        <div className={'bg-gray-300 dark:bg-gray-700 w-50 p-5  rounded-md w-full'}>
-                            <Review key={index} counts={0} review={review} />
+                        <div key={index} className={'bg-gray-300 dark:bg-gray-700 w-50 p-5  rounded-md w-full'}>
+                            <Review  counts={0} review={review} />
                         </div>
                     ))
 

@@ -5,6 +5,7 @@ import Layout from '../components/Layouts/mainLayout';
 import { fetcher } from '../lib/api';
 import { getTokenFromServerCookie } from '../lib/auth';
 import MyProfileComponent from '../components/profile/MyProfile'
+import RatingsComponent from '../components/profile/RatingsComponent';
 
 const Profile = ({ user }) => {
     const [image, setImage] = useState(null);
@@ -14,6 +15,7 @@ const Profile = ({ user }) => {
     return (
         <Layout user={user}>
             <MyProfileComponent user={user} />
+            <RatingsComponent user={user} profileUser={user} />
         </Layout>
     );
 };
