@@ -24,13 +24,13 @@ const MyProfileComponent = ({ user }) => {
             {user ?
                 <>
                     <div className='mb-10'>
-                        <h1 className="text-5xl text-center font-bold">
+                        <h2 className="text-5xl text-center font-bold">
                             Bienvenido {' '}
                             <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">
                                 {user?.name}
                             </span>
                             <span>👋</span>
-                        </h1>
+                        </h2>
                     </div>
                     <ModalEditProfile isOpen={isOpen}
                         user={user}

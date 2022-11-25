@@ -69,11 +69,11 @@ const DonateComponent = () => {
 
     return (
         <div className="items-center w-full">
-            <h1 className="flex justify-center text-5xl md:text-6xl font-bold leading-tighter mb-4">
+            <h2 className="flex justify-center text-5xl md:text-6xl font-bold leading-tighter mb-4">
                 <span className="bg-clip-text text-center text-transparent bg-gray-700 dark:bg-gray-100 py-2">
                     Apoya nuestro Trabajo, dona ahora!
                 </span>
-            </h1>
+            </h2>
             <div className="w-full md:max-w-md md:mx-auto">
                 <form
                     onSubmit={handleSubmit(submitDonate)}

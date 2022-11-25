@@ -49,11 +49,11 @@ const RatingForm = ({ user, review }) => {
         <form
             onSubmit={onSubmit}
         >
-            <h1 className="flex justify-start text-xl md:text-xl font-bold leading-tighter mb-2">
+            <h2 className="flex justify-start text-xl md:text-xl font-bold leading-tighter mb-2">
                 <span className="bg-clip-text text-center text-transparent bg-gray-700  dark:bg-gray-100 py-2">
                     {'Escribe una Reseña'}
                 </span>
-            </h1>
+            </h2>
             <HoverRating
                 onChange={onChange}
                 onChangeActive={onChangeActive}

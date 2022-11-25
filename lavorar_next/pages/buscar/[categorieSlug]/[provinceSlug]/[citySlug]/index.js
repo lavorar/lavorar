@@ -57,9 +57,9 @@ const SearchProvince = ({ users, user, numberOfLenders }) => {
     return (
         <Layout user={user}>
             <div className="flex flex-col  items-center w-full p-1 text-black">
-                <h1 className="text-center text-gray-900 dark:text-gray-100 font-bold text-4xl pt-5">
+                <h2 className="text-center text-gray-900 dark:text-gray-100 font-bold text-4xl pt-5">
                     {'BUSCAR SERVICIOS DE' + ' ' + router.query.categorieSlug?.toUpperCase() + ' EN ' + router.query.citySlug?.toUpperCase() + ' ' + router.query.provinceSlug?.toUpperCase()}
-                </h1>
+                </h2>
                 <HomeSearchBar />                
                 {users.length > 0 ?                                        
                     <div className='min-h-screen'>

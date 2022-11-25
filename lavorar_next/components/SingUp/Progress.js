@@ -7,11 +7,11 @@ const Progress = ({ currentStep, prevFormStep, back2FormStep, children }) => {
         <div className="items-center w-full">
             <div className="w-full p-2 md:max-w-md md:mx-auto">
                 <div className='flex flex-col justify-center text-orange-brand'>
-                    <h1 className="flex justify-center text-5xl md:text-6xl font-bold leading-tighter mb-4">
+                    <h2 className="flex justify-center text-5xl md:text-6xl font-bold leading-tighter mb-4">
                         <span className="bg-clip-text text-center text-transparent bg-gray-700  dark:bg-gray-100 py-2">
                             {'Registrate'}
                         </span>
-                    </h1>
+                    </h2>
                     <div className=' w-full p-2 md:max-w-md place-self-center grid grid-cols-3 '>
                         <button
                             className={` ${currentStep > 0 ? 'block' : 'invisible'} justify-self-start  `}

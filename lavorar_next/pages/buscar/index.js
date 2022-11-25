@@ -45,9 +45,9 @@ const Search = ({ users, user, numberOfLenders }) => {
 
     return (
         <Layout user={user}>
-            <h1 className="text-center text-gray-900 dark:text-gray-100 font-bold text-4xl pt-5">
+            <h2 className="text-center text-gray-900 dark:text-gray-100 font-bold text-4xl pt-5">
                 {'BUSCAR PRESTADORES DE SERVICIOS'}
-            </h1>
+            </h2>
             <div className="flex flex-col   items-center w-full p-1 text-black">
                 <HomeSearchBar />
                 <div className='min-h-screen'>

@@ -156,13 +156,13 @@ export default function FormCompleted() {
 
     return (
         <>
-            <h1 className="text-5xl text-center font-bold">
+            <h2 className="text-5xl text-center font-bold">
                 Bienvenido, Gracias por Registrarte! {' '}
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">
                     {data.firstName + ' ' + data.lastName}
                 </span>
                 <span>👋 🎉</span>
-            </h1>
+            </h2>
         </>
     );
 }
