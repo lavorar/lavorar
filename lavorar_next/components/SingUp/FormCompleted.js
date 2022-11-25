@@ -126,14 +126,14 @@ export default function FormCompleted() {
         {
             onSettled: async (data) => {
                 setToken(data);
-                    // console.log('datos id', data.user)
+                // console.log('datos id', data.user)
                 setdatos({ ...datos, id: data.user.id, jwt: data.jwt })
-                if(datos?.role){
+                if (datos?.role) {
                     let role = JSON.stringify({
                         "role": {
                             "id": 3
                         }
-                    });                      
+                    });
                     await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${data.user.id}`,
                         role,
                         {
@@ -141,15 +141,20 @@ export default function FormCompleted() {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${data.jwt}`
                             }
-                        })
-                }                
-                //router.replace('/profile')
+                        }).then((data =>{
+                            router.replace('/profile')
+                        }))
+                        .catch(error=>{ console.error(error)})
+                }
+                else {
+                    router.replace('/profile')
+                }
             },
             enabled: Boolean(registerUp || (querycity.isSuccess)),
             staleTime: Infinity
         })
 
-   
+
     console.log('datos update', datos)
     console.log('querycity', querycity)
     console.log('register', queryregisterUser)
