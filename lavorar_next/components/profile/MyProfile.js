@@ -51,7 +51,7 @@ const MyProfileComponent = ({ user }) => {
                                             >
                                                 <Image
                                                     src={`/f_auto,q_auto,c_thumb/v${user.avatar}`}
-                                                    alt="Picture of the user"
+                                                    alt={"Picture of the user " + user?.name}
                                                     layout="fill" // required                   
                                                     objectFit="cover"// change to suit your needs
                                                     className="rounded-full w-full"

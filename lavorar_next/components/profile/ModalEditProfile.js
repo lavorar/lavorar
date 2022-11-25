@@ -297,7 +297,7 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
                                                                 onClick={handleClick}
                                                             >
                                                                 <Image
-                                                                    alt="Picture of the user"
+                                                                    alt={"Picture of the user " + user?.name}
                                                                     layout="fill" // required                   
                                                                     objectFit="cover" // change to suit your needs
                                                                     className="rounded-full w-full"
