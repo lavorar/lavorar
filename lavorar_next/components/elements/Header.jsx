@@ -10,6 +10,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { useRouter } from 'next/router';
 import { unsetToken } from '../../lib/auth';
+import Link from 'next/link';
 // import { useAuth } from "../../../context/authContext";
 
 const Header = (props) => {
@@ -182,8 +183,7 @@ const Header = (props) => {
               </div>
             </li>
             <li>
-              <div
-                onClick={handleLogout}
+              <div                
                 className="px-1 py-1 ">
                 <button
 
@@ -195,23 +195,23 @@ const Header = (props) => {
 
                     <HelpRoundedIcon />
                   </div>
-                  Ayuda
+                  Ayuda (proximamente)
                 </button>
               </div>
-            </li>  
+            </li>
             <li>
-              <div
-                onClick={handleLogout}
+              <div                
                 className="px-1 py-1 ">
-                <button
-                  type="button"
-                  onClick={(e) => router.replace('/donate')}
-                  className="focus:outline-none text-gray-900 w-full bg-orange-brand hover:bg-yellow-500 focus:ring-2 focus:ring-orange-high dark:focus:ring-orange-high font-medium rounded-lg text-base px-3 py-2 "
-                >
-                  Dona
-                </button>
+                <Link href='/donate'>
+                  <button
+                    type="button"                    
+                    className="focus:outline-none text-gray-900 w-full bg-orange-brand hover:bg-yellow-500 focus:ring-2 focus:ring-orange-high dark:focus:ring-orange-high font-medium rounded-lg text-base px-3 py-2 "
+                  >
+                    Dona
+                  </button>
+                </Link>
               </div>
-            </li>                
+            </li>
           </ul>
         </div>
       </nav>
