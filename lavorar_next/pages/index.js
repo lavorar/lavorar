@@ -9,15 +9,15 @@ import { getTokenFromServerCookie } from "../lib/auth";
 import { useFetchUser, useUser } from "../lib/AuthContext";
 
 export default function Home({ user, users }) {
-  
   return (
     <Layout user={user} >
       <div className="flex flex-col  items-center w-full p-1 text-black">
         <HomeSearchBar />
         <div className="mt-10 flex flex-wrap  justify-evenly  gap-4 lg:gap-8 w-full lg:px-5">
           {
-            users?.map((user) => (
-              <Card key={user.id} user={user} />
+            users?.map((lender) => (
+              <Card key={lender.id} authUser={user} lender={lender} slug={lender.Slug}
+              />
             ))
           }
           {/* <Card />
@@ -52,8 +52,31 @@ export async function getServerSideProps({ req }) {
   let user
   const jwt = getTokenFromServerCookie(req);
   if (jwt) {
+    const queryuser = qs.stringify({
+      populate: {
+        notifications: {
+          sort: ['review_updatedAt:desc'],
+          limit: 10,
+          populate: '*'
+        },
+        notifications_requested: {
+          sort: ['review_updatedAt:desc'],
+          populate: '*'
+        },
+        // lenders: {
+        //     populate: '*'
+        // },
+        service_recruiters: {
+          populate: {
+            lender: true
+          }
+        },
+      }
+    }, {
+      encodeValuesOnly: true, // prettify URL
+    });
     user = await fetcher(
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/users/me`,
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/users/me?${queryuser}`,
       {
         headers: {
           Authorization: `Bearer ${jwt}`,

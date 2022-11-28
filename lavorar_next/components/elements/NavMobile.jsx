@@ -10,7 +10,7 @@ import Router from 'next/router'
 
 
 const NavMobile = ({ user }) => {
-
+    
     return (
         <nav className="bg-gray-50 dark:bg-gray-900 px-2 sm:px-4 py-2.5 fixed md:hidden w-full z-10 bottom-0">
             <div className="container flex  justify-around items-center mx-auto px-2">

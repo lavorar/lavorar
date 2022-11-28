@@ -68,12 +68,6 @@
       "relation": "oneToMany",
       "target": "api::category.category"
     },
-    "service_recruiter": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::service.service",
-      "mappedBy": "users_recruiter"
-    },
     "lender": {
       "type": "relation",
       "relation": "oneToOne",
@@ -143,6 +137,30 @@
     "countsReview": {
       "type": "integer",
       "default": 0
+    },
+    "notifications": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::notification.notification",
+      "mappedBy": "user"
+    },
+    "notifications_requested": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::notification.notification",
+      "mappedBy": "user_request"
+    },
+    "service_recruiters": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::service.service",
+      "mappedBy": "users_recruiter"
+    },
+    "lenders": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::service.service",
+      "mappedBy": "lender"
     }
   }
 }

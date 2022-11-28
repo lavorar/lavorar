@@ -32,9 +32,24 @@ export async function getServerSideProps({ req }) {
             },
         };
     } else {
-        console.log(jwt)
+        const qs = require('qs');
+        const query = qs.stringify({
+            populate: {
+                categories: true,
+                role: true,
+                localidad: true,
+                provincia: true,
+                notifications: {
+                    sort: ['review_updatedAt:desc'],
+                    limit:10,
+                    populate: '*'
+                },
+            }
+        }, {
+            encodeValuesOnly: true, // prettify URL
+        });
         const user = await fetcher(
-            `${process.env.NEXT_PUBLIC_STRAPI_URL}/users/me?populate=*`,
+            `${process.env.NEXT_PUBLIC_STRAPI_URL}/users/me?${query}`,
             {
                 headers: {
                     Authorization: `Bearer ${jwt}`,

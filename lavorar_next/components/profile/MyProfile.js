@@ -10,7 +10,6 @@ import AddAPhoto from '@mui/icons-material/AddAPhoto';
 
 const MyProfileComponent = ({ user }) => {
     let [isOpen, setIsOpen] = useState(false)
-
     // function closeModal() {
     //     setIsOpen(false)
     // }

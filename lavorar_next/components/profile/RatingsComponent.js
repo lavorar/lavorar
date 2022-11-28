@@ -10,6 +10,7 @@ import Review from '../rating/Review'
 
 const RatingsComponent = ({ user, profileUser, userReview }) => {
     const router = useRouter()
+    // console.log(profileUser)
     let slug = profileUser ? profileUser.Slug : router.query.userSlug
     const [reviews, setreviews] = useState([])
     const getRatings = async () => {
@@ -24,6 +25,9 @@ const RatingsComponent = ({ user, profileUser, userReview }) => {
     const queryRatings = useQuery(['ratings'], getRatings, {
         staleTime: 1
     })
+    const contract = user?.service_recruiters?.filter(function (service) {        
+        return service.lender.id === profileUser.id
+    })
     return (
         <div>
             <div className={'bg-gray-300 relative dark:bg-gray-700 mt-10 p-5 rounded-md'}>
@@ -33,11 +37,16 @@ const RatingsComponent = ({ user, profileUser, userReview }) => {
                             <div>
                                 No puedes Reseñarte a vos mismo
                             </div>
-                            :
+                            :                                
                             userReview ?
                                 <Review review={userReview} user={user} />
                                 :
-                                <RatingForm user={user} />
+                                contract.length ? 
+                                <RatingForm user={user}  />
+                                :
+                                    <div>
+                                        Contrata a este prestador para reseñarlo
+                                    </div>
 
                         :
                         <div className="py-2 flex items-center gap-2 flex-row">

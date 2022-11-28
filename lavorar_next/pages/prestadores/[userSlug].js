@@ -14,8 +14,8 @@ import Layout from "/components/Layouts/mainLayout";
 const Search = ({ users, user, userReview, review }) => {
     return (
         <Layout user={user}>
-            <ProfileComponent user={users[0]} review={review} />
-            <RatingsComponent user={user} userReview={userReview} />
+            <ProfileComponent user={users[0]} authUser={user} review={review} />
+            <RatingsComponent user={user} profileUser={users[0]} userReview={userReview} />
         </Layout>
     )
 }
@@ -38,8 +38,28 @@ export async function getServerSideProps(context) {
             review = null
         })
     if (jwt) {
+        const queryuser = qs.stringify({
+            populate: {
+                notifications: {
+                    sort: ['review_updatedAt:desc'],
+                    limit: 10,
+                    populate: '*'
+                },
+                notifications_requested: {
+                    sort: ['review_updatedAt:desc'],
+                    populate: '*'
+                },
+                service_recruiters: {
+                    populate: {
+                        lender: true
+                    }
+                },
+            }
+        }, {
+            encodeValuesOnly: true, // prettify URL
+        });
         user = await fetcher(
-            `${process.env.NEXT_PUBLIC_STRAPI_URL}/users/me`,
+            `${process.env.NEXT_PUBLIC_STRAPI_URL}/users/me?${queryuser}`,
             {
                 headers: {
                     Authorization: `Bearer ${jwt}`,

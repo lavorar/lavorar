@@ -9,6 +9,7 @@ const RatingForm = ({ user, review }) => {
     const [value, setValue] = useState(5 || review?.score);
     const [hover, setHover] = useState(5);
 
+
     const router = useRouter()
     let slug = router.query.userSlug
     const onChange = (event, newValue) => {
@@ -22,22 +23,28 @@ const RatingForm = ({ user, review }) => {
         e.preventDefault()
         const jwt = getTokenFromLocalCookie();
         if (review) {
-            axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/ratings/reviews/updateReview/${slug}`,
+            await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/ratings/reviews/updateReview/${slug}`,
                 { comment: comment, score: value }, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${jwt}`,
                 }
-            }).then((data) => router.reload())
+            }).then((data) => {
+                console.log(data)
+                // router.reload()
+            })
         }
         else {
-            axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/ratings/reviews/${slug}`,
+            await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/ratings/reviews/${slug}`,
                 { comment: comment, score: value }, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${jwt}`,
                 }
-            }).then((data) => router.reload())
+            }).then((data) => {
+                console.log(data)
+                router.reload()
+            })
         }
     }
 

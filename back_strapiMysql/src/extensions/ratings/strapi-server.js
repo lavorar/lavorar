@@ -123,7 +123,7 @@ module.exports = (plugin) => {
 
         const userReview = await strapi.db.query("plugin::users-permissions.user").findOne({
             where: { slug }
-        })        
+        })
 
         await strapi.entityService.update("plugin::users-permissions.user", userReview.id, {
             data: {
@@ -131,6 +131,28 @@ module.exports = (plugin) => {
                 countsReview: relatedContent.reviews.length
             }
         })
+        const notifi = await strapi.entityService.create("api::notification.notification", {
+            data: {
+                user: userReview,
+                user_request: user,
+                type: 'Review',
+                comment: newReview.comment,
+                score: newReview.score,
+                review_updatedAt: new Date()
+            },
+            populate: '*'
+        })
+        
+        let datos = {
+            user: userReview,
+            user_request: user,
+            type: 'Review',
+            comment: newReview.comment,
+            score: newReview.score,
+            review_updatedAt: new Date()
+        }
+        strapi.$io.raw("review", datos);
+
         ctx.body = {
             newReview,
             newAvg
@@ -212,6 +234,16 @@ module.exports = (plugin) => {
             data: {
                 averageScore: newAvg,
                 countsReview: relatedContent.reviews.length + 1
+            }
+        })
+        await strapi.entityService.create("api::notification.notification", {
+            data: {
+                user: userReview,
+                user_request: user,
+                type: 'Review',
+                comment: newReview.comment,
+                score: newReview.score,
+                review_updatedAt: new Date()
             }
         })
         ctx.body = { id: newReview.id }

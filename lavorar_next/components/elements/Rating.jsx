@@ -43,8 +43,7 @@ export default function HoverRating({ readOnly, value, hover, onChangeActive, on
     > {readOnly !== true ?
       <Rating
         name="rating-onchange"
-        value={value ? value : 5}
-        precision={0.5}
+        value={value ? value : 5}       
         getLabelText={getLabelText}
         onChange={onChange}
         onChangeActive={onChangeActive}

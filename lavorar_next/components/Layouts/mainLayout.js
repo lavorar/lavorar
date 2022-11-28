@@ -9,20 +9,25 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
-
 import BookmarkOutlinedIcon from '@mui/icons-material/BookmarkOutlined';
 import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
 import EventAvailableRoundedIcon from '@mui/icons-material/EventAvailableRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import AddchartRoundedIcon from '@mui/icons-material/AddchartRounded';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
+import { UseLayoutOpen } from "../../context/LayoutContext";
 import Card from "../elements/Card";
 import NavMobile from '../elements/NavMobile';
+import { getTokenFromLocalCookie, getTokenFromServerCookie } from '../../lib/auth';
+import axios from 'axios';
 
 
 const Layout = ({ user, loading = false, children }) => {
+
+
     const router = useRouter()
-    const [open, setOpen] = useState(true);
+    const { open } = UseLayoutOpen()
+    const { setOpenBar } = UseLayoutOpen()
     const Menus = [
         { title: "Inicio", src: <HomeRoundedIcon fontSize={'large'} />, always: true, href: '/' },
         { title: "Buscar", src: <SearchRoundedIcon fontSize={'large'} />, always: true, href: '/buscar' },
@@ -37,6 +42,7 @@ const Layout = ({ user, loading = false, children }) => {
     ];
     return (
         <UserProvider value={{ user, loading }}>
+
             <Head>
                 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
                 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -60,7 +66,7 @@ const Layout = ({ user, loading = false, children }) => {
                             className={`absolute  cursor-pointer group -right-5 top-10
                             rounded-full duration-300  ${!open && "rotate-180"}`}>
                             <IconWithButton
-                                onClick={() => setOpen(!open)}
+                                onClick={setOpenBar}
                             >
                                 <ArrowBackIosNewRoundedIcon fontSize="small" />
                             </IconWithButton>
@@ -91,7 +97,7 @@ const Layout = ({ user, loading = false, children }) => {
                                 } `}
                                     >
                                         <div
-                                            
+
                                             className={`cursor-pointer  duration-300  text-gray-900  dark:text-white-ghost`}>
                                             <IconWithButton
                                             >

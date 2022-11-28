@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import VerifiedIcon from "@mui/icons-material/Verified";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import BasicRating from '/components/elements/Rating';
@@ -6,8 +6,16 @@ import ButtonCard from '/components/elements/ButtonCard';
 import Image from 'next/image';
 import BackgroundLetterAvatars from '../elements/AvatarInitials';
 import Link from 'next/link';
+import { getTokenFromLocalCookie } from '../../lib/auth';
+import axios from 'axios';
+import { useQuery } from 'react-query';
+import HireLender from '../elements/HireLender';
 
-const ProfileComponent = ({ user, review }) => {
+const ProfileComponent = ({ user, authUser, review }) => {
+
+    const handleHire = async () => {
+
+    }
     return (
         <div className='flex flex-col'>
             {user ?
@@ -54,12 +62,13 @@ const ProfileComponent = ({ user, review }) => {
                                     </div>
                                 </div>
                                 <div className="flex py-2 items-center">
-                                    <button
-                                        type="button"
-                                        className="py-2 px-3 mr-2 my-2 text-base font-medium text-gray-900 focus:outline-none bg-white rounded-lg hover:bg-gray-100 hover:text-blue-700  dark:bg-gray-800 dark:text-gray-400  dark:hover:text-white dark:hover:bg-gray-600"
-                                    >
-                                        Contratar
-                                    </button>
+                                    {authUser ?
+                                        authUser.id === user.id ?
+                                            <></>
+                                            :
+                                            <HireLender authUser={authUser} lender={user} />
+                                        :
+                                        <></>}
                                     {user.phone &&
                                         <Link href={'https://api.whatsapp.com/send?phone=' + user.phone} >
                                             <button

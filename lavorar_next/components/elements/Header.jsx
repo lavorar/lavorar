@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Dropdown from './Dropdown'
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
@@ -8,17 +8,88 @@ import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import { useRouter } from 'next/router';
-import { unsetToken } from '../../lib/auth';
+import { getTokenFromLocalCookie, unsetToken } from '../../lib/auth';
 import Link from 'next/link';
+import NotificationDropdown from './NotificationsDropdown';
+import { Badge } from '@mui/material';
+import axios from 'axios';
+import { useQuery } from 'react-query';
+import { boolean } from 'yup';
+import Image from 'next/image';
+import BackgroundLetterAvatars from './AvatarInitials';
 // import { useAuth } from "../../../context/authContext";
 
-const Header = (props) => {
-  // const { user, logout, loading } = useAuth();
+const Header = ({ user }) => {
+  const jwt = getTokenFromLocalCookie()
+  const qs = require('qs');
+  const queryuser = qs.stringify({
+    populate: {
+      notifications: {
+        sort: ['review_updatedAt:desc'],
+        limit: 10,
+        populate: '*'
+      },
+    }
+  }, {
+    encodeValuesOnly: true, // prettify URL
+  });
+  const getNotifications = async () => {
+    const { data } = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/me?${queryuser}`, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    })
+    return data
+  }
+  const [notifications, setnotifications] = useState(user?.notifications)
+  const [unreadNotifications, setunreadNotifications] = useState(user?.notifications.filter(function (notif) {
+    //  console.log('notificacion ' ,notif)
+    if (!notif.read) {
+      return notif
+    }
+    else {
+      return
+    }
+  }))
+
+
+  const querynotifications = useQuery('notifications', getNotifications, {
+    refetchInterval: 10000,
+    enabled: Boolean(jwt),
+    onSettled: (data) => {
+      // console.log('ractquery data', data.notifications)
+      // setnotifications(data)
+    }
+  })
+  // console.log('numero de no leida',unreadNotifications)
   const router = useRouter();
-  const user = props.user
   const [open, setopen] = useState(false)
   const [openNotification, setopenNotification] = useState(false)
+
+  const { io } = require("socket.io-client");
+  const SERVER_URL = "http://localhost:1337";
+
+  // token will be verified, connection will be rejected if not a valid JWT
+  const socket = io(SERVER_URL, {
+    auth: {
+      token: jwt
+    },
+  });
+
+  //  wait until socket connects before adding event listeners
+
+  socket.on("notificationCreate", function (data) {
+    console.log('notification creada', data.user)
+    if (data.user === user.id) {
+      if (!notifications.includes(data)) {
+        setnotifications(notifications => [...notifications, data])
+      }
+
+    }
+  });
+
 
   const handleOpenNotification = () => {
     if (open) {
@@ -60,7 +131,7 @@ const Header = (props) => {
         <div className="container flex justify-between md:justify-end h-16 items-center mx-auto px-2">
           <a href="/" className="flex items-center md:invisible ">
             <img src="/Lavorar-logo-negativo.svg" className="mr-2 w-16" alt="LAvorar Logo" />
-            <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Lavorar</span>
+            <span className="self-center hidden md:block text-xl font-semibold whitespace-nowrap dark:text-white">Lavorar</span>
           </a>
           <div className="flex md:order-2 ">
 
@@ -115,12 +186,50 @@ const Header = (props) => {
               :
               <></>
             } */}
+            {
+              user && (
+                <div className='mr-4 '>
+                  <NotificationDropdown
+                    user={user}
+                    notifications={notifications}
+                    setunreadNotifications={setunreadNotifications}
+                    unreadNotifications={unreadNotifications}>
+                    <Badge badgeContent={unreadNotifications?.length} color="primary">
+                      <NotificationsRoundedIcon fontSize='large' />
+                    </Badge>
+                  </NotificationDropdown>
+                </div>)
+            }
 
             <div className='mr-4 '>
-              <Dropdown>
-                <PersonRoundedIcon fontSize='large' />
+              <Dropdown user={user}>
+                {user ?
+                  user?.avatar ?
+                    <div className="h-[50px] w-[50px] relative aspect-square cursor-pointer"
+                    // onClick={router.replace( '/prestadores/' + lender?.Slug )}
+                    >
+                      <Image
+                        src={`/v${user.avatar}`}
+                        alt={"Picture of the lender " + user?.name}
+                        layout="fill" // required                   
+                        objectFit="cover" // change to suit your needs
+                        className="rounded-full w-full" // just an example
+                      />
+                    </div>
+                    :
+                    <div className="h-[50px] w-[50px] cursor-pointer aspect-square"
+                    // onClick={router.replace( '/prestadores/' + lender?.Slug )}
+                    >
+                      <BackgroundLetterAvatars fontSize='large' firtsName={user?.firstName} lastName={user?.lastName} />
+                    </div>
+
+
+                  :
+                  <PersonRoundedIcon fontSize='large' />
+                }
               </Dropdown>
             </div>
+
             <div className={`md:hidden`}>
               <IconWithButton
                 onClick={() => {
@@ -164,7 +273,7 @@ const Header = (props) => {
         </div>
         <div className={`${open ? "block" : "hidden"} md:hidden justify-between items-center w-full md:w-auto md:order-1`} id="navbar-sticky">
           <ul className="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-700 md:dark:bg-gray-900 dark:border-gray-700">
-            <li>
+            {user && <li>
               <div
                 onClick={handleLogout}
                 className="px-1 py-1 ">
@@ -181,9 +290,9 @@ const Header = (props) => {
                   Cerrar sesion
                 </button>
               </div>
-            </li>
+            </li>}
             <li>
-              <div                
+              <div
                 className="px-1 py-1 ">
                 <button
 
@@ -200,11 +309,11 @@ const Header = (props) => {
               </div>
             </li>
             <li>
-              <div                
+              <div
                 className="px-1 py-1 ">
                 <Link href='/donate'>
                   <button
-                    type="button"                    
+                    type="button"
                     className="focus:outline-none text-gray-900 w-full bg-orange-brand hover:bg-yellow-500 focus:ring-2 focus:ring-orange-high dark:focus:ring-orange-high font-medium rounded-lg text-base px-3 py-2 "
                   >
                     Dona

@@ -22,12 +22,6 @@
       "relation": "oneToMany",
       "target": "api::category.category",
       "mappedBy": "lender"
-    },
-    "service": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::service.service",
-      "inversedBy": "lender"
     }
   }
 }
