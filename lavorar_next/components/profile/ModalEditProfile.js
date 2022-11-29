@@ -213,13 +213,13 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
                 }
             }
         ).then((data) => {
-            if (image === null) {
+            if (image === null || image === '/v' + user.avatar) {
                  router.reload('/profile')
             }
             // // router.reload('/profile')
             return data
         }).catch((error) => {
-            if (image === null) {
+            if (image === null || image === '/v' + user.avatar) {
                  router.reload('/profile')
             }
             return error
