@@ -70,7 +70,7 @@ const Header = ({ user }) => {
   const [openNotification, setopenNotification] = useState(false)
 
   const { io } = require("socket.io-client");
-  const SERVER_URL = process.env.NEXT_PUBLIC_STRAPI_URL_SERVER;
+  const SERVER_URL = "https://backstrapimysql-production.up.railway.app";
 
   // token will be verified, connection will be rejected if not a valid JWT
   const socket = io(SERVER_URL, {
