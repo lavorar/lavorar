@@ -74,7 +74,7 @@ export default function NotificationDropdown({ user, children, notifications, un
     const handleAceptService = async (e, id, indexstate, notification) => {
         e.preventDefault()
 
-        await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/services/`,
+        await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/services`,
             {
                 data: {
                     acepted: true,
