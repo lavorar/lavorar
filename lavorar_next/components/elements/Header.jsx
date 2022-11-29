@@ -18,6 +18,7 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import { boolean } from 'yup';
 import Image from 'next/image';
+import moment from 'moment';
 import BackgroundLetterAvatars from './AvatarInitials';
 // import { useAuth } from "../../../context/authContext";
 
@@ -79,18 +80,16 @@ const Header = ({ user }) => {
   });
 
   //  wait until socket connects before adding event listeners
-
-  socket.on("notificationCreate", function (data) {
-    console.log('notification creada', data.user)
-    if (data.user === user.id) {
-      if (!notifications.includes(data)) {
-        setnotifications(notifications => [...notifications, data])
+  useEffect(() => {
+    socket.on("notificationCreate", function (data) {
+      console.log('notification creada', data)
+      if (data.user.id === user.id) {        
+        setnotifications(notifications => [data, ...notifications])       
+        setunreadNotifications(notifications => [data, ...notifications]) 
       }
-
-    }
-  });
-
-
+    });
+  }, [])
+  
   const handleOpenNotification = () => {
     if (open) {
       setopen(false)

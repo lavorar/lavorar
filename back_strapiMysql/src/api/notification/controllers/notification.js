@@ -24,8 +24,13 @@ module.exports = createCoreController('api::notification.notification', ({ strap
 
         const response = await super.create(ctx);       // some more logic
         let datos = {
-            user: ctx.request.body.data.user.id,
-            user_request: ctx.request.body.data.user_request.id,
+            id: response.data.id,
+            score: response.data.id.attributes?.score,
+            comment: response.data.id.attributes?.comment,
+            read: false,
+            acepted: false,
+            user: ctx.request.body.data.user,
+            user_request: ctx.request.body.data.user_request,
             type: ctx.request.body.data.type,
             review_updatedAt: new Date()
         }
