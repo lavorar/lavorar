@@ -70,7 +70,7 @@ const Header = ({ user }) => {
   const [openNotification, setopenNotification] = useState(false)
 
   const { io } = require("socket.io-client");
-  const SERVER_URL = "http://localhost:1337";
+  const SERVER_URL = process.env.NEXT_PUBLIC_STRAPI_URL_SERVER;
 
   // token will be verified, connection will be rejected if not a valid JWT
   const socket = io(SERVER_URL, {

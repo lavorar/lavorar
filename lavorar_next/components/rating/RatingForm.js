@@ -31,7 +31,7 @@ const RatingForm = ({ user, review }) => {
                 }
             }).then((data) => {
                 console.log(data)
-                // router.reload()
+                router.reload()
             })
         }
         else {
