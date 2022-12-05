@@ -10,7 +10,6 @@ import Review from '../rating/Review'
 
 const RatingsComponent = ({ user, profileUser, userReview }) => {
     const router = useRouter()
-    // console.log(profileUser)
     let slug = profileUser ? profileUser.Slug : router.query.userSlug
     const [reviews, setreviews] = useState([])
     const getRatings = async () => {
@@ -22,48 +21,49 @@ const RatingsComponent = ({ user, profileUser, userReview }) => {
                 console.log(error)
             })
     }
+    const [reviewUserAuth, setReviewUserAuth] = useState(userReview)
     const queryRatings = useQuery(['ratings'], getRatings, {
         staleTime: 1
     })
-    const contract = user?.service_recruiters?.filter(function (service) {        
+    const contract = user?.service_recruiters?.filter(function (service) {
         return service.lender.id === profileUser.id
     })
     return (
         <div>
-            <div className={'bg-gray-300 relative dark:bg-gray-700 mt-10 p-5 rounded-md'}>
+
+            {(slug !== user?.Slug) && <div className={'bg-gray-300 relative dark:bg-gray-700  mt-4 p-5 rounded-xl'}>
                 {
                     user ?
-                        slug === user.Slug ?
-                            <div>
-                                No puedes Reseñarte a vos mismo
-                            </div>
-                            :                                
-                            userReview ?
-                                <Review review={userReview} user={user} />
+                        reviewUserAuth ?
+                            <Review review={reviewUserAuth} setReviewUserAuth={setReviewUserAuth} user={user} />
+                            :
+                            contract?.length ?
+                                <RatingForm user={user} setReviewUserAuth={setReviewUserAuth} review={reviewUserAuth} />
                                 :
-                                contract.length ? 
-                                <RatingForm user={user}  />
-                                :
-                                    <div>
-                                        Contrata a este prestador para reseñarlo
-                                    </div>
+                                <div>
+                                    <span className='font-bold'>Debes Contratar </span>
+                                    a este prestador para reseñarlo
+                                </div>
 
                         :
                         <div className="py-2 flex items-center gap-2 flex-row">
-                            <Link href={'/login'} >
+                            <Link href={{
+                                pathname: '/login',
+                                query: { slug: 'prestadores/' + profileUser.Slug }
+                            }} >
                                 <p className="text-xl text-orange-high cursor-pointer">Inicia Sesion</p>
                             </Link>
                             <p className="text-xl">para publicar una reseña!</p>
 
                         </div>
                 }
-            </div>
+            </div>}
 
-            <div className="mt-10 flex flex-wrap justify-evenly gap-4 lg:gap-8 w-full ">
+            <div className="mt-5 flex flex-wrap justify-evenly gap-4 lg:gap-0 w-full bg-gray-300 relative dark:bg-gray-700   rounded-md">
                 {reviews.length > 0 ?
                     reviews.map((review, index) => (
-                        <div key={index} className={'bg-gray-300 dark:bg-gray-700 w-50 p-5  rounded-md w-full'}>
-                            <Review  counts={0} review={review} />
+                        <div key={index} className={`${index < reviews.length-1 ? 'border-b' : ''} bg-gray-300 dark:bg-gray-700 w-50 p-5  w-full`}>
+                            <Review counts={0} review={review} />
                         </div>
                     ))
 

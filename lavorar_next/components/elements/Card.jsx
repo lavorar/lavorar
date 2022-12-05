@@ -14,24 +14,26 @@ import HireLender from "./HireLender";
 const Card = ({ lender, authUser, slug }) => {
 
   return (
-    <div className="inline-block mt-3  overflow-ellipsis w-72 bg-gray-200 rounded-lg border border-gray-200 shadow-md ">
+    <div className="inline-block mt-3 text-gray-900  overflow-ellipsis w-72 bg-gray-200 rounded-lg border border-gray-200 shadow-md ">
 
       <div className="flex flex-col  mx-1 pb-2 mt-3">
-        <div className="flex  justify-between  mx-2">
+        <div className="flex h-24 justify-between  mx-2">
           <div className="flex flex-row">
             {
               lender?.avatar ?
-                <div className="h-16 w-16 relative aspect-square cursor-pointer"
-                // onClick={router.replace( '/prestadores/' + lender?.Slug )}
-                >
-                  <Image
-                    src={`/v${lender.avatar}`}
-                    alt={"Picture of the lender " + lender?.name}
-                    layout="fill" // required                   
-                    objectFit="cover" // change to suit your needs
-                    className="rounded-full w-full" // just an example
-                  />
-                </div>
+                <Link href={`/prestadores/${lender?.slug}`}>
+                  <a className="h-16 w-16 relative aspect-square cursor-pointer"
+                  // onClick={router.replace( '/prestadores/' + lender?.Slug )}
+                  >
+                    <Image
+                      src={`/v${lender.avatar}`}
+                      alt={"Picture of the lender " + lender?.name}
+                      layout="fill" // required                   
+                      objectFit="cover" // change to suit your needs
+                      className="rounded-full w-full" // just an example
+                    />
+                  </a>
+                </Link>
                 :
                 <>
                   {
@@ -76,18 +78,19 @@ const Card = ({ lender, authUser, slug }) => {
           counts={lender?.countsReview ? lender?.countsReview : 0}
           value={lender?.averageScore}
           readOnly={true} />
-        <h5 className=" border-0 pt-2 border-t mx-2  border-gray-500 mb-1 px-1 text-base font-medium text-gray-900 dark">
-          {lender?.aboutme ? lender.aboutme : 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumend    laboriosam, quod aut officiis ea deleniti repellat nisi delectus magnam reiciendis?'}
-        </h5>
-        <div>
-          {
-            lender?.categories.map((categorie) => (
-              <ButtonCard key={categorie.id + lender.id} href={'/buscar/' + categorie?.Slug} text={categorie.name} />
-            ))
-          }
+        <div className="flex flex-col justify-between my-2 h-28">
+          <span className=" border-0 pt-2 border-t mx-2  border-gray-500 overflow-clip  mb-1 px-1 text-base font-medium text-gray-900 dark">
+            {lender?.aboutme ? lender.aboutme : 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumend    laboriosam, quod aut officiis ea deleniti repellat nisi delectus magnam reiciendis?'}
+          </span>
+          <div>
+            {
+              lender?.categories?.map((categorie) => (
+                <ButtonCard key={categorie.id + lender.id} href={'/buscar/' + categorie?.Slug} text={categorie.name} />
+              ))
+            }
 
+          </div>
         </div>
-
         <div className="flex flex-wrap mx-2 border-0 pt-2 border-t  border-gray-500 justify-end space-x-3 ">
           {authUser ?
             authUser.id === lender.id ?
@@ -96,7 +99,7 @@ const Card = ({ lender, authUser, slug }) => {
               <HireLender authUser={authUser} lender={lender} />
             :
             <></>}
-          {lender.phone &&
+          {lender?.phone &&
             <Link href={'https://api.whatsapp.com/send?phone=' + lender.phone} >
               <button
                 type="button"

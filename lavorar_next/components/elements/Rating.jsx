@@ -25,7 +25,7 @@ export default function HoverRating({ readOnly, value, hover, onChangeActive, on
   let valLabel = 0.5 * Math.floor(value / 0.5)
   // console.log(counts)
   let label = ''
-  label = (value + ' (' + counts + ' )' + labels[counts ? valLabel : (hover !== -1 ? hover : value)])
+  label = (value + ' (' + counts + ') ' + labels[counts ? valLabel : (hover !== -1 ? hover : value)])
   if (!counts) {
     label = 'no hay reseñas'
   }
@@ -43,7 +43,7 @@ export default function HoverRating({ readOnly, value, hover, onChangeActive, on
     > {readOnly !== true ?
       <Rating
         name="rating-onchange"
-        value={value ? value : 5}       
+        value={value ? value : 5}
         getLabelText={getLabelText}
         onChange={onChange}
         onChangeActive={onChangeActive}
@@ -53,7 +53,7 @@ export default function HoverRating({ readOnly, value, hover, onChangeActive, on
       :
       <Rating
         name="half-rating"
-        defaultValue={value}
+        value={value}
         precision={0.5}
         readOnly
         getLabelText={getLabelText}
@@ -62,7 +62,7 @@ export default function HoverRating({ readOnly, value, hover, onChangeActive, on
       />
       }
       {(
-        <Box sx={{ ml: 2 }}>{label}</Box>
+        <Box sx={{ ml: 0.5 }}>{label}</Box>
       )}
     </Box>
   );

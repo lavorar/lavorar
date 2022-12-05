@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react'
 import { getTokenFromLocalCookie } from '../../lib/auth';
 import HoverRating from '../elements/Rating'
 
-const RatingForm = ({ user, review }) => {
+const RatingForm = ({ user, review, setReviewUserAuth, closeModal }) => {
     const [comment, setComment] = useState(review ? review.comment : "")
     const [value, setValue] = useState(5 || review?.score);
     const [hover, setHover] = useState(5);
@@ -30,8 +30,12 @@ const RatingForm = ({ user, review }) => {
                     'Authorization': `Bearer ${jwt}`,
                 }
             }).then((data) => {
-                console.log(data)
-                router.reload()
+                console.log('datos modal', data)
+                console.log('user modal', user)
+                let reviewdata = data.data.newReview
+                reviewdata.author = user
+                setReviewUserAuth(reviewdata)
+                closeModal()
             })
         }
         else {
@@ -43,7 +47,7 @@ const RatingForm = ({ user, review }) => {
                 }
             }).then((data) => {
                 console.log(data)
-                router.reload()
+                setReviewUserAuth(data.data)
             })
         }
     }
@@ -74,7 +78,7 @@ const RatingForm = ({ user, review }) => {
                         Comentario
                     </label>
                     <textarea
-                        className={`border-2 py-1 px-2 w-3/5 rounded-md outline-none focus:border-blue-500 bg-transparent`}
+                        className={`border-2 py-1 px-2 w-3/5 rounded-md outline-none border-gray-800 dark:border-gray-400 focus:border-blue-500 bg-transparent`}
                         type="comment"
                         name="comment"
                         onChange={handleInputComment}

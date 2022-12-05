@@ -19,15 +19,7 @@ export default function FormCompleted() {
 
     const [datos, setdatos] = useState(data)
     console.log('formdata', datos)
-    let provinceUp
-    let registerUp = true
-    if (data?.categories) {
-        provinceUp = true
-        registerUp = false
-    }
-
-    const [province, setprovince] = useState(null)
-
+    let provinceUp = true
     const getProvince = async () => {
         let response = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces1/${provinceForm.Slug}`)
             .then(({ data }) => {
@@ -45,14 +37,12 @@ export default function FormCompleted() {
     }
 
 
-    const [foundProvince, setfoundProvince] = useState(undefined)
+
     const queryprovince = useQuery(
         ['province'],
         getProvince,
         {
             onSettled: (data) => {
-                setprovince(data)
-                setfoundProvince(true)
                 setdatos({ ...datos, provincia: data })
                 setcityForm({ ...cityForm, province: data })
             },
@@ -85,20 +75,15 @@ export default function FormCompleted() {
         return response
     }
 
-    const [city, setcity] = useState(null)
-
-    const [foundcity, setfoundcity] = useState(data.categories ? undefined : true)
     const querycity = useQuery(
         ['city'],
         getCity,
         {
             onSettled: (data) => {
-                // console.log('datos a actualizar', datos)
-                setcity(data)
-                setfoundcity(true)
+                // console.log('datos a actualizar', datos)                
                 setdatos({ ...datos, localidad: data })
             },
-            enabled: Boolean(foundProvince),
+            enabled: Boolean(queryprovince.isSuccess),
             staleTime: Infinity
         },
     )
@@ -128,29 +113,25 @@ export default function FormCompleted() {
                 setToken(data);
                 // console.log('datos id', data.user)
                 setdatos({ ...datos, id: data.user.id, jwt: data.jwt })
-                if (datos?.role) {
-                    let role = JSON.stringify({
-                        "role": {
-                            "id": 3
+                let role = JSON.stringify({
+                    "role": {
+                        "id": 3
+                    }
+                });
+                await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${data.user.id}`,
+                    role,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${data.jwt}`
                         }
-                    });
-                    await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${data.user.id}`,
-                        role,
-                        {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                Authorization: `Bearer ${data.jwt}`
-                            }
-                        }).then((data =>{
-                            router.replace('/profile')
-                        }))
-                        .catch(error=>{ console.error(error)})
-                }
-                else {
-                    router.replace('/profile')
-                }
+                    }).then((data => {
+                        router.replace('/profile')
+                    }))
+                    .catch(error => { console.error(error) })
+
             },
-            enabled: Boolean(registerUp || (querycity.isSuccess)),
+            enabled: Boolean((querycity.isSuccess)),
             staleTime: Infinity
         })
 

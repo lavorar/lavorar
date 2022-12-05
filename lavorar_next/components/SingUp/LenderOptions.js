@@ -5,6 +5,7 @@ import Select from 'react-select'
 import { useQuery } from 'react-query';
 import axios from 'axios'
 import { components } from "react-select";
+import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
 
 export const slugify = str =>
     str
@@ -145,7 +146,8 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
                     name="categories"
                     control={control}
                 />
-                <p className={` ${errors.categories ? 'text-orange-high block' : 'invisible'}  `}>{'Debes ingresar al menos una categoria'}</p>
+                <p className={` ${errors.categories ? 'text-red-800 dark:text-orange-high block' : 'invisible'}  `}>
+                    <ErrorOutlinedIcon /> {'Debes ingresar al menos una categoria'}</p>
             </div>
             <div className="flex flex-col text-black">
                 <label className='mb-5 dark:text-gray-50'>Provincia</label>
@@ -167,7 +169,8 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
                     name="provincia"
                     control={control}
                 />
-                <p className={` ${errors.provincia ? 'text-orange-high block' : 'invisible'}  `}>{'Debes seleccionar una provincia'}</p>
+                <p className={` ${errors.provincia ? 'text-red-800 dark:text-orange-high block' : 'invisible'}  `}>
+                    <ErrorOutlinedIcon /> {'Debes seleccionar una provincia'}</p>
             </div>
             <div className="flex flex-col text-black">
                 <label className='mb-5 dark:text-gray-50'>Provincia</label>
@@ -192,7 +195,7 @@ const LenderOptions = ({ formStep, nextFormStep }) => {
                     name="localidad"
                     control={control}
                 />
-                <p className={` ${errors.localidad ? 'text-orange-high block' : 'invisible'}  `}>{'Debes seleccionar una ciudad'}</p>
+                <p className={` ${errors.localidad ? 'text-red-800 dark:text-orange-high block' : 'invisible'}  `}> <ErrorOutlinedIcon /> {'Debes seleccionar una ciudad'}</p>
             </div>
             <button
                 className='block mb-6 text-gray-900 bg-orange-pastel text-lg rounded py-2.5 w-full'

@@ -142,7 +142,7 @@ module.exports = (plugin) => {
             },
             populate: '*'
         })
-        
+
         let datos = {
             user: userReview,
             user_request: user,
@@ -151,7 +151,7 @@ module.exports = (plugin) => {
             score: newReview.score,
             review_updatedAt: new Date()
         }
-        strapi.$io.raw("review", datos);
+        strapi.$io.raw("notificationCreate", datos);
 
         ctx.body = {
             newReview,
@@ -246,7 +246,28 @@ module.exports = (plugin) => {
                 review_updatedAt: new Date()
             }
         })
-        ctx.body = { id: newReview.id }
+        const notifi = await strapi.entityService.create("api::notification.notification", {
+            data: {
+                user: userReview,
+                user_request: user,
+                type: 'Review',
+                comment: newReview.comment,
+                score: newReview.score,
+                review_updatedAt: new Date()
+            },
+            populate: '*'
+        })
+
+        let datos = {
+            user: userReview,
+            user_request: user,
+            type: 'Review',
+            comment: newReview.comment,
+            score: newReview.score,
+            review_updatedAt: new Date()
+        }
+        strapi.$io.raw("notificationCreate", datos);
+        ctx.body = { newReview: newReview }
     };
 
     plugin.routes['content-api'].routes.push(

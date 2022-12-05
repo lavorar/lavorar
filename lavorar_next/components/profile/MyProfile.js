@@ -49,7 +49,7 @@ const MyProfileComponent = ({ user }) => {
                                             // onClick={router.replace( '/prestadores/' + user?.Slug )}
                                             >
                                                 <Image
-                                                    src={`/v${user.avatar}`}
+                                                    src={`/f_auto,q_auto,w_150,h_150/v${user.avatar}`}
                                                     alt={"Picture of the user " + user?.name}
                                                     layout="fill" // required                   
                                                     objectFit="cover"// change to suit your needs
@@ -96,16 +96,18 @@ const MyProfileComponent = ({ user }) => {
                                     </button>
                                 </div>
                             </div>
-                            <div>
-                                <BasicRating
-                                    hover={-1}
-                                    counts={user?.countsReview}
-                                    value={user?.averageScore}
-                                    readOnly={true} />
-                            </div>
-                            <h5 className="  pt-2 mx-2  mb-1 px-1 text-base font-medium ">
+                            {user.role.id === 3 &&
+                                <div>
+                                    <BasicRating
+                                        hover={-1}
+                                        counts={user?.countsReview}
+                                        value={user?.averageScore}
+                                        readOnly={true} />
+                                </div>
+                            }
+                            <span className="  pt-2 mx-2  mb-1 px-1 text-base font-medium ">
                                 {user.aboutme ? user.aboutme : 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumend    laboriosam, quod aut officiis ea deleniti repellat nisi delectus magnam reiciendis?'}
-                            </h5>
+                            </span>
                         </div>
                         {user.role?.id === 3 ?
                             <div className='flex p-5 flex-col '>

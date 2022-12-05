@@ -70,26 +70,75 @@ const Header = ({ user }) => {
   const [openNotification, setopenNotification] = useState(false)
 
   const { io } = require("socket.io-client");
-  const SERVER_URL = "https://backstrapimysql-production.up.railway.app";
+  const SERVER_URL = "http://localhost:1337";
 
   // token will be verified, connection will be rejected if not a valid JWT
-  const socket = io(SERVER_URL, {
-    auth: {
-      token: jwt
-    },
-  });
+
 
   //  wait until socket connects before adding event listeners
   useEffect(() => {
-    socket.on("notificationCreate", function (data) {
-      console.log('notification creada', data)
-      if (data.user.id === user.id) {        
-        setnotifications(notifications => [data, ...notifications])       
-        setunreadNotifications(notifications => [data, ...notifications]) 
-      }
+    const socket = io(SERVER_URL, {
+      auth: {
+        token: jwt
+      },
     });
+    socket.on("connect", () => {
+      socket.on("notificationCreate", function (data) {
+        console.log('notification creada', data)
+        console.log('user ', user)
+        if (user && data.user.id === user?.id) {
+          setnotifications(notifications => [data, ...notifications])
+          setunreadNotifications(notifications => [data, ...notifications])
+        }
+      });
+      socket.on("notificationDelete", function (data) {
+        console.log('notification Borrada', data)
+        console.log('user ', user)
+        if (user && data.user.id === user?.id) {
+          setnotifications(
+            notifications.filter(function (notifaction) {
+              return notifaction.id !== data.id
+            })
+          )
+          setunreadNotifications(
+            unreadNotifications.filter(function (notifaction) {
+              return notifaction.id !== data.id
+            })
+          )
+        }
+      });
+    });
+    return () => {
+      socket.disconnect();
+    }
   }, [])
-  
+  // useEffect(() => {
+  //   const socket = io(SERVER_URL, {
+  //     auth: {
+  //       token: jwt
+  //     },
+  //   });
+  //   socket.on("notificationDelete", function (data) {
+  //     console.log('notification Borrada', data)
+  //     console.log('user ', user)
+  //     if (user && data.user.id === user?.id) {
+  //       setnotifications(
+  //         notifications.filter(function (notifaction) {
+  //           return notifaction.id !== data.id
+  //         })
+  //       )
+  //       setunreadNotifications(
+  //         unreadNotifications.filter(function (notifaction) {
+  //           return notifaction.id !== data.id
+  //         })
+  //       )
+  //     }
+  //   });
+  //   return () => {
+  //     socket.disconnect();
+  //   }
+  // }, [])
+
   const handleOpenNotification = () => {
     if (open) {
       setopen(false)
@@ -124,12 +173,12 @@ const Header = ({ user }) => {
 
   return (
     <>
-      <nav className="bg-gray-200
+      <nav className="bg-gray-50
       dark:bg-[#13192b]
-       text-gray-900  dark:text-white-ghost px-2 sm:px-4 p-0 sticky w-full z-10 top-0 py-1 left-0">
+       text-gray-900  dark:text-white-ghost dark:bg-opacity-95  backdrop-blur px-2 sm:px-4 p-0 sticky w-full z-10 top-0 py-1 left-0">
         <div className="container flex justify-between md:justify-end h-16 items-center mx-auto px-2">
           <a href="/" className="flex items-center md:invisible ">
-            <img src="/Lavorar-logo-negativo.svg" className="mr-2 w-16" alt="LAvorar Logo" />
+            <img src="/Lavorar-logo-negativo.svg" className="mr-2 w-11" alt="LAvorar Logo" />
             <span className="self-center hidden md:block text-xl font-semibold whitespace-nowrap dark:text-white">Lavorar</span>
           </a>
           <div className="flex md:order-2 ">
@@ -141,6 +190,15 @@ const Header = ({ user }) => {
                 className="focus:outline-none text-gray-900 bg-orange-brand hover:bg-yellow-500 focus:ring-2 focus:ring-orange-high dark:focus:ring-orange-high font-medium rounded-lg text-base px-3 py-2 mr-2 my-2 "
               >
                 Dona
+              </button>
+            </div>
+            <div className='mr-2  hidden md:block '>
+              <button
+                type="button"
+                onClick={(e) => router.replace('/donate')}
+                className="focus:outline-none text-gray-900 bg-orange-brand hover:bg-yellow-500 focus:ring-2 focus:ring-orange-high dark:focus:ring-orange-high font-medium rounded-lg text-base px-3 py-2 mr-2 my-2 "
+              >
+                Anunciate
               </button>
             </div>
             {/* {user ?
@@ -187,14 +245,19 @@ const Header = ({ user }) => {
             } */}
             {
               user && (
-                <div className='mr-4 '>
+                <div className='mr-4 hidden md:block '>
                   <NotificationDropdown
                     user={user}
                     notifications={notifications}
                     setunreadNotifications={setunreadNotifications}
                     unreadNotifications={unreadNotifications}>
                     <Badge badgeContent={unreadNotifications?.length} color="primary">
-                      <NotificationsRoundedIcon fontSize='large' />
+                      <NotificationsRoundedIcon sx={{
+                        fontSize: '28px',
+                        '@media (min-width: 768px)': {
+                          fontSize: '35px',
+                        },
+                      }} />
                     </Badge>
                   </NotificationDropdown>
                 </div>)
@@ -204,11 +267,11 @@ const Header = ({ user }) => {
               <Dropdown user={user}>
                 {user ?
                   user?.avatar ?
-                    <div className="h-[50px] w-[50px] relative aspect-square cursor-pointer"
+                    <div className="h-[44px] w-[44px] md:h-[50px] md:w-[50px]  relative aspect-square cursor-pointer"
                     // onClick={router.replace( '/prestadores/' + lender?.Slug )}
                     >
                       <Image
-                        src={`/v${user.avatar}`}
+                        src={`/f_auto,q_auto,w_50,h_50/v${user.avatar}`}
                         alt={"Picture of the lender " + user?.name}
                         layout="fill" // required                   
                         objectFit="cover" // change to suit your needs
@@ -216,7 +279,7 @@ const Header = ({ user }) => {
                       />
                     </div>
                     :
-                    <div className="h-[50px] w-[50px] cursor-pointer aspect-square"
+                    <div className="h-[44px] w-[44px] md:h-[50px] md:w-[50px] cursor-pointer aspect-square"
                     // onClick={router.replace( '/prestadores/' + lender?.Slug )}
                     >
                       <BackgroundLetterAvatars fontSize='large' firtsName={user?.firstName} lastName={user?.lastName} />
@@ -224,12 +287,17 @@ const Header = ({ user }) => {
 
 
                   :
-                  <PersonRoundedIcon fontSize='large' />
+                  <PersonRoundedIcon sx={{
+                    fontSize: '28px',
+                    '@media (min-width: 768px)': {
+                      fontSize: '35px',
+                    },
+                  }} />
                 }
               </Dropdown>
             </div>
 
-            <div className={`md:hidden`}>
+            <div className={`md:hidden `}>
               <IconWithButton
                 onClick={() => {
                   handleOpen()
@@ -238,6 +306,10 @@ const Header = ({ user }) => {
                 {open === false ?
                   <MenuRoundedIcon
                     sx={{
+                      fontSize: '28px',
+                      '@media (min-width: 768px)': {
+                        fontSize: '35px',
+                      },
                       animation: !open && "spin 500ms ease 0s alternate",
                       "@keyframes spin": {
                         "0%": {
@@ -248,12 +320,16 @@ const Header = ({ user }) => {
                         },
                       },
                     }}
-                    fontSize='large' />
+                    fontSize='medium' />
 
                   :
 
                   <CloseRoundedIcon
                     sx={{
+                      fontSize: '28px',
+                      '@media (min-width: 768px)': {
+                        fontSize: '35px',
+                      },
                       animation: open && "spin 500ms ease 0s reverse",
                       "@keyframes spin": {
                         "0%": {
@@ -263,8 +339,11 @@ const Header = ({ user }) => {
                           transform: "rotate(0deg)",
                         },
                       },
+                      '@media (min-width: 768px)': {
+                        fontSize: 'large',
+                      },
                     }}
-                    fontSize='large' />}
+                    fontSize='medium' />}
               </IconWithButton>
             </div>
 
@@ -272,6 +351,19 @@ const Header = ({ user }) => {
         </div>
         <div className={`${open ? "block" : "hidden"} md:hidden justify-between items-center w-full md:w-auto md:order-1`} id="navbar-sticky">
           <ul className="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-700 md:dark:bg-gray-900 dark:border-gray-700">
+            <li>
+              <div
+                className="px-1 py-1 ">
+                <Link href='/donate'>
+                  <button
+                    type="button"
+                    className="focus:outline-none text-gray-900 w-full bg-orange-brand hover:bg-yellow-500 focus:ring-2 focus:ring-orange-high dark:focus:ring-orange-high font-medium rounded-lg text-base px-3 py-2 "
+                  >
+                    Anunciate
+                  </button>
+                </Link>
+              </div>
+            </li>
             {user && <li>
               <div
                 onClick={handleLogout}
@@ -320,6 +412,7 @@ const Header = ({ user }) => {
                 </Link>
               </div>
             </li>
+
           </ul>
         </div>
       </nav>

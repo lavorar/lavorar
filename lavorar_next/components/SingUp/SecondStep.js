@@ -1,19 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { UseFormData } from '../../context/FormContext'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-
-const plans = ['Quiero Ofrecer mis servicios', 'Omitir']
+import moment from 'moment';
+import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
 
 const SecondStep = ({ formStep, nextFormStep }) => {
   const validationSchema = Yup.object().shape({
     phone: Yup.string()
       .required('Ingresa una telefono!'),
-    birth: Yup.string()
-      .required('Ingresa una fecha de nacimiento!')
-      .matches(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/, 'La fecha de nacimiento debe tener el formato YYYY-MM-DD'),
     acceptTerms: Yup.bool()
       .oneOf([true], 'debes aceptar los terminos y condiciniones')
   });
@@ -21,19 +18,22 @@ const SecondStep = ({ formStep, nextFormStep }) => {
 
   const { setFormValues } = UseFormData();
 
-  const { register, handleSubmit, reset, formState } = useForm(formOptions);
+  const { register, handleSubmit, control, reset, formState } = useForm(formOptions);
   const { errors } = formState;
 
-  const onSubmit = (values) => {
-    console.log('values', values.is_lender)
-    values.is_lender ? values.role = { id: 3 } : ''
-    setFormValues(values);
-    if (!values.is_lender) {
-      nextFormStep();
-      nextFormStep();
-    }
-    else nextFormStep();
+  const datebirth = new Date();
+  datebirth.setFullYear(datebirth.getFullYear() - 18);
+  const formatDate = datebirth.getDate() < 10 ? `0${datebirth.getDate()}` : datebirth.getDate();
+  const formatMonth = datebirth.getMonth() < 10 ? `0${datebirth.getMonth()}` : datebirth.getMonth();
+  const formattedDate = [datebirth.getFullYear(), formatMonth, formatDate].join('-');
 
+  const [birth, setbirth] = useState(formattedDate)
+  const onSubmit = (values) => {
+    console.log(values)
+    values.birth = moment(birth).format('YYYY-MM-DD')
+    console.log(values)
+    setFormValues(values);
+    nextFormStep();
   };
   return (
     <form
@@ -47,26 +47,53 @@ const SecondStep = ({ formStep, nextFormStep }) => {
             Telefono
           </label>
           <input
-            className={` ${errors.phone ? 'text-orange-high border-orange-high ' : 'border-gray-500 dark:border-gray-400'} border-2 py-1 px-2 rounded-md outline-none focus:border-blue-500 bg-transparent`}
+            className={` ${errors.phone ? 'text-red-800 dark:text-orange-high border-orange-high ' : 'border-gray-500 dark:border-gray-400'} border-2 py-1 px-2 rounded-md outline-none focus:border-blue-500 bg-transparent`}
             type="phone"
             name="phone"
             {...register("phone")}
           />
-          <p className={` ${errors.phone ? 'text-orange-high block' : 'invisible'}  `}>{errors.phone?.message + ''}</p>
+          <p className={` ${errors.phone ? 'text-red-800 dark:text-orange-high block' : 'invisible'}  `}><ErrorOutlinedIcon /> {errors.phone?.message + ''}</p>
         </div>
-        <div className="flex flex-col ">
+
+        <div className="flex flex-col  ">
+          <input            
+            max={birth}            
+            name='birth'
+            type="date"
+            className={` ${errors.birth ? 'text-red-800 dark:text-orange-high border-orange-high ' : 'border-gray-500 dark:border-gray-400'} border-2 py-1 px-2  rounded-md outline-none focus:border-blue-500 bg-transparent`}
+            {...register("birth")}
+          />
           <label className="font-bold text-lg mb-1" htmlFor="lastName">
             Fecha de nacimiento
           </label>
-          <input
+          {/* <Controller
             name='birth'
-            type="date"
-            className={` ${errors.birth ? 'text-orange-high border-orange-high ' : 'border-gray-500 dark:border-gray-400'} border-2 py-1 px-2  rounded-md outline-none focus:border-blue-500 bg-transparent`}
-            {...register("birth")}
-          />
-          <p className={` ${errors.birth ? 'text-orange-high block' : 'invisible'}  `}>{errors.birth?.message + ''}</p>
+            control={control}
+            render={({ field }) => (
+              <DatePicker
+                {...field}
+                className={` ${errors.phone ? 'text-red-800 dark:text-orange-high border-orange-high ' : 'border-gray-500 dark:border-gray-400'} border-2 py-1 px-2 rounded-md outline-none focus:border-blue-500 bg-transparent w-full`}
+                value={birth}
+                onChange={(e) => { setbirth(e) }}
+                selected={birth}
+                id='birth'
+                dateFormat={'yyyy-MM-dd'}
+                placeholderText='Fecha de nacimiento'
+                maxDate={birth}
+                showYearDropdown
+                showMonthDropdown
+                scrollableYearDropdown
+                dropdownMode='select'
+                calendarClassName='text-white'
+                locale={'es'}
+                autoComplete='off'
+              />
+            )}
+            onChange={(e) => { setbirth(e) }}
+          /> */}
+          <p className={` ${errors.birth ? 'text-red-800 dark:text-orange-high block' : 'invisible'}  `}> <ErrorOutlinedIcon />{errors.birth?.message + ''}</p>
         </div>
-        <div>
+        <div className=''>
           <label
             htmlFor="small-toggle"
             className="inline-flex relative items-center mb-2 mt-2 cursor-pointer"
@@ -74,28 +101,17 @@ const SecondStep = ({ formStep, nextFormStep }) => {
             <input
               type="checkbox"
               id="small-toggle"
-              name="is_lender"
+              name="acceptTerms"
               className="sr-only peer"
-              {...register("is_lender")}
+              {...register("acceptTerms")}
             />
-            <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            <div className="w-9 h-5 bg-gray-500  peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
             <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-100">
-              Voy a prestar un servicio
+              Terminos y condiciones
             </span>
           </label>
         </div>
-        <div className="flex mt-2 flex-row gap-2 items-baseline ">
-          <label className="font-bold text-lg" htmlFor="email">
-            Terminos y condiciones
-          </label>
-          <input
-            className="flex justify-start border-2 py-2 px-3 border-gray-500 dark:border-gray-400 rounded-md outline-none focus:border-blue-500 bg-transparent"
-            type="checkbox"
-            name="acceptTerms"
-            {...register("acceptTerms")}
-          />
-        </div>
-        <p className={` ${errors.acceptTerms ? 'text-orange-high block' : 'invisible'} mb-3 `}>{errors.acceptTerms?.message + ''}</p>
+        <p className={` ${errors.acceptTerms ? 'text-red-800 dark:text-orange-high block' : 'invisible'} mb-3 `}><ErrorOutlinedIcon /> {errors.acceptTerms?.message + ''}</p>
 
         <button
           className='block mb-6 text-gray-900 bg-orange-pastel text-lg rounded py-2.5 w-full'

@@ -98,7 +98,6 @@ const HireLender = ({ authUser, lender }) => {
                 Authorization: `Bearer ${jwt}`,
             },
         }).then(({ data }) => {
-
             setrequestHire(null)
         }).catch(error => console.log(error))
 

@@ -4,7 +4,7 @@ import { getTokenFromLocalCookie } from '../../lib/auth'
 import HoverRating from '../elements/Rating'
 import ModalEditRating from './ModalEditRating'
 
-const Review = ({ review, user }) => {
+const Review = ({ review, user, setReviewUserAuth }) => {
     let [isOpen, setIsOpen] = useState(false)
 
     function formatMyDate(value, locale = 'en-es') {
@@ -24,7 +24,7 @@ const Review = ({ review, user }) => {
                 <div className="flex justify-between md:justify-start ">
                     <div>
                         <p
-                            className=" text-bold text-orange-pastel mb-1 cursor-pointer">
+                            className=" font-bold text-gray-900 dark:text-orange-pastel mb-1 cursor-pointer">
                             {review.author ? review.author.name : "User"}
                         </p>
                     </div>
@@ -60,7 +60,7 @@ const Review = ({ review, user }) => {
                     >
                         Editar
                     </button>
-                    <ModalEditRating isOpen={isOpen} review={review} setIsOpen={setIsOpen} closeModal={closeModal} />
+                    <ModalEditRating user={user} setReviewUserAuth={setReviewUserAuth} isOpen={isOpen} review={review} setIsOpen={setIsOpen} closeModal={closeModal} />
                 </div>
             )}
 

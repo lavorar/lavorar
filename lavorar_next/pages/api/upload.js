@@ -33,9 +33,6 @@ export default async function upload(req, res) {
          try {
              const response = await cloudinary.v2.uploader.upload(file, {
                  public_id: user_id,
-                 width: 150,
-                 heigth: 150,
-                 crop: 'scale',
                  invalidate: true
              });
              const { public_id, version } = response;
@@ -52,7 +49,7 @@ export default async function upload(req, res) {
                          Authorization: `Bearer ${jwt}`
                      }
                  })
-             return res.json({ message: 'success', data: data });
+             return res.json({ message: 'success', data: data, img: img });
 
 
          } catch (error) {

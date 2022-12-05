@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { getIdFromLocalCookie, getTokenFromLocalCookie, setToken } from '../../lib/auth';
 import { fetcher } from '../../lib/api';
 import { useFetchUser } from '../../lib/AuthContext';
@@ -11,6 +11,7 @@ import axios from 'axios';
 import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
 
 const RegisterComponent = ({ formStep, nextFormStep }) => {
+    const router = useRouter();
     const validationSchema = Yup.object().shape({
         firstName: Yup.string()
             .required('Ingresa un nombre!')
@@ -27,11 +28,11 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
 
-    const { setFormValues } = UseFormData()       
+    const { setFormValues } = UseFormData()
     const { register, handleSubmit, formState } = useForm(formOptions);
     const { errors } = formState;
     const onSubmit = async (values) => {
-        
+
         const qs = require('qs');
         const query = qs.stringify({
             filters: {
@@ -43,7 +44,7 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
         }, {
             encodeValuesOnly: true, // prettify URL
         });
-        await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users?${query}`).then(({ data }) => {
+        await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users?${query}`).then(async ({ data }) => {
             console.log('primer paso', data)
             if (data.length > 0) {
                 alert('el email ya esta tomado')
@@ -57,18 +58,32 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
                 values.name = name
                 values.username = values.email
                 console.log('primer paso', values)
-                setFormValues(values);
-                nextFormStep();
+
+                await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/auth/local/register`,
+                    values,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    }
+                ).then(({ data }) => {
+                    console.log('register', data)
+                    setToken(data)
+                    router.push('/profile')
+                }).catch((error) => {
+                    alert(error.message)
+                    console.log(error)
+                })
             }
         }).catch((data) => {
             console.log(data)
-        })        
+        })
 
     };
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className={`${formStep === 0 ? 'block' : 'hidden'}`}
+            className={``}
         >
             <div className={'flex-col'}>
                 <div className="grid grid-cols-2 gap-5  ">
@@ -79,11 +94,11 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
                         </label>
                         <input
                             name='firstName'
-                            className={` ${errors.firstName ? 'text-red-800 dark:text-orange-high border-orange-high ' : 'border-gray-500 dark:border-gray-400'} border-2 py-1 px-2  rounded-md outline-none focus:border-blue-500 bg-transparent`}
+                            className={` ${errors.firstName ? 'text-orange-high border-orange-high ' : 'border-gray-500 dark:border-gray-400'} border-2 py-1 px-2  rounded-md outline-none focus:border-blue-500 bg-transparent`}
                             {...register("firstName")}
 
                         />
-                        <p className={` ${errors.firstName ? 'text-red-800 dark:text-orange-high block' : 'invisible'}  `}><ErrorOutlinedIcon />{errors.firstName?.message + ''}</p>
+                        <p className={` ${errors.firstName ? 'text-orange-high block' : 'invisible'}  `}><ErrorOutlinedIcon />{errors.firstName?.message + ''}</p>
 
                     </div>
                     <div className="flex flex-col ">
@@ -92,10 +107,10 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
                         </label>
                         <input
                             name='lastName'
-                            className={` ${errors.lastName ? 'text-red-800 dark:text-orange-high border-orange-high ' : 'border-gray-500 dark:border-gray-400'} border-2 py-1 px-2  rounded-md outline-none focus:border-blue-500 bg-transparent`}
+                            className={` ${errors.lastName ? 'text-orange-high border-orange-high ' : 'border-gray-500 dark:border-gray-400'} border-2 py-1 px-2  rounded-md outline-none focus:border-blue-500 bg-transparent`}
                             {...register("lastName")}
                         />
-                        <p className={` ${errors.lastName ? 'text-red-800 dark:text-orange-high block' : 'invisible'}  `}><ErrorOutlinedIcon />{errors.lastName?.message + ''}</p>
+                        <p className={` ${errors.lastName ? 'text-orange-high block' : 'invisible'}  `}><ErrorOutlinedIcon />{errors.lastName?.message + ''}</p>
                     </div>
                 </div>
 
@@ -104,12 +119,12 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
                         Email
                     </label>
                     <input
-                        className={` ${errors.email ? 'text-red-800 dark:text-orange-high border-orange-high ' : 'border-gray-500 dark:border-gray-400'} border-2 py-1 px-2  rounded-md outline-none focus:border-blue-500 bg-transparent`}
+                        className={` ${errors.email ? 'text-orange-high border-orange-high ' : 'border-gray-500 dark:border-gray-400'} border-2 py-1 px-2  rounded-md outline-none focus:border-blue-500 bg-transparent`}
                         type="email"
                         name="email"
                         {...register("email")}
                     />
-                    <p className={` ${errors.email ? 'text-red-800 dark:text-orange-high block' : 'invisible'} `}><ErrorOutlinedIcon />{errors.email?.message + ''}</p>
+                    <p className={` ${errors.email ? 'text-orange-high block' : 'invisible'} `}><ErrorOutlinedIcon />{errors.email?.message + ''}</p>
                 </div>
 
                 <div className="flex flex-col mb-4 ">
@@ -117,20 +132,20 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
                         Contraseña
                     </label>
                     <input
-                        className={` ${errors.password ? 'text-red-800 dark:text-orange-high border-orange-high ' : 'border-gray-500 dark:border-gray-400'} border-2 py-1 px-2  rounded-md outline-none focus:border-blue-500 bg-transparent`}
+                        className={` ${errors.password ? 'text-orange-high border-orange-high ' : 'border-gray-500 dark:border-gray-400'} border-2 py-1 px-2  rounded-md outline-none focus:border-blue-500 bg-transparent`}
                         type="password"
                         name="password"
                         {...register("password")}
                         autoComplete='new-password'
                     />
-                    <p className={` ${errors.password ? 'text-red-800 dark:text-orange-high block' : 'invisible'}   `}><ErrorOutlinedIcon />{errors.password?.message + ''}</p>
+                    <p className={` ${errors.password ? 'text-orange-high block' : 'invisible'}   `}><ErrorOutlinedIcon />{errors.password?.message + ''}</p>
                 </div>
 
                 <button
                     className='block mb-6 text-gray-900 bg-orange-pastel text-lg rounded py-2.5 w-full'
                     type="submit"
                 >
-                    Siguiente
+                    Registrarse
                 </button>
             </div>
         </form>

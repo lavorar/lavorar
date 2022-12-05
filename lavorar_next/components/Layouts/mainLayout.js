@@ -20,6 +20,7 @@ import Card from "../elements/Card";
 import NavMobile from '../elements/NavMobile';
 import { getTokenFromLocalCookie, getTokenFromServerCookie } from '../../lib/auth';
 import axios from 'axios';
+import Link from 'next/link';
 
 
 const Layout = ({ user, loading = false, children }) => {
@@ -57,59 +58,64 @@ const Layout = ({ user, loading = false, children }) => {
 
 
             <main>
-                <div className="flex md:flex-row min-h-screen h-auto">
+                <div className="flex md:flex-row min-h-screen  h-auto">
                     <div
-                        className={` ${open ? "w-64" : "w-24 "
-                            } hidden md:flex z-40  flex-col bg-transparent border-0  text-gray-900 dark:text-white-ghost h-full p-3  fixed pt-8  duration-500 border-r border-gray-500 dark:border-gray-100`}
+                        className={` w-24 xl:w-64
+                                 hidden md:flex z-40  flex-col bg-transparent border-0  text-gray-900 dark:text-white-ghost h-full p-3  fixed pt-8  duration-500 `}
                     >
-                        <div
-                            className={`absolute  cursor-pointer group -right-5 top-10
+                        {/* <div
+                            className={`absolute bg-gray-900 hidden xl:block cursor-pointer group -right-5 top-12
                             rounded-full duration-300  ${!open && "rotate-180"}`}>
                             <IconWithButton
                                 onClick={setOpenBar}
                             >
                                 <ArrowBackIosNewRoundedIcon fontSize="small" />
                             </IconWithButton>
-                        </div>
-                        <div className="flex flex-row gap-x-2 justify-start items-center ">
-                            <img
-                                src="/Lavorar-logo-negativo.svg"
-                                className={`cursor-pointer duration-500 ${open ? "w-20" : "w-14 ml-1 "
-                                    } ${open && "rotate-[360deg] "
-                                    }`}
-                            />
+                        </div> */}
+                        <Link href={'/'}>
+                            <a
+                                className=" cursor-pointer flex flex-row gap-x-2 justify-start items-center ">
+                                <img
+                                    src="/Lavorar-logo-negativo.svg"
+                                    className={` duration-500 w-16  "
+                                    `}
+                                />
 
-                            <h1
-                                className={`text-orange-brand origin-left font-medium text-xl duration-200 ${!open && "scale-0"
-                                    }`}
-                            >
-                                LavorAr
-                            </h1>
-                        </div>
+                                <h1
+                                    className={`text-orange-brand origin-left hidden xl:block font-medium text-xl duration-200 ${!open && "scale-0"
+                                        }`}
+                                >
+                                    LavorAr
+                                </h1>
+                            </a>
+                        </Link>
                         <ul className="pt-6">
                             {Menus.map((Menu, index) => (
                                 Menu.always ?
-                                    <li
-                                        onClick={() => { Menu.href ? router.replace(Menu.href) : '' }}
-                                        key={index}
-                                        className={`flex rounded-md p-2 ${open ? '' : ''} group cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-white-ghost text-md items-center gap-x-2
-                        ${Menu.gap ? "mt-9" : "mt-2"}
+                                    <Link href={Menu.href ? Menu.href : ''}>
+                                        <a>
+                                            <li
+                                                key={index}
+                                                className={`flex rounded-md p-2 ${open ? '' : ''} group cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-white-ghost text-md items-center gap-x-2
+                                            ${Menu.gap ? "mt-9" : "mt-2"}
                                 } `}
-                                    >
-                                        <div
-
-                                            className={`cursor-pointer  duration-300  text-gray-900  dark:text-white-ghost`}>
-                                            <IconWithButton
                                             >
-                                                {Menu.src}
-                                            </IconWithButton>
-                                        </div>
+                                                <div
 
-                                        <span className={`${open ? 'block' : "hidden"} overflow-hidden whitespace-nowrap origin-left duration-700`}>
-                                            {Menu.title}
-                                        </span>
+                                                    className={`cursor-pointer  duration-300  text-gray-900  dark:text-white-ghost`}>
+                                                    <IconWithButton
+                                                    >
+                                                        {Menu.src}
+                                                    </IconWithButton>
+                                                </div>
 
-                                    </li>
+                                                <span className={`${open ? 'block' : "hidden"} overflow-hidden whitespace-nowrap origin-left duration-700`}>
+                                                    {Menu.title}
+                                                </span>
+
+                                            </li>
+                                        </a>
+                                    </Link>
                                     :
                                     <div key={index}>
                                     </div>
@@ -122,8 +128,8 @@ const Layout = ({ user, loading = false, children }) => {
                             >Donar</a>
                         </p>
                     </div>
-                    <div className={`${open ? 'md:pl-64' : 'md:pl-24'}  z-10 lg:mr-[310px] h-auto flex flex-around   duration-500 w-full   md:flex-1  `}>
-                        <div className="w-full  ">
+                    <div className={`${open ? 'md:pl-24 xl:pl-64' : 'md:pl-24 xl:pl-64'}  z-10  h-auto flex flex-row justify-center   duration-500 w-full   md:flex-1  `}>
+                        <div className="w-[1200px] border-opacity-10 dark:border-opacity-10  border-r border-l  border-gray-500 dark:border-gray-100  ">
                             <Header user={user} >
 
                             </Header>
@@ -134,15 +140,15 @@ const Layout = ({ user, loading = false, children }) => {
 
                         </div>
                         {/* <AppHeader /> */}
-                    </div>
-                    <div className={'lg:w-[310px] float-right overflow-auto lg:flex-col hidden lg:flex lg:fixed h-screen right-0 bg-transparent ml-2 p-1 border-l   border-gray-500 dark:border-gray-100'} >
-                        <div className='pt-16' >
-                            {/* <Card />
-                        <Card />
-                        <Card />
-                        <Card /> */}
+                        <div className={'xl:w-[400px]  xl:flex-col hidden xl:flex  xl:justify-center xl:items-center h-screen right-0 bg-transparent ml-2 p-1 '} >
+                            <div className='flex flex-col w-full items-center justify-center pt-64' >
+                                <Card lender={user} authUser={user} />
+                                <Card lender={user} authUser={user} />
+                                <Card lender={user} authUser={user} />
+                            </div>
                         </div>
                     </div>
+
                 </div >
                 <NavMobile user={user} />
             </main>
@@ -153,84 +159,3 @@ export default Layout;
 
 
 
-// const SideBar = (props) => {
-
-//     return (
-//         <div className="flex md:flex-row h-auto  bg-gray-100 dark:bg-gray-900">
-//             <div
-//                 className={` ${open ? "w-64" : "w-24 "
-//                     } overflow-y-auto hidden md:flex  flex-col bg-transparent border-0 border-r border-gray-500 dark:border-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white-ghost h-full p-3 z-20 fixed pt-8  duration-300`}
-//             >
-//                 <div
-//                     className={`absolute  cursor-pointer group -right-5 top-11
-//                             rounded-full  ${!open && "rotate-180"}`}>
-//                     <IconWithButton
-//                         onClick={() => setOpen(!open)}
-//                     >
-//                         <ArrowBackIosNewRoundedIcon fontSize="small" />
-//                     </IconWithButton>
-//                 </div>
-//                 <div className="flex flex-row gap-x-2 justify-start items-center ">
-//                     <img
-//                         src="./src/assets/Lavorar-logo-negativo.svg"
-//                         className={`cursor-pointer duration-500 ${open ? "w-20" : "w-14 ml-1 "
-//                             } ${open && "rotate-[360deg] "
-//                             }`}
-//                     />
-
-//                     <h1
-//                         className={`text-orange-brand origin-left font-medium text-xl duration-200 ${!open && "scale-0"
-//                             }`}
-//                     >
-//                         Lavorar
-//                     </h1>
-//                 </div>
-//                 <ul className="pt-6">
-//                     {Menus.map((Menu, index) => (
-//                         Menu.always ?
-//                             <li
-//                                 key={index}
-//                                 className={`flex rounded-md p-2 ${open ? '' : ''} group cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-white-ghost text-md items-center gap-x-2
-//                         ${Menu.gap ? "mt-9" : "mt-2"}
-//                                 } `}
-//                             >
-//                                 <div
-//                                     onClick={() => { Menu.href ? router(Menu.href) : '' }}
-//                                     className={`cursor-pointer  duration-300  text-gray-900  dark:text-white-ghost`}>
-//                                     <IconWithButton
-//                                     >
-//                                         {Menu.src}
-//                                     </IconWithButton>
-//                                 </div>
-
-//                                 <span className={`${open ? 'block' : "hidden"} whitespace-nowrap origin-left duration-700`}>
-//                                     {Menu.title}
-//                                 </span>
-
-//                             </li>
-//                             :
-//                             <div key={index}>
-//                             </div>
-//                     ))}
-//                 </ul>
-//             </div>
-//             <div className={`${open ? 'md:pl-64' : 'md:pl-24'} lg:mr-[310px] h-auto flex flex-around p-2 md:p-0  duration-500 w-full md:ml-2   md:flex-1 `}>
-//                 <div className="w-full lg:px-20">
-//                     <Header>
-
-//                     </Header>
-//                     <App> </App>
-
-//                 </div>
-//                 {/* <AppHeader /> */}
-//             </div>
-//             <div className={'lg:w-[310px] float-right overflow-auto lg:flex-col hidden lg:flex lg:fixed h-screen right-0 bg-transparent text-white-ghost ml-2 p-1 border-l dark:bg-gray-900  border-gray-500 dark:border-gray-100'} >
-
-//                 <Card />
-//                 <Card />
-//                 <Card />
-//                 <Card />
-//             </div>
-//         </div >
-//     );
-// };

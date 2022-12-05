@@ -19,8 +19,8 @@ module.exports = createCoreController('api::notification.notification', ({ strap
     // Method 3: Replacing a core action
     async create(ctx) {
         // some logic here
-        console.log(ctx.state.user)
-        console.log(ctx.request.body)
+        // console.log(ctx.state.user)
+        // console.log(ctx.request.body)
 
         const response = await super.create(ctx);       // some more logic
         let datos = {
@@ -35,7 +35,36 @@ module.exports = createCoreController('api::notification.notification', ({ strap
             review_updatedAt: new Date()
         }
         strapi.$io.raw("notificationCreate", datos);
-        
+
+
+        return response;
+    },
+
+    async delete(ctx) {
+        // some logic here
+
+        const { id } = ctx.params
+        const notification = await strapi.db.query("api::notification.notification").findOne({
+            populate: {
+                user: true,
+                user_request: true,
+            },
+            where: {
+                id: id,
+            }
+        })
+        const response = await super.delete(ctx);
+        // some more logic
+        // console.log(response)
+        // console.log(notification)
+        let datos = {
+            id: notification.id,
+            user: notification.user,
+            user_request: notification.user_request,
+            type: notification.type,
+            review_updatedAt: new Date()
+        }
+        strapi.$io.raw("notificationDelete", datos);
 
         return response;
     }

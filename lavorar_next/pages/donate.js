@@ -24,8 +24,10 @@ export async function getServerSideProps({ req }) {
     if (!jwt) {
         return {
             redirect: {
-                destination: '/login',
+                source: '/donate',                
+                destination: '/login?slug=/donate',
             },
+
         };
     } else {
         console.log(jwt)

@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Fragment, useRef, useState } from 'react'
-import { useForm, Controller, useController } from 'react-hook-form';
+import { useForm, Controller, useController, set } from 'react-hook-form';
 import { components } from "react-select";
 import Select from 'react-select'
 import { useQuery } from 'react-query';
@@ -19,34 +19,48 @@ import { slugify } from '../SingUp/LenderOptions';
 import { Avatar } from '@mui/material';
 
 
-export default function MyModal({ isOpen, setIsOpen, user }) {
+export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image, setuserClient }) {
     const router = useRouter()
-    const validationSchema = Yup.object().shape({
+    const [user, setuser] = useState(userClient)
+    const [categories, setcategories] = useState(user.categories?.map((ele) => (
+        { value: ele.id, label: ele.name, id: ele.id }
+    )))
+    // console.log('user initial', user)
+    const validationSchema = user.role.id !== 3 ? Yup.object().shape({
         aboutme: Yup.string()
             .required('Ingresa una descripcion sobre vos!'),
         phone: Yup.string()
             .required('Ingresa una telefono!'),
-        categories: Yup.array()
-            .required('Ingresa una categoria!')
-            .nullable()
-            .min(1, 'Selecciona una categoria por lo menos'),
-        localidad: Yup.object().shape({
-            label: Yup.string().required(),
-            value: Yup.string().required(),
-        })
-
-    });
+    })
+        :
+        Yup.object().shape({
+            aboutme: Yup.string()
+                .required('Ingresa una descripcion sobre vos!'),
+            phone: Yup.string()
+                .required('Ingresa una telefono!'),
+            categories: Yup.array()
+                .required('Ingresa una categoria!')
+                .nullable()
+                .min(1, 'Selecciona una categoria por lo menos'),
+        });
 
     const formOptions = { resolver: yupResolver(validationSchema) };
-    const { register, handleSubmit, control, formState } = useForm(formOptions);
-    const { errors } = formState;
-    const { ref, onChange, name, type, ...rest } = register('avatar');
-    const [image, setImage] = useState(user.avatar ? '/v' + user.avatar : null);
+    const { register, handleSubmit, control, formState, reset } = useForm(formOptions, {
+        defaultValues: {
+            aboutme: user.aboutme,
+            phone: user.phone,
+            avatar: user.avatar,
+            provincia: { value: user.localidad?.identificador, label: user.localidad?.name },
+            localidad: { value: user.provincia?.identificador, label: user.provincia?.name },
+        }
+    });
+    const { errors, isDirty } = formState;
+    const { ref, onChange: onChangeImg, name, type, ...rest } = register('avatar');
     const uploadToClient = (event) => {
         if (event.target.files && event.target.files[0]) {
             const tmpImage = event.target.files[0];
             avatar.current = event.target.files
-            setImage(URL.createObjectURL(tmpImage));
+            setimg(URL.createObjectURL(tmpImage));
         }
     };
 
@@ -85,11 +99,14 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
         return options
 
     }
-
+    const [img, setimg] = useState(image)
     const provinces = useQuery(['provinces'], getProvinces, { staleTime: Infinity })
     const [cityId, setcityId] = useState(user.provincia?.identificador)
     const [cityValue, setcityValue] = useState({ value: user.localidad?.identificador, label: user.localidad?.name })
-
+    const [provinceValue, setprovinceValue] = useState({ value: user.provincia?.identificador, label: user.provincia?.name })
+    const [phone, setphone] = useState(user.phone)
+    const [aboutme, setaboutme] = useState(user.aboutme)
+    // console.log(validationSchema)
     const getCitys = async (cityId) => {
         const { data } = await axios.get(`https://apis.datos.gob.ar/georef/api/localidades?provincia=${cityId}&campos=nombre&max=400`)
         const options = []
@@ -153,89 +170,112 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
         )
             .then(({ data }) => {
                 console.log(data)
-                 router.reload('/profile')
-                 return data
+                setImage('/f_auto,q_auto,w_80,h_80/v' + data.img)
+                closeModal()
+                // router.reload('/profile')
+                return data
             })
 
             .catch((error) => {
                 console.error(JSON.stringify(error));
-                 router.reload('/profile')
+                // router.reload('/profile')
             })
     };
 
     const onSubmit = async (values) => {
         console.log('values', values)
         const files = values.avatar
-        if (image === null) {
+        if (img === null) {
             values.avatar = ''
         }
         else {
             delete values.avatar
         }
-        let slugprovince = slugify(values.provincia.label)
-        let slugcity = slugify(values.localidad.label)
-        let provincia = { name: values.provincia.label, identificador: values.provincia.identificador, Slug: slugprovince }
-        console.log('provicnes', values.provincia)
-        let responseProvince = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces1/${provincia.Slug}`)
-            .then(({ data }) => {
-                return data.data
-            }).catch(async (error) => {
-                return await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces`, { data: provincia })
-                    .then(({ data }) => {
-                        return data.data
-                    })
-                    .catch((error) => {
-                        return error
-                    })
-            })
-        values.provincia = responseProvince
-        let localidad = { name: values.localidad.label, identificador: values.localidad.identificador, slug: slugcity, province: values.provincia }
-        let responseCity = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/citys1/${localidad.slug}`)
-            .then(({ data }) => {
-                return data.data
-            }).catch(async (error) => {
-                return await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/cities`, { data: localidad })
-                    .then(({ data }) => {
-                        return data.data
-                    })
-                    .catch((error) => {
-                        return error
-                    })
-            })
-        values.localidad = responseCity
+        if (values.province?.label) {
+            let slugprovince = slugify(values.provincia.label)
+            let provincia = { name: values.provincia.label, identificador: values.provincia.identificador, Slug: slugprovince }
+            console.log('provicnes', values.provincia)
+            let responseProvince = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces1/${provincia.Slug}`)
+                .then(({ data }) => {
+                    return data.data
+                }).catch(async (error) => {
+                    return await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces`, { data: provincia })
+                        .then(({ data }) => {
+                            return data.data
+                        })
+                        .catch((error) => {
+                            return error
+                        })
+                })
+            values.provincia = responseProvince
+        }
+        else {
+            delete values.provincia
+        }
+        if (values.localidad?.label) {
+            let slugcity = slugify(values.localidad.label)
+            let localidad = { name: values.localidad.label, identificador: values.localidad.identificador, slug: slugcity, province: values.provincia }
+            let responseCity = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/citys1/${localidad.slug}`)
+                .then(({ data }) => {
+                    return data.data
+                }).catch(async (error) => {
+                    return await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/cities`, { data: localidad })
+                        .then(({ data }) => {
+                            return data.data
+                        })
+                        .catch((error) => {
+                            return error
+                        })
+                })
+            values.localidad = responseCity
+        }
+        else {
+            delete values.localidad
+        }
         const jwt = getTokenFromLocalCookie();
-        const responsePut = await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${user.id}`,
-            values,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${jwt}`,
+        if (isDirty) {
+            await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/user/updateLoggedInUser/${user.id}`,
+                { data: values },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${jwt}`,
+                    }
                 }
-            }
-        ).then((data) => {
-            if (image === null || image === '/v' + user.avatar) {
-                 router.reload('/profile')
-            }
-            // // router.reload('/profile')
-            return data
-        }).catch((error) => {
-            if (image === null || image === '/v' + user.avatar) {
-                 router.reload('/profile')
-            }
-            return error
-        });
+            ).then(({ data }) => {
+                console.log(user)
+                console.log(data)
+                closeModal()
+                setuser(data.user)
+                setcategories(data.user?.categories?.map((ele) => (
+                    { value: ele.id, label: ele.name, id: ele.id }
+                )))
+                console.log(categories)
+                setuserClient(data.user)
+
+                // if (img === null || img === image) {
+                //     router.reload('/profile')
+                // }
+                // // router.reload('/profile')                
+            }).catch((error) => {
+                console.log(error)
+            });
+        }
         if (image !== null && files.length > 0) {
             uploadToServer(files[0])
         }
-        console.log('data response', responsePut)
     }
-    const [provinceValue, setprovinceValue] = useState({ value: user.provincia?.identificador, label: user.provincia?.name })
-    const [phone, setphone] = useState(user.phone)
-    const [aboutme, setaboutme] = useState(user.aboutme)
+    
 
-    function closeModal() {
-        setIsOpen(false)
+    const [isDirtyImage, setisDirtyImage] = useState(isDirty)
+    function closeModal() {        
         setImage(user.avatar ? '/f_auto,q_auto,c_thumb,r_max/v' + user.avatar : null);
+        setphone(user.phone)
+        setaboutme(user.aboutme)
+        setprovinceValue({ value: user.provincia?.identificador, label: user.provincia?.name })
+        setcityValue({ value: user.localidad?.identificador, label: user.localidad?.name })
+        setIsOpen(false)
+        reset()
     }
     return (
         <>
@@ -264,7 +304,7 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="w-full max-w-md transform  rounded-2xl bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-50 p-6 text-left align-middle shadow-xl transition-all">
+                                <Dialog.Panel className="w-full max-w-md transform  rounded-2xl bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-50 p-6 text-left align-middle shadow-xl transition-all">
                                     <Dialog.Title
                                         as="h3"
                                         className="text-2xl font-bold leading-6 text-gray-900 dark:text-gray-50"
@@ -301,7 +341,7 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
                                                                     layout="fill" // required                   
                                                                     objectFit="cover" // change to suit your needs
                                                                     className="rounded-full w-full"
-                                                                    src={image}
+                                                                    src={img}
 
                                                                 />
                                                                 <div className="absolute bottom-0 left-14">
@@ -319,14 +359,16 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
                                                                     }}
                                                                     onChange={(e) => {
                                                                         uploadToClient(e)
-                                                                        onChange(e)
+                                                                        onChangeImg(e)
                                                                     }}
                                                                 />
                                                             </div>
                                                             <div className="absolute top-32 left-40 cursor-pointer flex-row flex items-center gap-2 "
+
                                                                 onClick={(e) => {
                                                                     setImage(null)
-                                                                    onChange(e)
+                                                                    setisDirtyImage(true)
+                                                                    onChangeImg(e)
                                                                 }}
                                                             >
                                                                 <Avatar sx={{ background: '#111827' }}>
@@ -360,7 +402,7 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
                                                                 }}
                                                                 onChange={(e) => {
                                                                     uploadToClient(e)
-                                                                    onChange(e)
+                                                                    onChangeImg(e)
                                                                 }}
                                                             // {...register("avatar", {
                                                             //     onChange: (e) => uploadToClient(e)
@@ -407,103 +449,97 @@ export default function MyModal({ isOpen, setIsOpen, user }) {
                                                 <p className={` ${errors.aboutme ? 'text-orange-high block' : 'invisible'}  `}>{errors.aboutme?.message + ''}</p>
                                             </div>
                                             {
-                                                user.role.id === 3 ?
-                                                    <>
-                                                        <div className="flex flex-col text-black">
-                                                            <label className='mb-5 dark:text-gray-50'>Categoria (3 max)</label>
+                                                user.role.id === 3 &&
+                                                <div className="flex flex-col text-black">
+                                                    <label className='mb-5 dark:text-gray-50'>Categoria (3 max)</label>
 
-                                                            <Controller
-                                                                className='mt-5 '
-                                                                render={({ field }) => (
-                                                                    <Select
-                                                                        components={{ Menu }}
-                                                                        {...field}
+                                                    <Controller
+                                                        className='mt-5 '
+                                                        render={({ field }) => (
+                                                            <Select
+                                                                components={{ Menu }}
+                                                                {...field}
+                                                                value={categories}
+                                                                options={querycategories?.data}
+                                                                isMulti
+                                                                placeholder='Habilidad o rubro al que te dedicas'
+                                                                id="categories" instanceId="categories"
+                                                                isValidNewOption={isValidNewOption}
+                                                                onChange={(e) => {
+                                                                    control._formValues.categories = e
+                                                                    setcategories(e)
+                                                                }}
+                                                            // getOptionLabel={(option) => option.attributes.name}
+                                                            // getOptionValue={(option) => option.id} // It should be unique value in the options. E.g. ID
 
-                                                                        options={querycategories?.data}
-                                                                        isMulti
-                                                                        placeholder='Habilidad o rubro al que te dedicas'
-                                                                        id="categories" instanceId="categories"
-                                                                        isValidNewOption={isValidNewOption}
-
-                                                                    // getOptionLabel={(option) => option.attributes.name}
-                                                                    // getOptionValue={(option) => option.id} // It should be unique value in the options. E.g. ID
-
-                                                                    />
-
-                                                                )}
-                                                                defaultValue={user.categories?.map((ele) => (
-                                                                    { value: ele.id, label: ele.name, id: ele.id }
-                                                                ))}
-                                                                name="categories"
-                                                                control={control}
                                                             />
-                                                            <p className={` ${errors.categories ? 'text-orange-high block' : 'invisible'}  `}>
-                                                                {errors.categories?.message}</p>
 
-                                                        </div>
+                                                        )}
 
+                                                        name="categories"
+                                                        control={control}
+                                                    />
+                                                    <p className={` ${errors.categories ? 'text-orange-high block' : 'invisible'}  `}>
+                                                        {errors.categories?.message}</p>
 
-                                                        <div className="flex flex-col text-black">
-                                                            <label className='mb-5 dark:text-gray-50'>Provincia</label>
-                                                            <Controller
-                                                                className='mt-5 '
-
-                                                                render={({ field }) => (
-                                                                    <Select
-                                                                        {...field}
-                                                                        placeholder='Provincia'
-                                                                        options={provinces.data}
-                                                                        isDisabled={provinces.isLoading}
-                                                                        value={provinceValue}
-                                                                        onChange={handleProvinceChange}
-                                                                        id="provincia" instanceId="provincia"
-                                                                    // getOptionLabel={(option) => option.nombre}
-                                                                    // getOptionValue={(option) => option.nombre} // It should be unique value in the options. E.g. ID
-                                                                    />
-                                                                )}
-                                                                // onChange={handleProvinceChange}
-                                                                defaultValue={{ value: user.provincia?.identificador, label: user.provincia?.name }}
-                                                                name="provincia"
-                                                                control={control}
-                                                            />
-                                                            <p className={` ${errors.provincia ? 'text-orange-high block' : 'invisible'}  `}>{'Debes seleccionar una provincia'}</p>
-                                                        </div>
-                                                        <div className="flex flex-col text-black">
-                                                            <label className='mb-5 dark:text-gray-50 '>Localidad</label>
-                                                            <Controller
-                                                                className='mt-5 z-30'
-                                                                render={({ field }) => (
-                                                                    <Select
-                                                                        {...field}
-                                                                        placeholder='Ingresa una Ciudad'
-                                                                        options={citys.data}
-                                                                        value={cityValue}
-
-                                                                        id="localidad" instanceId="localidad"
-                                                                        onChange={(e) => {
-                                                                            setcityValue(e)
-                                                                            control._formValues.localidad = e
-                                                                        }}
-
-                                                                    // getOptionLabel={(option) => option.nombre}
-                                                                    // getOptionValue={(option) => option.nombre}
-                                                                    />
-                                                                )}
-                                                                defaultValue={cityValue}
-                                                                // 
-                                                                name="localidad"
-                                                                control={control}
-                                                            />
-                                                            <p className={` ${errors.localidad ? 'text-orange-high block' : 'invisible'}  `}>{'Debes seleccionar una ciudad'}</p>
-                                                        </div>
-                                                    </>
-                                                    :
-                                                    <>
-                                                    </>
+                                                </div>
                                             }
+                                            <div className="flex flex-col text-black">
+                                                <label className='mb-5 dark:text-gray-50'>Provincia</label>
+                                                <Controller
+                                                    className='mt-5 '
 
+                                                    render={({ field }) => (
+                                                        <Select
+                                                            {...field}
+                                                            placeholder='Provincia'
+                                                            options={provinces.data}
+                                                            isDisabled={provinces.isLoading}
+                                                            value={provinceValue}
+                                                            onChange={handleProvinceChange}
+                                                            id="provincia" instanceId="provincia"
+                                                        // getOptionLabel={(option) => option.nombre}
+                                                        // getOptionValue={(option) => option.nombre} // It should be unique value in the options. E.g. ID
+                                                        />
+                                                    )}
+                                                    // onChange={handleProvinceChange}
+                                                    
+                                                    name="provincia"
+                                                    control={control}
+                                                />
+                                                <p className={` ${errors.provincia ? 'text-orange-high block' : 'invisible'}  `}>{'Debes seleccionar una provincia'}</p>
+                                            </div>
+                                            <div className="flex flex-col text-black">
+                                                <label className='mb-5 dark:text-gray-50 '>Localidad</label>
+                                                <Controller
+                                                    className='mt-5 z-30'
+                                                    render={({ field }) => (
+                                                        <Select
+                                                            {...field}
+                                                            placeholder='Ingresa una Ciudad'
+                                                            options={citys.data}
+                                                            value={cityValue}
+
+                                                            id="localidad" instanceId="localidad"
+                                                            onChange={(e) => {
+                                                                setcityValue(e)
+                                                                control._formValues.localidad = e
+                                                            }}
+
+                                                        // getOptionLabel={(option) => option.nombre}
+                                                        // getOptionValue={(option) => option.nombre}
+                                                        />
+                                                    )}
+                                                    
+                                                    // 
+                                                    name="localidad"
+                                                    control={control}
+                                                />
+                                                <p className={` ${errors.localidad ? 'text-orange-high block' : 'invisible'}  `}>{'Debes seleccionar una ciudad'}</p>
+                                            </div>
                                             <button
-                                                className='block mb-6 text-gray-900 bg-orange-pastel text-lg rounded py-2.5 w-full'
+                                                disabled={isDirty || isDirtyImage ? false : true}
+                                                className={` ${isDirty || isDirtyImage ? 'bg-orange-pastel' : 'bg-gray-400'} block mb-6 text-gray-900  text-lg rounded py-2.5 w-full`}
                                                 type="submit"
                                             >
                                                 Guardar

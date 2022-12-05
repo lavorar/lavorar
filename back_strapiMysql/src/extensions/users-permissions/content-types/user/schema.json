@@ -161,6 +161,10 @@
       "relation": "oneToMany",
       "target": "api::service.service",
       "mappedBy": "lender"
+    },
+    "description": {
+      "type": "richtext",
+      "maxLength": 2000
     }
   }
 }

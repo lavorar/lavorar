@@ -5,8 +5,8 @@ module.exports = ({ env }) => ({
         config: {
             contentTypes: {
                 user: {
-                    field: 'Slug',
-                    references: 'name',
+                    field: 'slug',
+                    references: 'name',                    
                 },
             },
             slugifyWithCount: true,
@@ -19,8 +19,8 @@ module.exports = ({ env }) => ({
     "io": {
         "enabled": true,
         "config": {
-            "IOServerOptions": {                
-                "cors": { "origin": "https://lavorar-beta.vercel.app", "methods": ["GET", "POST"] },
+            "IOServerOptions": {
+                "cors": { "origin": "http://localhost:3000", "methods": ["GET", "POST"] },
             },
             "contentTypes": {
                 "notification": '*',
@@ -29,9 +29,9 @@ module.exports = ({ env }) => ({
                 {
                     "name": "connection",
                     "handler": ({ strapi }, socket) => {
-                        strapi.log.info(`[io] new connection with id ${socket.id}`);
+                        // strapi.log.info(`[io] new connection with id ${socket.id}`);
                     },
-                },                
+                },
             ]
         },
     },
