@@ -72,7 +72,7 @@ const Header = ({ user }) => {
   const [openNotification, setopenNotification] = useState(false)
 
   const { io } = require("socket.io-client");
-  const SERVER_URL = "http://localhost:1337";
+  const SERVER_URL = "https://backstrapimysql-production.up.railway.app";
 
   // token will be verified, connection will be rejected if not a valid JWT
 

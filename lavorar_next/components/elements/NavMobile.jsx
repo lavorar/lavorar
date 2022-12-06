@@ -26,7 +26,7 @@ const NavMobile = ({ user }) => {
     }))
     const jwt = getTokenFromLocalCookie()
     const { io } = require("socket.io-client");
-    const SERVER_URL = "http://localhost:1337";
+    const SERVER_URL = "https://backstrapimysql-production.up.railway.app";
     useEffect(() => {
         const socket = io(SERVER_URL, {
             auth: {
