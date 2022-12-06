@@ -134,7 +134,7 @@ const Layout = ({ user, loading = false, children }) => {
                             <Header user={user} >
 
                             </Header>
-                            <div className='pt-5  mb-20 p-4  md:mb-0 '>
+                            <div className='pt-5  mb-20 p-4  md:mb-0 md:p-0 '>
 
                                 {children}
                             </div>

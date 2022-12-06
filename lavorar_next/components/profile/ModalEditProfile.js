@@ -59,6 +59,7 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
             avatar: user.avatar,
             provincia: provinceValue,
             localidad: cityValue,
+            categories: categories
         }
     });
     const { errors, isDirty } = formState;
@@ -112,7 +113,7 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
         staleTime: Infinity
     })
     useEffect(() => {
-        
+
         if (provinces.status == "success") {
             setprovincesOptions(provinces.data)
         }
@@ -497,7 +498,7 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
                                                             />
 
                                                         )}
-
+                                                        defaultValue={categories}
                                                         name="categories"
                                                         control={control}
                                                     />

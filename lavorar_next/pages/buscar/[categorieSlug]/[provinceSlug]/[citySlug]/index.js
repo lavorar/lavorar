@@ -60,7 +60,7 @@ const SearchProvince = ({ users, user, numberOfLenders }) => {
                 <h2 className="text-center text-gray-900 dark:text-gray-100 font-bold text-4xl pt-5">
                     {'BUSCAR SERVICIOS DE' + ' ' + router.query.categorieSlug?.toUpperCase() + ' EN ' + router.query.citySlug?.toUpperCase() + ' ' + router.query.provinceSlug?.toUpperCase()}
                 </h2>
-                <HomeSearchBar />
+                {/* <HomeSearchBar /> */}
                 {users.length > 0 ?
                     <div className='min-h-screen'>
                         <InfiniteScroll

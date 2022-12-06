@@ -47,11 +47,11 @@ const SearchCategorie = ({ users, user, numberOfLenders }) => {
 
     return (
         <Layout user={user}>
-            <div className="flex flex-col  items-center w-full p-1 text-black">
+            <div className="flex flex-col  items-center w-full p-1 text-black">                
                 <h2 className="text-center text-gray-900 dark:text-gray-100 font-bold text-4xl pt-5">
                     {'BUSCAR SERVICIOS DE' + ' ' + router.query.categorieSlug?.toUpperCase()}
-                </h2>
-                <HomeSearchBar />
+                </h2>                
+                
                 {lenders ?
                     <div className='min-h-screen'>
                         <InfiniteScroll

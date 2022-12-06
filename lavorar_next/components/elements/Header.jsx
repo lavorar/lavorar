@@ -12,6 +12,8 @@ import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import { useRouter } from 'next/router';
 import { getTokenFromLocalCookie, unsetToken } from '../../lib/auth';
 import Link from 'next/link';
+import DropdownFilter from './DropdownFilter';
+
 import NotificationDropdown from './NotificationsDropdown';
 import { Badge } from '@mui/material';
 import axios from 'axios';
@@ -400,7 +402,12 @@ const Header = ({ user }) => {
 
           </ul>
         </div>
+        <div className="container flex justify-between md:justify-end h-auto w-full items-center mx-auto px-2">
+          <DropdownFilter/>
+        </div>
+
       </nav>
+
 
     </>
   )
