@@ -126,7 +126,7 @@ export default function FormCompleted() {
                             Authorization: `Bearer ${data.jwt}`
                         }
                     }).then((data => {
-                        router.replace('/profile')
+                        router.replace('/')
                     }))
                     .catch(error => { console.error(error) })
 

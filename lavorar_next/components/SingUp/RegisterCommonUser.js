@@ -69,7 +69,7 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
                 ).then(({ data }) => {
                     console.log('register', data)
                     setToken(data)
-                    router.push('/profile')
+                    router.push('/')
                 }).catch((error) => {
                     alert(error.message)
                     console.log(error)
