@@ -17,9 +17,10 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { slugify } from '../SingUp/LenderOptions';
 import { Avatar } from '@mui/material';
+import { fetcher } from '../../lib/api';
 
 
-export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image, setuserClient }) {
+export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image, setuserClient, provincesOptions }) {
     const router = useRouter()
     const [user, setuser] = useState(userClient)
     const [categories, setcategories] = useState(user.categories?.map((ele) => (
@@ -93,38 +94,15 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
     const querycategories = useQuery(['todos'], getCategories, {
         staleTime: Infinity
     })
-    const getProvinces = async () => {
-        const { data } = await axios.get(`https://apis.datos.gob.ar/georef/api/provincias?campos=nombre`)
-        let options = []
-        data.provincias.map((provice) => (
-            options.push({
-                value: provice.id,
-                label: provice.nombre,
-                identificador: provice.id,
-                name: provice.nombre,
-            })
-        ))
-        return options
 
-    }
-    const [provincesOptions, setprovincesOptions] = useState([])
-    const provinces = useQuery(['provincesQuery'], getProvinces, {
-        retry: 2,
-        staleTime: Infinity
-    })
-    useEffect(() => {
-
-        if (provinces.status == "success") {
-            setprovincesOptions(provinces.data)
-        }
-    }, [userClient])
 
 
     // console.log(validationSchema)
     const getCitys = async (cityId) => {
-        const { data } = await axios.get(`https://apis.datos.gob.ar/georef/api/localidades?provincia=${cityId}&campos=nombre&max=400`)
+        const citys = await fetcher(`https://apis.datos.gob.ar/georef/api/localidades?provincia=${cityId}&campos=nombre&max=400`)
         const options = []
-        data.localidades.map((city) => (
+        console.log('citys', citys)
+        citys.localidades.map((city) => (
             city.nombre = city.nombre.toLowerCase(),
             city.nombre = city.nombre.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()),
             options.push({
@@ -142,15 +120,17 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
         ['citys', cityId],
         () => getCitys(cityId),
         {
-            staleTime: Infinity
+            manual: true,
+            staleTime: 20
         }
     )
     useEffect(() => {
-        getCitys(cityId)
+        citys.refetch()
+        console.log('citys', citys)
         if (citys.status == "success") {
             setcitysoptions(citys.data)
         }
-    }, [userClient])
+    }, [provinceValue])
 
     const handleProvinceChange = (e) => {
         console.log(e)
@@ -267,13 +247,14 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
             ).then(({ data }) => {
                 console.log(user)
                 console.log(data)
-                setIsOpen(false)
+
                 setuser(data.user)
                 setcategories(data.user?.categories?.map((ele) => (
                     { value: ele.id, label: ele.name, id: ele.id }
                 )))
                 console.log(categories)
                 setuserClient(data.user)
+                setIsOpen(false)
                 // if (img === null || img === image) {
                 //     router.reload('/profile')
                 // }
@@ -517,7 +498,7 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
                                                             {...field}
                                                             placeholder='Provincia'
                                                             options={provincesOptions}
-                                                            isDisabled={provinces.isLoading}
+                                                            isDisabled={provincesOptions?.length === 0}
                                                             value={provinceValue}
                                                             onChange={handleProvinceChange}
                                                             id="provincia" instanceId="provincia"

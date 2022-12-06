@@ -6,6 +6,23 @@ import { useQuery } from 'react-query';
 import axios from 'axios'
 import { components } from "react-select";
 import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
+import { fetcher } from '../../lib/api';
+
+export const getProvincesArgentina = async () => {
+    const provincias = await fetcher(`https://apis.datos.gob.ar/georef/api/provincias?campos=nombre`)
+    const options = []
+    provincias.provincias.map((provice) => (
+        options.push({
+            value: provice.id,
+            label: provice.nombre,
+            identificador: provice.id,
+            name: provice.nombre,
+        })
+    ))
+    return options
+
+}
+
 
 export const slugify = str =>
     str
@@ -17,6 +34,8 @@ export const slugify = str =>
         .replace(/[\s_-]+/g, '-')
         .replace(/^-+|-+$/g, '')
         .normalize();
+
+
 
 const LenderOptions = ({ formStep, nextFormStep }) => {
 

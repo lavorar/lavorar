@@ -16,9 +16,20 @@ import BackgroundLetterAvatars from '/components/elements/AvatarInitials';
 import Image from 'next/image';
 import ModalEditProfile from '/components/profile/ModalEditProfile'
 import axios from 'axios';
+import { useQuery } from 'react-query';
+import { getProvincesArgentina } from '../../components/SingUp/LenderOptions';
 
 
 const Profile = ({ user, userNoAuth, userReview }) => {
+
+    const [provincesOptions, setprovincesOptions] = useState([]);
+    const queryprovinces = useQuery(['provinces'], getProvincesArgentina, {
+        onSettled: (data) => {
+            setprovincesOptions(data);
+        },
+        staleTime: Infinity,
+    });
+    console.log(queryprovinces)
     const router = useRouter();
     const [userClient, setuserClient] = useState(userNoAuth);
     const [image, setImage] = useState(userClient?.avatar ? `/f_auto,q_auto,w_150,h_150/v${userClient?.avatar}` : null);
@@ -171,6 +182,7 @@ const Profile = ({ user, userNoAuth, userReview }) => {
                                 userClient={userClient}
                                 setuserClient={handleUserChange}
                                 setIsOpen={setIsOpen}
+                                provincesOptions={provincesOptions}
                             // closeModal={closeModal}
                             >
 
@@ -275,6 +287,7 @@ export async function getServerSideProps({ req, query }) {
                 },
             }
         );
+
         let userReview
         await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/ratings/reviews/${userSlug}`)
             .then(({ data }) => {
