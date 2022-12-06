@@ -134,7 +134,7 @@ const Layout = ({ user, loading = false, children }) => {
                             <Header user={user} >
 
                             </Header>
-                            <div className='pt-5  mb-20 p-4  md:mb-0 md:p-0 '>
+                            <div className='pt-5  mb-20 p-4  md:mb-0 '>
 
                                 {children}
                             </div>
@@ -143,9 +143,9 @@ const Layout = ({ user, loading = false, children }) => {
                         {/* <AppHeader /> */}
                         <div className={'xl:w-[400px]  xl:flex-col hidden xl:flex  xl:justify-center xl:items-center h-screen right-0 bg-transparent ml-2 p-1 '} >
                             <div className='flex flex-col w-full items-center justify-center pt-64' >
+                                {/* <Card lender={user} authUser={user} />
                                 <Card lender={user} authUser={user} />
-                                <Card lender={user} authUser={user} />
-                                <Card lender={user} authUser={user} />
+                                <Card lender={user} authUser={user} /> */}
                             </div>
                         </div>
                     </div>
