@@ -51,18 +51,18 @@ const DescriptionProfile = ({ user, lender, authUser }) => {
         let userProfile = await fetcher(
             `${process.env.NEXT_PUBLIC_STRAPI_URL}/users?${queryuser}`
         );
-        
+
         setuserClient(userProfile[0]);
         setDescription(userProfile[0].description)
     }
     function closeModal() {
         setIsOpen(false)
     }
-    
+
     const jwt = getTokenFromLocalCookie();
-     useEffect(() => {
-         getUserQuery()        
-     }, [router.query])
+    useEffect(() => {
+        getUserQuery()
+    }, [router.query])
     function openModal() {
         setIsOpen(true)
     }
@@ -98,7 +98,10 @@ const DescriptionProfile = ({ user, lender, authUser }) => {
 
                     {
                         <span className="text-justify text-lg font-normal ">
-                            {description ? description : 'Hola esto es una prueba'}
+                            {description ?
+                                <div dangerouslySetInnerHTML={{ __html: description }} />
+                                :
+                                'Hola esto es una prueba'}
                         </span>
                     }
                 </div>
