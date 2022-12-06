@@ -9,6 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import axios from 'axios';
 import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
+import { slugify } from '../SingUp/LenderOptions';
 
 const RegisterComponent = ({ formStep, nextFormStep }) => {
     const router = useRouter();
@@ -66,10 +67,32 @@ const RegisterComponent = ({ formStep, nextFormStep }) => {
                             'Content-Type': 'application/json',
                         }
                     }
-                ).then(({ data }) => {
+                ).then(async ({ data }) => {
                     console.log('register', data)
-                    setToken(data)
-                    router.push('/')
+                    let slug = slugify(data.user.name + ' ' + new Date().getTime())
+
+                    let role = JSON.stringify({
+                        "Slug": slug,
+                        "is_lender": false,
+                        "aboutme": "Descripcion....",
+                        "role": {
+                            "id": 1
+                        }
+                    });
+                    await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${data.user.id}`,
+                        role,
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: `Bearer ${data.jwt}`
+                            }
+                        }).then((response => {
+                            console.log('register', response)
+                            setToken(data)
+                            // router.push('/')
+                        }))
+                        .catch(error => { console.error(error) })
+
                 }).catch((error) => {
                     alert(error.message)
                     console.log(error)
