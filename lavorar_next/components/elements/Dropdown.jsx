@@ -47,7 +47,7 @@ export default function Example({ children, user }) {
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                         >
-                            <Menu.Items className="fixed w-full top-14 md:top-12 sm:absolute right-0 sm:-right-10  mt-4 sm:w-72 origin-top-right divide-y divide-gray-200 rounded-md bg-white-ghost dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <Menu.Items className="fixed w-full top-14 md:top-12 sm:absolute right-0 sm:-right-10 z-30 mt-4 sm:w-72 origin-top-right divide-y divide-gray-200 rounded-md bg-white-ghost dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                 {user && <div className='text-bold'>
                                     <Menu.Item>
                                         {({ active }) => (

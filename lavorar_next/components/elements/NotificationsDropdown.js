@@ -175,7 +175,7 @@ export default function NotificationDropdown({ user, children, notifications, un
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                         >
-                            <Menu.Items className={`${up && '-top-7 transform h-[calc(100vh-138px)] -translate-y-full absolute -left-2 right-0 w-screen'}  max-h-[calc(100vh-138px)] md:max-h-[500px] overflow-y-auto top-14 md:top-12 md:absolute right-0 md:-right-0  mt-4 md:w-96 origin-top-right divide-y divide-gray-200 rounded-md bg-white-ghost dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}>
+                            <Menu.Items className={`${up && '-top-7 transform h-[calc(100vh-138px)] -translate-y-full absolute -left-2 right-0 w-screen'}  max-h-[calc(100vh-138px)] md:max-h-[500px] overflow-y-auto top-14 md:top-12 md:absolute right-0 md:-right-0 z-30 mt-4 md:w-96 origin-top-right divide-y divide-gray-200 rounded-md bg-white-ghost dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}>
                                 {notifications ?
                                     notifications?.map((notification, index) => (
                                         <div key={index}
