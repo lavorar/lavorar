@@ -130,11 +130,11 @@ const Layout = ({ user, loading = false, children }) => {
                         </p>
                     </div>
                     <div className={`${open ? 'md:pl-20 xl:pl-64' : 'md:pl-24 xl:pl-64'}  z-10  h-auto flex flex-row justify-center   duration-500 w-full   md:flex-1  `}>
-                        <div className="w-[1200px] border-opacity-10 dark:border-opacity-10  border-r border-l  border-gray-500 dark:border-gray-100  ">
+                        <div className="w-full lg:w-[1200px] border-opacity-10 dark:border-opacity-10  border-r border-l  border-gray-500 dark:border-gray-100  ">
                             <Header user={user} >
 
                             </Header>
-                            <div className='pt-5  mb-20 p-4  md:mb-0 '>
+                            <div className='pt-5 w-full  mb-20 p-4  md:mb-0 '>
 
                                 {children}
                             </div>
