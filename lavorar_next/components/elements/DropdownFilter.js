@@ -32,7 +32,7 @@ export default function Example({ children, user }) {
 
                             <Menu.Button
                                 className={` ${user ? '' : 'px-2 py-2'}  ${open ? 'text-blue-600 dark:text-blue-500 dark:bg-gray-700' : ''} inline-flex w-full justify-center rounded-full bg-gray-300 dark:bg-gray-700 dark:hover:bg-black   text-sm font-medium text-gray-900 dark:text-white-ghost hover:bg-gray-200  focus:outline-1 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}>
-                                {'busquda avanzada'}
+                                {'Busqueda Avanzada'}
 
                             </Menu.Button>
 
