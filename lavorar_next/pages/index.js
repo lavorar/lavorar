@@ -63,6 +63,7 @@ export async function getServerSideProps({ req }) {
           sort: ['review_updatedAt:desc'],
           populate: '*'
         },
+        role: true,
         // lenders: {
         //     populate: '*'
         // },

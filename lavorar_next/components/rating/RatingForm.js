@@ -4,14 +4,14 @@ import React, { useContext, useState } from 'react'
 import { getTokenFromLocalCookie } from '../../lib/auth';
 import HoverRating from '../elements/Rating'
 
-const RatingForm = ({ user, review, setReviewUserAuth, closeModal }) => {
+const RatingForm = ({ user, review, setReviewUserAuth, closeModal, setreviews, lender, reviews }) => {
     const [comment, setComment] = useState(review ? review.comment : "")
     const [value, setValue] = useState(5 || review?.score);
     const [hover, setHover] = useState(5);
 
 
     const router = useRouter()
-    let slug = router.query.userSlug
+    let slug = lender ? lender.Slug : router.query.userSlug
     const onChange = (event, newValue) => {
         setValue(newValue);
     }
@@ -35,6 +35,12 @@ const RatingForm = ({ user, review, setReviewUserAuth, closeModal }) => {
                 let reviewdata = data.data.newReview
                 reviewdata.author = user
                 setReviewUserAuth(reviewdata)
+                setreviews(reviews => [...reviews].map((rev) => {
+                    if (rev.id === reviewdata.id) {
+                        rev = reviewdata
+                    }
+                    return rev
+                }))
                 closeModal()
             })
         }
@@ -45,9 +51,14 @@ const RatingForm = ({ user, review, setReviewUserAuth, closeModal }) => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${jwt}`,
                 }
-            }).then((data) => {
-                console.log(data)
-                setReviewUserAuth(data.data)
+            }).then(({ data }) => {
+                console.log('data post', data)
+                let reviewdata = data.newReview
+                reviewdata.author = user                
+                if (setreviews && Array.isArray(reviews)) {
+                    setreviews(reviews => [reviewdata, ...reviews])
+                }
+                setReviewUserAuth(data.newReview)
             })
         }
     }

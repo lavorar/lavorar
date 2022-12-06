@@ -4,7 +4,7 @@ import RatingForm from './RatingForm'
 import IconWithButton from '../elements/IconWithButton';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
-export default function MyModal({ isOpen, setIsOpen, closeModal, review, user, setReviewUserAuth }) {
+export default function MyModal({ isOpen, setIsOpen, closeModal, review, user, setReviewUserAuth, lender, setreviews }) {
     return (
         <>
             <Transition appear show={isOpen} as={Fragment}>
@@ -40,7 +40,7 @@ export default function MyModal({ isOpen, setIsOpen, closeModal, review, user, s
                                         </IconWithButton>
 
                                     </div>
-                                    <RatingForm closeModal={closeModal} user={user} setReviewUserAuth={setReviewUserAuth} review={review} />
+                                    <RatingForm lender={lender} closeModal={closeModal} user={user} setReviewUserAuth={setReviewUserAuth} review={review} setreviews={setreviews} />
 
                                 </Dialog.Panel>
                             </Transition.Child>

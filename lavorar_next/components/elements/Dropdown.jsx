@@ -8,6 +8,9 @@ import { useRouter } from 'next/router';
 import { useUser } from '../../lib/AuthContext';
 import { unsetToken } from '../../lib/auth';
 import BackgroundLetterAvatars from './AvatarInitials';
+import BookmarkOutlinedIcon from '@mui/icons-material/BookmarkOutlined';
+import PendingRoundedIcon from '@mui/icons-material/PendingRounded';
+
 import Image from 'next/image';
 // import { useAuth } from "../../../context/authContext";
 // import { useNavigate } from 'react-router-dom';
@@ -69,8 +72,8 @@ export default function Example({ children, user }) {
                                                     >
                                                         <BackgroundLetterAvatars fontSize='large' firtsName={user?.firstName} lastName={user?.lastName} />
                                                     </div>}{
-                                                        user?.name
-                                                    }
+                                                    user?.name
+                                                }
                                             </button>
                                         )}
                                     </Menu.Item>
@@ -78,7 +81,7 @@ export default function Example({ children, user }) {
                                 }
                                 {user ?
                                     <div
-                                        onClick={() => [router.push('/profile')]} className="px-1 py-1 ">
+                                        onClick={() => [router.push('/' + user.Slug)]} className="px-1 py-1 ">
                                         <Menu.Item>
                                             {({ active }) => (
                                                 <button
@@ -89,6 +92,47 @@ export default function Example({ children, user }) {
                                                         <PersonRoundedIcon />
                                                     </div>
                                                     Tu perfil
+                                                </button>
+                                            )}
+                                        </Menu.Item>
+                                    </div>
+                                    :
+                                    <></>
+                                }
+
+                                {user ?
+                                    <div
+                                        onClick={() => [router.push('/' + user.Slug + '/contratados')]} className="px-1 py-1 ">
+                                        <Menu.Item>
+                                            {({ active }) => (
+                                                <button
+                                                    className={`${active ? 'bg-gray-300 dark:bg-gray-700' : 'dark:bg-gray-800'}  group flex w-full items-center rounded-md px-2 py-2 text-md  text-gray-900 dark:text-white-ghost`}
+                                                >
+                                                    <div className={`rounded-full mr-3 ${active ? 'bg-gray-100 dark:bg-black ' : 'bg-gray-300 dark:bg-gray-600'} h-9 w-9 p-1 text-gray-900 dark:text-white-ghost`}>
+
+                                                        <BookmarkOutlinedIcon />
+                                                    </div>
+                                                    Contratados
+                                                </button>
+                                            )}
+                                        </Menu.Item>
+                                    </div>
+                                    :
+                                    <></>
+                                }
+                                {user ?
+                                    <div
+                                        onClick={() => [router.push('/' + user.Slug + '/pendientes')]} className="px-1 py-1 ">
+                                        <Menu.Item>
+                                            {({ active }) => (
+                                                <button
+                                                    className={`${active ? 'bg-gray-300 dark:bg-gray-700' : 'dark:bg-gray-800'}  group flex w-full items-center rounded-md px-2 py-2 text-md  text-gray-900 dark:text-white-ghost`}
+                                                >
+                                                    <div className={`rounded-full mr-3 ${active ? 'bg-gray-100 dark:bg-black ' : 'bg-gray-300 dark:bg-gray-600'} h-9 w-9 p-1 text-gray-900 dark:text-white-ghost`}>
+
+                                                        <PendingRoundedIcon />
+                                                    </div>
+                                                    Pendientes
                                                 </button>
                                             )}
                                         </Menu.Item>

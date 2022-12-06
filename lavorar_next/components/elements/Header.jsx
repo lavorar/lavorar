@@ -91,53 +91,38 @@ const Header = ({ user }) => {
           setunreadNotifications(notifications => [data, ...notifications])
         }
       });
-      socket.on("notificationDelete", function (data) {
-        console.log('notification Borrada', data)
-        console.log('user ', user)
-        if (user && data.user.id === user?.id) {
-          setnotifications(
-            notifications.filter(function (notifaction) {
-              return notifaction.id !== data.id
-            })
-          )
-          setunreadNotifications(
-            unreadNotifications.filter(function (notifaction) {
-              return notifaction.id !== data.id
-            })
-          )
-        }
-      });
+
     });
     return () => {
       socket.disconnect();
     }
   }, [])
-  // useEffect(() => {
-  //   const socket = io(SERVER_URL, {
-  //     auth: {
-  //       token: jwt
-  //     },
-  //   });
-  //   socket.on("notificationDelete", function (data) {
-  //     console.log('notification Borrada', data)
-  //     console.log('user ', user)
-  //     if (user && data.user.id === user?.id) {
-  //       setnotifications(
-  //         notifications.filter(function (notifaction) {
-  //           return notifaction.id !== data.id
-  //         })
-  //       )
-  //       setunreadNotifications(
-  //         unreadNotifications.filter(function (notifaction) {
-  //           return notifaction.id !== data.id
-  //         })
-  //       )
-  //     }
-  //   });
-  //   return () => {
-  //     socket.disconnect();
-  //   }
-  // }, [])
+  useEffect(() => {
+    const socket = io(SERVER_URL, {
+      auth: {
+        token: jwt
+      },
+    });
+    socket.on("notificationDelete", function (data) {
+      console.log('notification Borrada', data)
+      console.log('user ', user)
+      if (user && data.user.id === user?.id) {
+        setnotifications(
+          notifications.filter(function (notifaction) {
+            return notifaction.id !== data.id
+          })
+        )
+        setunreadNotifications(
+          unreadNotifications.filter(function (notifaction) {
+            return notifaction.id !== data.id
+          })
+        )
+      }
+    });
+    return () => {
+      socket.disconnect();
+    }
+  }, [])
 
   const handleOpenNotification = () => {
     if (open) {

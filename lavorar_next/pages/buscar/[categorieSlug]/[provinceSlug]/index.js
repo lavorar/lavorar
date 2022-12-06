@@ -108,6 +108,7 @@ export async function getServerSideProps(context) {
     if (jwt) {
         const queryuser = qs.stringify({
             populate: {
+                role: true,
                 notifications: {
                     sort: ['review_updatedAt:desc'],
                     limit: 10,

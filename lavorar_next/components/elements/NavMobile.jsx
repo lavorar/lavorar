@@ -106,7 +106,7 @@ const NavMobile = ({ user }) => {
                 {user &&
                     <div className=''>
                         <IconWithButton
-                            onClick={() => Router.push('/profile')}>
+                            onClick={() => Router.push('/'+user.Slug)}>
                             <PersonRoundedIcon fontSize='large' />
                         </IconWithButton>
                     </div>

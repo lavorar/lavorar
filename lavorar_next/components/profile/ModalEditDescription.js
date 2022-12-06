@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -8,8 +8,12 @@ import IconWithButton from '../elements/IconWithButton';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { getTokenFromLocalCookie } from '../../lib/auth';
 import axios from 'axios';
+import { useRouter } from 'next/router';
+import { fetcher } from '../../lib/api';
 
 export default function ModalEditDescription({ isOpen, setIsOpen, user, closeModal, setDescription, description }) {
+    const [userClient, setuserClient] = useState(user)
+    const router = useRouter();
     const [numberofcharacters, setNumberofcharacters] = useState(0);
     const validationSchema = Yup.object().shape({
         description: Yup.string()
@@ -19,14 +23,58 @@ export default function ModalEditDescription({ isOpen, setIsOpen, user, closeMod
     const formOptions = { resolver: yupResolver(validationSchema) };
     const [descriptionModal, setdescriptionModal] = useState(description);
 
+    const qs = require('qs');
 
-    const { register, handleSubmit, control, formState } = useForm(formOptions);
+    const queryuser = qs.stringify({
+        filters: {
+            slug: {
+                $eq: router.query.userSlug,
+            }
+        },
+        populate: {
+            categories: true,
+            role: true,
+            localidad: true,
+            lenders: {
+                populate: {
+                    user_recruiter: true,
+                }
+            },
+            service_recruiters: {
+                populate: {
+                    lender: true,
+                }
+            },
+            provincia: true,
+            notifications: {
+                sort: ['review_updatedAt:desc'],
+                limit: 10,
+                populate: '*'
+            },
+        }
+    }, {
+        encodeValuesOnly: true, // prettify URL
+    });
+    const getUserQuery = async () => {
+        let userProfile = await fetcher(
+            `${process.env.NEXT_PUBLIC_STRAPI_URL}/users?${queryuser}`
+        );
+        console.log(userProfile)
+        setuserClient(userProfile[0]);
+        setdescriptionModal(userProfile[0].description)
+        reset()
+    }
+     useEffect(() => {
+         getUserQuery()
+     }, [router.query])
+
+    const { register, handleSubmit, reset, control, formState } = useForm(formOptions, { defaultValues: { description: descriptionModal } });
     const { errors } = formState;
 
 
     const onSubmit = async (values) => {
         const jwt = getTokenFromLocalCookie();
-        await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${user.id}`,
+        await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/users/${userClient.id}`,
             { description: values.description }, {
             headers: {
                 'Content-Type': 'application/json',

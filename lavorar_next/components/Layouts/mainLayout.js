@@ -9,11 +9,12 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
+import AssignmentTurnedInRoundedIcon from '@mui/icons-material/AssignmentTurnedInRounded';
 import BookmarkOutlinedIcon from '@mui/icons-material/BookmarkOutlined';
 import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
 import EventAvailableRoundedIcon from '@mui/icons-material/EventAvailableRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
-import AddchartRoundedIcon from '@mui/icons-material/AddchartRounded';
+import PendingRoundedIcon from '@mui/icons-material/PendingRounded';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import { UseLayoutOpen } from "../../context/LayoutContext";
 import Card from "../elements/Card";
@@ -30,15 +31,15 @@ const Layout = ({ user, loading = false, children }) => {
     const { open } = UseLayoutOpen()
     const { setOpenBar } = UseLayoutOpen()
     const Menus = [
-        { title: "Inicio", src: <HomeRoundedIcon fontSize={'large'} />, always: true, href: '/' },
-        { title: "Buscar", src: <SearchRoundedIcon fontSize={'large'} />, always: true, href: '/buscar' },
-        { title: "Mi Perfil", src: <PersonRoundedIcon fontSize={'large'} />, always: user ? true : false, gap: true, href: '/profile' },
-        { title: "Guardado (proximamente)", src: <BookmarkOutlinedIcon color="disabled" fontSize={'large'} />, always: user ? true : false },
-        { title: "Mis Trabajos (proximamente)", src: <WorkRoundedIcon color="disabled" fontSize={'large'} />, always: user ? true : false },
-        { title: "Horario y Agenda (proximamente)", src: <EventAvailableRoundedIcon color="disabled" fontSize={'large'} />, always: user ? true : false },
-        { title: "Ayuda (proximamente)", src: <HelpRoundedIcon color="disabled" fontSize={'large'} />, always: true },
-        { title: "Ganancias (proximamente)", src: <AddchartRoundedIcon color="disabled" fontSize={'large'} />, always: user ? true : false, gap: true },
-        { title: "Estadisticas (proximamente)", src: <TrendingUpRoundedIcon color="disabled" fontSize={'large'} />, always: user ? true : false },
+        { title: "Inicio", src: <HomeRoundedIcon fontSize={'medium'} />, always: true, href: '/' },
+        { title: "Buscar", src: <SearchRoundedIcon fontSize={'medium'} />, always: true, href: '/buscar' },
+        { title: "Mi Perfil", src: <PersonRoundedIcon fontSize={'medium'} />, always: user ? true : false, gap: true, href: '/' + user?.Slug },
+        { title: "Contratados", src: <BookmarkOutlinedIcon fontSize={'medium'} />, always: user ? true : false, href: '/' + user?.Slug + '/contratados' },
+        { title: "Pendientes", src: <PendingRoundedIcon fontSize={'medium'} />, always: user ? true : false, href: '/' + user?.Slug + '/pendientes', gap: false },
+        { title: "Mis Trabajos ", src: <WorkRoundedIcon fontSize={'medium'} />, always: user?.role?.id === 3 ? true : false, href: '/' + user?.Slug + '/trabajos-realizados' },
+        { title: "Horario y Agenda (proximamente)", src: <EventAvailableRoundedIcon color="disabled" fontSize={'medium'} />, always: user ? true : false },
+        // { title: "Estadisticas (proximamente)", src: <TrendingUpRoundedIcon color="disabled" fontSize={'medium'} />, always: user ? true : false, gap: true },
+        // { title: "Ayuda (proximamente)", src: <HelpRoundedIcon color="disabled" fontSize={'medium'} />, always: true },
 
     ];
     return (
@@ -60,8 +61,8 @@ const Layout = ({ user, loading = false, children }) => {
             <main>
                 <div className="flex md:flex-row min-h-screen  h-auto">
                     <div
-                        className={` w-24 xl:w-64
-                                 hidden md:flex z-40  flex-col bg-transparent border-0  text-gray-900 dark:text-white-ghost h-full p-3  fixed pt-8  duration-500 `}
+                        className={` w-20 xl:w-64
+                                 hidden md:flex z-40 lg:items-center xl:items-baseline flex-col bg-transparent border-0  text-gray-900 dark:text-white-ghost h-full p-3  fixed pt-8  duration-500 `}
                     >
                         {/* <div
                             className={`absolute bg-gray-900 hidden xl:block cursor-pointer group -right-5 top-12
@@ -74,10 +75,10 @@ const Layout = ({ user, loading = false, children }) => {
                         </div> */}
                         <Link href={'/'}>
                             <a
-                                className=" cursor-pointer flex flex-row gap-x-2 justify-start items-center ">
+                                className=" cursor-pointer flex flex-row gap-x-2 justify-start items-center xl:ml-1 ">
                                 <img
                                     src="/Lavorar-logo-negativo.svg"
-                                    className={` duration-500 w-16  "
+                                    className={` duration-500 w-11 xl:w-16  "
                                     `}
                                 />
 
@@ -89,13 +90,13 @@ const Layout = ({ user, loading = false, children }) => {
                                 </h1>
                             </a>
                         </Link>
-                        <ul className="pt-6">
+                        <ul className="pt-6 w-full">
                             {Menus.map((Menu, index) => (
                                 Menu.always ?
-                                    <Link href={Menu.href ? Menu.href : ''}>
+                                    <Link key={index} href={Menu.href ? Menu.href : ''}>
                                         <a>
                                             <li
-                                                key={index}
+
                                                 className={`flex rounded-md p-2 ${open ? '' : ''} group cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-white-ghost text-md items-center gap-x-2
                                             ${Menu.gap ? "mt-9" : "mt-2"}
                                 } `}
@@ -109,7 +110,7 @@ const Layout = ({ user, loading = false, children }) => {
                                                     </IconWithButton>
                                                 </div>
 
-                                                <span className={`${open ? 'block' : "hidden"} overflow-hidden whitespace-nowrap origin-left duration-700`}>
+                                                <span className={`${open ? 'block' : "hidden"} lg:hidden xl:block overflow-hidden whitespace-nowrap origin-left duration-700`}>
                                                     {Menu.title}
                                                 </span>
 
@@ -128,7 +129,7 @@ const Layout = ({ user, loading = false, children }) => {
                             >Donar</a>
                         </p>
                     </div>
-                    <div className={`${open ? 'md:pl-24 xl:pl-64' : 'md:pl-24 xl:pl-64'}  z-10  h-auto flex flex-row justify-center   duration-500 w-full   md:flex-1  `}>
+                    <div className={`${open ? 'md:pl-20 xl:pl-64' : 'md:pl-24 xl:pl-64'}  z-10  h-auto flex flex-row justify-center   duration-500 w-full   md:flex-1  `}>
                         <div className="w-[1200px] border-opacity-10 dark:border-opacity-10  border-r border-l  border-gray-500 dark:border-gray-100  ">
                             <Header user={user} >
 

@@ -8,9 +8,10 @@ import RatingForm from '../rating/RatingForm'
 import Review from '../rating/Review'
 
 
-const RatingsComponent = ({ user, profileUser, userReview }) => {
+const RatingsComponent = ({ authUser, user, userReview }) => {
+    const [userClient, setuserClient] = useState(user)
     const router = useRouter()
-    let slug = profileUser ? profileUser.Slug : router.query.userSlug
+    let slug = user ? user.Slug : router.query?.userSlug
     const [reviews, setreviews] = useState([])
     const getRatings = async () => {
         await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/ratings/reviews/${slug}`)
@@ -22,23 +23,27 @@ const RatingsComponent = ({ user, profileUser, userReview }) => {
             })
     }
     const [reviewUserAuth, setReviewUserAuth] = useState(userReview)
+    console.log('reviewUserAuth', reviewUserAuth)
+    console.log('user', user)
     const queryRatings = useQuery(['ratings'], getRatings, {
         staleTime: 1
     })
-    const contract = user?.service_recruiters?.filter(function (service) {
-        return service.lender.id === profileUser.id
-    })
+    const contract = authUser?.service_recruiters?.filter(function (service) {
+        return service.lender.id === userClient.id
+    })   
+
     return (
         <div>
 
-            {(slug !== user?.Slug) && <div className={'bg-gray-300 relative dark:bg-gray-700  mt-4 p-5 rounded-xl'}>
+            {(slug !== authUser?.Slug) && <div className={'bg-gray-300 relative dark:bg-gray-700  mt-4 p-5 rounded-xl'}>
                 {
-                    user ?
+                    authUser ?
                         reviewUserAuth ?
-                            <Review review={reviewUserAuth} setReviewUserAuth={setReviewUserAuth} user={user} />
+                            <Review review={reviewUserAuth} 
+                            setreviews={setreviews} setReviewUserAuth={setReviewUserAuth} authUser={authUser} user={userClient} lender={userClient} />
                             :
                             contract?.length ?
-                                <RatingForm user={user} setReviewUserAuth={setReviewUserAuth} review={reviewUserAuth} />
+                                <RatingForm user={userClient} setreviews={setreviews} setReviewUserAuth={setReviewUserAuth} review={reviewUserAuth} />
                                 :
                                 <div>
                                     <span className='font-bold'>Debes Contratar </span>
@@ -49,7 +54,7 @@ const RatingsComponent = ({ user, profileUser, userReview }) => {
                         <div className="py-2 flex items-center gap-2 flex-row">
                             <Link href={{
                                 pathname: '/login',
-                                query: { slug: 'prestadores/' + profileUser.Slug }
+                                query: { slug: '/' + userClient.Slug }
                             }} >
                                 <p className="text-xl text-orange-high cursor-pointer">Inicia Sesion</p>
                             </Link>
@@ -59,10 +64,10 @@ const RatingsComponent = ({ user, profileUser, userReview }) => {
                 }
             </div>}
 
-            <div className="mt-5 flex flex-wrap justify-evenly gap-4 lg:gap-0 w-full bg-gray-300 relative dark:bg-gray-700   rounded-md">
+            <div className="mt-5 p-5 flex flex-wrap justify-evenly gap-4 lg:gap-4 w-full rounded-xl bg-gray-300 relative dark:bg-gray-700 ">
                 {reviews.length > 0 ?
                     reviews.map((review, index) => (
-                        <div key={index} className={`${index < reviews.length-1 ? 'border-b' : ''} bg-gray-300 dark:bg-gray-700 w-50 p-5  w-full`}>
+                        <div key={index} className={`${index < reviews.length - 1 ? 'border-b dark:border-gray-400 border-gray-500' : ''} bg-gray-300 dark:bg-gray-700   w-full`}>
                             <Review counts={0} review={review} />
                         </div>
                     ))

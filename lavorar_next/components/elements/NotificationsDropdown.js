@@ -175,7 +175,7 @@ export default function NotificationDropdown({ user, children, notifications, un
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                         >
-                            <Menu.Items className={`${up && '-top-7 transform -translate-y-full absolute -left-2 right-0 w-screen'}  max-h-[calc(100vh-138px)] md:max-h-[500px] overflow-y-auto top-14 md:top-12 md:absolute right-0 md:-right-0  mt-4 md:w-96 origin-top-right divide-y divide-gray-200 rounded-md bg-white-ghost dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}>
+                            <Menu.Items className={`${up && '-top-7 transform h-[calc(100vh-138px)] -translate-y-full absolute -left-2 right-0 w-screen'}  max-h-[calc(100vh-138px)] md:max-h-[500px] overflow-y-auto top-14 md:top-12 md:absolute right-0 md:-right-0  mt-4 md:w-96 origin-top-right divide-y divide-gray-200 rounded-md bg-white-ghost dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}>
                                 {notifications ?
                                     notifications?.map((notification, index) => (
                                         <div key={index}
@@ -197,7 +197,7 @@ export default function NotificationDropdown({ user, children, notifications, un
                                                                     notification.user_request.avatar ?
 
                                                                         <div
-                                                                            onClick={(e) => { router.push('/profile') }}
+                                                                            onClick={(e) => { router.push('/'+user.Slug) }}
                                                                             className="h-[50px] w-[50px] md:w-[50px] md:h-[50px] relative aspect-square "
                                                                         // onClick={router.replace('/prestadores/' + user?.Slug)}
                                                                         >
@@ -214,7 +214,7 @@ export default function NotificationDropdown({ user, children, notifications, un
                                                                         </div>
                                                                         :
                                                                         <div
-                                                                            onClick={(e) => { router.push('/profile') }} className="h-[50px] w-[50px] md:w-[50px] md:h-[50px] aspect-square"
+                                                                            onClick={(e) => { router.push('/'+user.Slug) }} className="h-[50px] w-[50px] md:w-[50px] md:h-[50px] aspect-square"
                                                                         // onClick={router.replace('/prestadores/' + user?.Slug)}
                                                                         >
                                                                             <span className="sr-only">{notification.user_request.name}</span>
@@ -223,7 +223,7 @@ export default function NotificationDropdown({ user, children, notifications, un
 
                                                                 }
                                                             </div>
-                                                            <div onClick={(e) => { router.push('/profile') }} className='flex w-full flex-row justify-between items-center'>
+                                                            <div onClick={(e) => { router.push('/'+user.Slug) }} className='flex w-full flex-row justify-between items-center'>
                                                                 <div
                                                                     onClick={(e) => { markAsRead(e, notification.id, index, notification) }}
                                                                     className="ml-3 text-sm font-normal">
@@ -262,7 +262,7 @@ export default function NotificationDropdown({ user, children, notifications, un
                                                                     notification.user_request.avatar ?
 
                                                                         <div
-                                                                            onClick={(e) => { router.push('/profile') }}
+                                                                            onClick={(e) => { router.push('/'+user.Slug) }}
                                                                             className="h-[50px] w-[50px] md:w-[50px] md:h-[50px] relative aspect-square "
                                                                         // onClick={router.replace('/prestadores/' + user?.Slug)}
                                                                         >
@@ -279,7 +279,7 @@ export default function NotificationDropdown({ user, children, notifications, un
                                                                         </div>
                                                                         :
                                                                         <div
-                                                                            onClick={(e) => { router.push('/profile') }} className="h-[50px] w-[50px] md:w-[50px] md:h-[50px] aspect-square"
+                                                                            onClick={(e) => { router.push('/'+user.Slug) }} className="h-[50px] w-[50px] md:w-[50px] md:h-[50px] aspect-square"
                                                                         // onClick={router.replace('/prestadores/' + user?.Slug)}
                                                                         >
                                                                             <span className="sr-only">{notification.user_request.name}</span>
@@ -345,7 +345,7 @@ export default function NotificationDropdown({ user, children, notifications, un
                                                                     notification.user_request.avatar ?
 
                                                                         <div
-                                                                            onClick={(e) => { router.push('/prestadores/' + notification.user_request.Slug) }}
+                                                                            onClick={(e) => { router.push('/' + notification.user_request.Slug) }}
                                                                             className="h-[50px] w-[50px] md:w-[50px] md:h-[50px] relative aspect-square "
                                                                         // onClick={router.replace('/prestadores/' + user?.Slug)}
                                                                         >
@@ -362,7 +362,7 @@ export default function NotificationDropdown({ user, children, notifications, un
                                                                         </div>
                                                                         :
                                                                         <div
-                                                                            onClick={(e) => { router.push('/prestadores/' + notification.user_request.Slug) }} className="h-[50px] w-[50px] md:w-[50px] md:h-[50px] aspect-square"
+                                                                            onClick={(e) => { router.push('/' + notification.user_request.Slug) }} className="h-[50px] w-[50px] md:w-[50px] md:h-[50px] aspect-square"
                                                                         // onClick={router.replace('/prestadores/' + user?.Slug)}
                                                                         >
                                                                             <span className="sr-only">{notification.user_request.name}</span>
@@ -376,7 +376,7 @@ export default function NotificationDropdown({ user, children, notifications, un
                                                                 <div className='flex w-full flex-col  justify-start items-start'>
 
                                                                     <div className=" text-sm font-normal">
-                                                                        <div onClick={(e) => { router.push('/prestadores/' + notification.user_request.Slug) }} className="text-sm font-semibold text-gray-900 dark:text-white-ghost">{notification.user_request.name}</div>
+                                                                        <div onClick={(e) => { router.push('/' + notification.user_request.Slug) }} className="text-sm font-semibold text-gray-900 dark:text-white-ghost">{notification.user_request.name}</div>
                                                                         <div className="text-sm font-normal">{'Acepto que lo contrataras, ahora puedes reseñarlo!'}</div>
 
                                                                     </div>

@@ -11,7 +11,7 @@ module.exports = (plugin) => {
                 start,
                 sort: { createdAt: "DESC" },
                 populate: {
-                    author: { fields: ["id", "username", "email", "name", "slug"] }
+                    author: { fields: ["id", "username", "email", "name", "slug", "avatar"] }
                 }
             }
         )
@@ -131,6 +131,7 @@ module.exports = (plugin) => {
                 countsReview: relatedContent.reviews.length
             }
         })
+        
         const notifi = await strapi.entityService.create("api::notification.notification", {
             data: {
                 user: userReview,
@@ -270,6 +271,24 @@ module.exports = (plugin) => {
         ctx.body = { newReview: newReview }
     };
 
+    plugin.controllers.reviews.findAll = async (ctx) => {
+        console.log(ctx.query)
+        const { query } = ctx
+        // some logic here
+        let reviews = await strapi.entityService.findMany("plugin::ratings.review", {
+            filters: query,
+            sort: { createdAt: "DESC" },
+            populate: {
+                author: { fields: ["id", "username", "email", "name", "slug"] },
+                related_to: true,
+            }
+        })
+        // console.log("reviews", reviews)
+        // some more logic
+
+        return reviews;
+
+    };
     plugin.routes['content-api'].routes.push(
         {
             method: 'GET',
@@ -281,6 +300,18 @@ module.exports = (plugin) => {
             }
         },
     );
+    plugin.routes['content-api'].routes.push(
+        {
+            method: 'GET',
+            path: '/ratings/reviews',
+            handler: 'reviews.findAll',
+            config: {
+                prefix: "",
+                policies: []
+            }
+        },
+    );
+
 
     plugin.routes['content-api'].routes.push(
         {

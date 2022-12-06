@@ -108,11 +108,11 @@ const HireLender = ({ authUser, lender }) => {
         notificationsrequest()
     }, [])
     return (
-        <div>
+        <div className=''>
             {serviceHire?.length ?
                 <button
                     type="button"
-                    className="py-2 px-3 mr-2 my-2 text-base font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-1 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                    className="py-[0.6rem] px-3 mr-2 my-2 text-base font-medium text-gray-900 focus:outline-none bg-white rounded-lg  hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-1 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-300  dark:hover:text-white dark:hover:bg-gray-700"
                 >
                     Contratado
                 </button>
@@ -121,7 +121,7 @@ const HireLender = ({ authUser, lender }) => {
                     <button
                         onClick={deleteRequestHire}
                         type="button"
-                        className="py-2 px-3 mr-2 my-2 text-base font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-1 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                        className="py-[0.6rem] px-3 mr-2 my-2 text-base font-medium text-gray-900 focus:outline-none bg-white rounded-lg  border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-1 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                     >
                         Pendiente
                     </button>
@@ -129,13 +129,11 @@ const HireLender = ({ authUser, lender }) => {
                     <button
                         onClick={hireLender}
                         type="button"
-                        className="py-2 px-3 mr-2 my-2 text-base font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-1 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                        className="py-[0.7rem] px-3 mr-2 my-2 text-base font-medium text-gray-900 focus:outline-none bg-white rounded-lg  border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-1 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                     >
                         Contratar
                     </button>
             }
-
-
 
         </div>
     )

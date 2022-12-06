@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { useForm, Controller, useController, set } from 'react-hook-form';
 import { components } from "react-select";
 import Select from 'react-select'
@@ -25,6 +25,13 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
     const [categories, setcategories] = useState(user.categories?.map((ele) => (
         { value: ele.id, label: ele.name, id: ele.id }
     )))
+    const [img, setimg] = useState(image)
+
+    const [cityId, setcityId] = useState(user.provincia?.identificador)
+    const [cityValue, setcityValue] = useState({ value: user.localidad?.identificador, label: user.localidad?.name })
+    const [provinceValue, setprovinceValue] = useState({ value: user.provincia?.identificador, label: user.provincia?.name })
+    const [phone, setphone] = useState(user.phone)
+    const [aboutme, setaboutme] = useState(user.aboutme)
     // console.log('user initial', user)
     const validationSchema = user.role.id !== 3 ? Yup.object().shape({
         aboutme: Yup.string()
@@ -50,13 +57,14 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
             aboutme: user.aboutme,
             phone: user.phone,
             avatar: user.avatar,
-            provincia: { value: user.localidad?.identificador, label: user.localidad?.name },
-            localidad: { value: user.provincia?.identificador, label: user.provincia?.name },
+            provincia: provinceValue,
+            localidad: cityValue,
         }
     });
     const { errors, isDirty } = formState;
     const { ref, onChange: onChangeImg, name, type, ...rest } = register('avatar');
     const uploadToClient = (event) => {
+        console.log(event)
         if (event.target.files && event.target.files[0]) {
             const tmpImage = event.target.files[0];
             avatar.current = event.target.files
@@ -84,10 +92,9 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
     const querycategories = useQuery(['todos'], getCategories, {
         staleTime: Infinity
     })
-
     const getProvinces = async () => {
         const { data } = await axios.get(`https://apis.datos.gob.ar/georef/api/provincias?campos=nombre`)
-        const options = []
+        let options = []
         data.provincias.map((provice) => (
             options.push({
                 value: provice.id,
@@ -99,13 +106,19 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
         return options
 
     }
-    const [img, setimg] = useState(image)
-    const provinces = useQuery(['provinces'], getProvinces, { staleTime: Infinity })
-    const [cityId, setcityId] = useState(user.provincia?.identificador)
-    const [cityValue, setcityValue] = useState({ value: user.localidad?.identificador, label: user.localidad?.name })
-    const [provinceValue, setprovinceValue] = useState({ value: user.provincia?.identificador, label: user.provincia?.name })
-    const [phone, setphone] = useState(user.phone)
-    const [aboutme, setaboutme] = useState(user.aboutme)
+    const [provincesOptions, setprovincesOptions] = useState([])
+    const provinces = useQuery(['provincesQuery'], getProvinces, {
+        retry: 2,
+        staleTime: Infinity
+    })
+    useEffect(() => {
+        
+        if (provinces.status == "success") {
+            setprovincesOptions(provinces.data)
+        }
+    }, [userClient])
+
+
     // console.log(validationSchema)
     const getCitys = async (cityId) => {
         const { data } = await axios.get(`https://apis.datos.gob.ar/georef/api/localidades?provincia=${cityId}&campos=nombre&max=400`)
@@ -122,6 +135,7 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
         ))
         return options
     }
+    const [citysoptions, setcitysoptions] = useState([])
 
     const citys = useQuery(
         ['citys', cityId],
@@ -130,10 +144,17 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
             staleTime: Infinity
         }
     )
+    useEffect(() => {
+        getCitys(cityId)
+        if (citys.status == "success") {
+            setcitysoptions(citys.data)
+        }
+    }, [userClient])
 
     const handleProvinceChange = (e) => {
         console.log(e)
         control._formValues.provincia = e
+        console.log(control._formValues.provincia)
         control._formValues.localidad = undefined
         setcityId(e.identificador)
         setprovinceValue(e)
@@ -170,7 +191,6 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
         )
             .then(({ data }) => {
                 console.log(data)
-                setImage('/f_auto,q_auto,w_80,h_80/v' + data.img)
                 closeModal()
                 // router.reload('/profile')
                 return data
@@ -191,10 +211,11 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
         else {
             delete values.avatar
         }
-        if (values.province?.label) {
-            let slugprovince = slugify(values.provincia.label)
-            let provincia = { name: values.provincia.label, identificador: values.provincia.identificador, Slug: slugprovince }
-            console.log('provicnes', values.provincia)
+        console.log('values', img)
+        if (provinceValue?.label) {
+            let slugprovince = slugify(provinceValue.label)
+            let provincia = { name: provinceValue.label, identificador: provinceValue.identificador, Slug: slugprovince }
+            console.log('provicnes', provinceValue)
             let responseProvince = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/provinces1/${provincia.Slug}`)
                 .then(({ data }) => {
                     return data.data
@@ -212,9 +233,9 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
         else {
             delete values.provincia
         }
-        if (values.localidad?.label) {
-            let slugcity = slugify(values.localidad.label)
-            let localidad = { name: values.localidad.label, identificador: values.localidad.identificador, slug: slugcity, province: values.provincia }
+        if (cityValue?.label) {
+            let slugcity = slugify(cityValue.label)
+            let localidad = { name: cityValue.label, identificador: cityValue.identificador, slug: slugcity, province: values.provincia }
             let responseCity = await axios.get(`${process.env.NEXT_PUBLIC_STRAPI_URL}/citys1/${localidad.slug}`)
                 .then(({ data }) => {
                     return data.data
@@ -233,7 +254,7 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
             delete values.localidad
         }
         const jwt = getTokenFromLocalCookie();
-        if (isDirty) {
+        if (isDirty || isDirtyImage) {
             await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/user/updateLoggedInUser/${user.id}`,
                 { data: values },
                 {
@@ -245,14 +266,13 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
             ).then(({ data }) => {
                 console.log(user)
                 console.log(data)
-                closeModal()
+                setIsOpen(false)
                 setuser(data.user)
                 setcategories(data.user?.categories?.map((ele) => (
                     { value: ele.id, label: ele.name, id: ele.id }
                 )))
                 console.log(categories)
                 setuserClient(data.user)
-
                 // if (img === null || img === image) {
                 //     router.reload('/profile')
                 // }
@@ -261,14 +281,15 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
                 console.log(error)
             });
         }
-        if (image !== null && files.length > 0) {
+        if (img !== null && files.length > 0) {
+            setImage(img)
             uploadToServer(files[0])
         }
     }
-    
+
 
     const [isDirtyImage, setisDirtyImage] = useState(isDirty)
-    function closeModal() {        
+    function closeModal() {
         setImage(user.avatar ? '/f_auto,q_auto,c_thumb,r_max/v' + user.avatar : null);
         setphone(user.phone)
         setaboutme(user.aboutme)
@@ -330,7 +351,7 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
                                             </p>
                                             <div className={'inline-block'}>
                                                 {
-                                                    image ?
+                                                    img ?
                                                         <div>
                                                             <div
                                                                 className="h-20 w-20 relative aspect-square cursor-pointer"
@@ -366,6 +387,7 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
                                                             <div className="absolute top-32 left-40 cursor-pointer flex-row flex items-center gap-2 "
 
                                                                 onClick={(e) => {
+                                                                    setimg(null)
                                                                     setImage(null)
                                                                     setisDirtyImage(true)
                                                                     onChangeImg(e)
@@ -493,7 +515,7 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
                                                         <Select
                                                             {...field}
                                                             placeholder='Provincia'
-                                                            options={provinces.data}
+                                                            options={provincesOptions}
                                                             isDisabled={provinces.isLoading}
                                                             value={provinceValue}
                                                             onChange={handleProvinceChange}
@@ -503,7 +525,7 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
                                                         />
                                                     )}
                                                     // onChange={handleProvinceChange}
-                                                    
+
                                                     name="provincia"
                                                     control={control}
                                                 />
@@ -517,7 +539,7 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
                                                         <Select
                                                             {...field}
                                                             placeholder='Ingresa una Ciudad'
-                                                            options={citys.data}
+                                                            options={citysoptions}
                                                             value={cityValue}
 
                                                             id="localidad" instanceId="localidad"
@@ -530,7 +552,7 @@ export default function MyModal({ isOpen, setIsOpen, userClient, setImage, image
                                                         // getOptionValue={(option) => option.nombre}
                                                         />
                                                     )}
-                                                    
+
                                                     // 
                                                     name="localidad"
                                                     control={control}

@@ -21,7 +21,10 @@ const Card = ({ lender, authUser, slug }) => {
           <div className="flex flex-row">
             {
               lender?.avatar ?
-                <Link href={`/prestadores/${lender?.slug}`}>
+                <Link href={{
+                  pathname: '/[userSlug]',
+                  query: { userSlug: lender?.Slug, },
+                }} >
                   <a className="h-16 w-16 relative aspect-square cursor-pointer"
                   // onClick={router.replace( '/prestadores/' + lender?.Slug )}
                   >
@@ -38,11 +41,16 @@ const Card = ({ lender, authUser, slug }) => {
                 <>
                   {
                     lender ?
-                      <div className="h-16 w-16 cursor-pointer aspect-square"
-                      // onClick={router.replace( '/prestadores/' + lender?.Slug )}
-                      >
-                        <BackgroundLetterAvatars fontSize='large' firtsName={lender?.firstName} lastName={lender?.lastName} />
-                      </div>
+                      <Link href={{
+                        pathname: '/[userSlug]',
+                        query: { userSlug: lender?.Slug, },
+                      }} >
+                        <a className="h-16 w-16 cursor-pointer aspect-square"
+                        // onClick={router.replace( '/prestadores/' + lender?.Slug )}
+                        >
+                          <BackgroundLetterAvatars fontSize='large' firtsName={lender?.firstName} lastName={lender?.lastName} />
+                        </a>
+                      </Link>
                       :
 
                       <> </>
@@ -53,8 +61,8 @@ const Card = ({ lender, authUser, slug }) => {
 
             <div className="flex flex-col ml-1">
               <Link href={{
-                pathname: '/prestadores/[lenderSlug]',
-                query: { lenderSlug: lender?.Slug, },
+                pathname: '/[userSlug]',
+                query: { userSlug: lender?.Slug, },
               }} >
                 <a>
                   <div className="flex justify-between text-sm ml-1">
