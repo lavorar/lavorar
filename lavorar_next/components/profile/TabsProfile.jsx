@@ -14,7 +14,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function TabsProfile({ authUser, review, lender, userReview, user }) {
+export default function TabsProfile({ authUser, review, lender, userReview, user, selectedIndex, setselectedIndex }) {
     const [userClient, setuserClient] = useState(user)
     const router = useRouter()
     let today = moment(new Date())
@@ -68,12 +68,12 @@ export default function TabsProfile({ authUser, review, lender, userReview, user
         setuserClient(userProfile[0]);
     }
 
-    useEffect(() => {
-        getUserQuery()
-        if (selectedIndex !== 0) {
-            setSelectedIndex(0)
-        }
-    }, [user])
+    // useEffect(() => {
+    //     getUserQuery()
+    //     if (selectedIndex !== 0) {
+    //         setSelectedIndex(0)
+    //     }
+    // }, [user])
 
     // useEffect(() => {
     //     getUserQuery()
@@ -82,11 +82,12 @@ export default function TabsProfile({ authUser, review, lender, userReview, user
     //     }
     // }, [router.query])
 
-    const [selectedIndex, setSelectedIndex] = useState(0)
+
+    console.log('selectedIndex tabs', selectedIndex)
 
     return (
         <div className="w-full py-4 sm:px-0 ">
-            <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex} >
+            <Tab.Group selectedIndex={selectedIndex} onChange={setselectedIndex} >
                 <Tab.List className="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
                     <Tab className={({ selected }) =>
                         classNames(

@@ -84,9 +84,11 @@ const Profile = ({ user, userNoAuth, userReview }) => {
 
     useEffect(() => {
         console.log('render')
+        console.log(selectedIndex)
         getUserQuery()
+        setselectedIndex(0)
     }, [router.query])
-
+    const [selectedIndex, setselectedIndex] = useState(0)
     const Modal = useMemo(() => {
 
         return (<ModalEditProfile isOpen={isOpen}
@@ -202,7 +204,7 @@ const Profile = ({ user, userNoAuth, userReview }) => {
 
             </div>
 
-            <TabsProfile authUser={user} user={userClient} userReview={userReview} />
+            <TabsProfile authUser={user} selectedIndex={selectedIndex} setselectedIndex={setselectedIndex} user={userClient} userReview={userReview} />
         </Layout>
     );
 };
