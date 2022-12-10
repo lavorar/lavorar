@@ -23,8 +23,8 @@ const RatingsComponent = ({ authUser, user, userReview }) => {
             })
     }
     const [reviewUserAuth, setReviewUserAuth] = useState(userReview)
-    console.log('reviewUserAuth', reviewUserAuth)
-    console.log('user', user)
+    // console.log('reviewUserAuth', reviewUserAuth)
+    // console.log('user', user)
     const queryRatings = useQuery(['ratings'], getRatings, {
         staleTime: 1
     })

@@ -93,11 +93,11 @@ const Header = ({ user }) => {
           setunreadNotifications(notifications => [data, ...notifications])
         }
       });
-
+      if (socket.readyState === 1) { // <-- This is important
+        socket.close();
+      }
     });
-    return () => {
-      socket.disconnect();
-    }
+
   }, [])
   useEffect(() => {
     const socket = io(SERVER_URL, {
@@ -120,10 +120,13 @@ const Header = ({ user }) => {
           })
         )
       }
+      return () => {
+        if (socket.readyState === 1) { // <-- This is important
+          socket.close();
+        }
+      }
     });
-    return () => {
-      socket.disconnect();
-    }
+
   }, [])
 
   const handleOpenNotification = () => {
@@ -403,7 +406,7 @@ const Header = ({ user }) => {
           </ul>
         </div>
         <div className="container flex justify-between md:justify-end h-auto w-full items-center mx-auto px-2">
-          <DropdownFilter/>
+          <DropdownFilter />
         </div>
 
       </nav>

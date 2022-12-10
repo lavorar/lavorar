@@ -70,13 +70,17 @@ export default function TabsProfile({ authUser, review, lender, userReview, user
 
     useEffect(() => {
         getUserQuery()
-        setSelectedIndex(0)
+        if (selectedIndex !== 0) {
+            setSelectedIndex(0)
+        }
     }, [user])
 
-    useEffect(() => {
-        getUserQuery()
-        setSelectedIndex(0)
-    }, [router.query])
+    // useEffect(() => {
+    //     getUserQuery()
+    //     if (selectedIndex !== 0) {
+    //         setSelectedIndex(0)
+    //     }
+    // }, [router.query])
 
     const [selectedIndex, setSelectedIndex] = useState(0)
 

@@ -29,7 +29,7 @@ const Profile = ({ user, userNoAuth, userReview }) => {
         },
         staleTime: Infinity,
     });
-    console.log(queryprovinces)
+    // console.log(queryprovinces)
     const router = useRouter();
     const [userClient, setuserClient] = useState(userNoAuth);
     const [image, setImage] = useState(userClient?.avatar ? `/f_auto,q_auto,w_150,h_150/v${userClient?.avatar}` : null);

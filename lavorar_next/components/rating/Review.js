@@ -13,8 +13,8 @@ const Review = ({ review, user, setReviewUserAuth, lender, authUser, setreviews 
     const jwt = getTokenFromLocalCookie()    
     const { user: userAuthent } = useUser()
     let [userSlug, setuserSlug] = useState(userAuthent? userAuthent.Slug : null)
-    console.log('userAuthent', userAuthent)
-    console.log('review', review)
+    // console.log('userAuthent', userAuthent)
+    // console.log('review', review)
     function formatMyDate(value, locale = 'en-es') {
         return new Date(value).toLocaleDateString(locale);
     }

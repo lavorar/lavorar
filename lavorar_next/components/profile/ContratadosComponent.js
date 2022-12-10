@@ -135,7 +135,7 @@ const ContratadosComponent = ({ authUser, user, services }) => {
                                         serv?.review ?
                                             <Review authUser={authUser} lender={serv.lender} user={user} review={serv?.review} setReviewUserAuth={handlereview} setreviews={handlereview} />
                                             :
-                                            authUser.Slug === router.query.userSlug ?
+                                            authUser?.Slug === router.query.userSlug ?
                                                 <RatingForm lender={serv.lender} user={user} setreviews={handlereview} setReviewUserAuth={handlereview} />
                                                 :
                                                 <div className='flex justify-center'>{user.name + ' aun no ha reseñado a ' + serv.lender.name} </div>
