@@ -78,7 +78,7 @@ const HomeSearchBar = (props) => {
             ...styles,
             boxShadow: '0px 0px 0px 0px rgb(0 170 225)',
             borderWidth: '0',
-            backgroundColor: 'rgb(0 0 0 0)',
+            backgroundColor: 'rgb(0 0 0 0 0)',
             color: 'rgb(255 255 255)',
             '&:hover': {
                 boxShadow: '0px 0px 0px 0px rgb(0 170 225)',
@@ -208,7 +208,7 @@ const HomeSearchBar = (props) => {
 
     return (
         <form onSubmit={handleSubmit(search)} className='max-w-5xl mt-8 h-44 md:h-auto w-full'>
-            <div className="inline-flex md:flex-row gap-y-4 flex-col items-center text-gray-300 justify-between p-5 md:pl-5 md:pr-1 shadow md:border-2 h-full md:h-16 w-full py-1 md:rounded-full border-gray-900 dark:border-gray-200" >
+            <div className="inline-flex md:flex-row gap-y-4 flex-col items-center bg-transparent text-gray-300 justify-between p-5 md:pl-5 md:pr-1  md:border-2 h-full md:h-16 w-full py-1 md:rounded-full border-gray-900 dark:border-gray-200" >
                 <div
                     className='flex flex-col justify-center w-full md:w-1/2 h-full  border-gray-900 rounded-full dark:border-white-ghost border md:border-0 md:rounded-none  md:mr-2 text-black dark:text-white-ghost'
                 >
