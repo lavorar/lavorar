@@ -15,10 +15,9 @@ function classNames(...classes) {
 }
 
 export default function TabsProfile({ authUser, review, lender, userReview, user, selectedIndex, setselectedIndex }) {
-    const [userClient, setuserClient] = useState(user)
     const router = useRouter()
     let today = moment(new Date())
-    let years = today.diff(moment(userClient?.birth), 'years')
+    let years = today.diff(moment(user?.birth), 'years')
 
     let [isOpen, setIsOpen] = useState(false)
     // function closeModal() {
@@ -98,7 +97,7 @@ export default function TabsProfile({ authUser, review, lender, userReview, user
                                 : 'text-gray-900 dark:text-gray-100 hover:bg-white/[0.12] hover:text-blue-700 dark:hover:text-orange-dark'
                         )
                     } >Mas Informacion</Tab>
-                    {userClient.role.id === 3 && <Tab className={({ selected }) =>
+                    {user.role.id === 3 && <Tab className={({ selected }) =>
                         classNames(
                             'w-full rounded-lg py-2.5 text-sm font-medium leading-5',
                             'ring-white   focus:outline-none ',
@@ -124,26 +123,26 @@ export default function TabsProfile({ authUser, review, lender, userReview, user
                         'ring-white focus:outline-none '
                     )}>
                         <div className='flex flex-col mt-4'>
-                            {userClient ?
+                            {user ?
 
                                 <div className='flex flex-col rounded-t-xl bg-gray-300 dark:bg-gray-700  ' >
                                     <div className='flex flex-col items-center lg:items-baseline relative gap-2 border-b dark:border-gray-400 border-gray-500 p-2'>
 
 
                                         <span className="  pt-2 mx-2  mb-1 px-1 text-base font-medium ">
-                                            {userClient.aboutme ? userClient.aboutme : 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumend    laboriosam, quod aut officiis ea deleniti repellat nisi delectus magnam reiciendis?'}
+                                            {user.aboutme ? user.aboutme : 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumend    laboriosam, quod aut officiis ea deleniti repellat nisi delectus magnam reiciendis?'}
                                         </span>
                                     </div>
 
                                     <div className='flex p-5 flex-col '>
-                                        {userClient?.role.id === 3 &&
+                                        {user?.role.id === 3 &&
                                             <div className='flex flex-row gap-20  py-3 justify-start items-center'>
                                                 <span>
                                                     Categoria
                                                 </span>
                                                 <div className='flex flex-wrap'>
-                                                    {userClient.categories ?
-                                                        userClient.categories.map((categorie) => (
+                                                    {user.categories ?
+                                                        user.categories.map((categorie) => (
                                                             <ButtonCard key={categorie.id} href={'/buscar/' + categorie?.Slug} text={categorie.name} />
                                                         ))
                                                         :
@@ -172,18 +171,18 @@ export default function TabsProfile({ authUser, review, lender, userReview, user
                                 </>}
 
                         </div>
-                        {<DescriptionProfile authUser={authUser} user={userClient} lender={lender} />}
+                        {<DescriptionProfile authUser={authUser} user={user} lender={lender} />}
                     </Tab.Panel>
-                    {userClient.role.id === 3 && <Tab.Panel className={classNames(
+                    {user.role.id === 3 && <Tab.Panel className={classNames(
                         'rounded-xl ',
                         'ring-white focus:outline-none '
-                    )}> <RatingsComponent authUser={authUser} user={userClient} userReview={userReview} />
+                    )}> <RatingsComponent authUser={authUser} user={user} userReview={userReview} />
                     </Tab.Panel>}
                     <Tab.Panel className={classNames(
                         '  ',
                         'ring-white focus:outline-none '
                     )}>
-                        <ContratadosComponent authUser={authUser} services={userClient.service_recruiters} user={userClient} />
+                        <ContratadosComponent authUser={authUser} services={user.service_recruiters} user={user} />
                     </Tab.Panel>
                 </Tab.Panels>
             </Tab.Group>
