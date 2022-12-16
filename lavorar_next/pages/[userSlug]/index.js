@@ -22,6 +22,15 @@ import { getProvincesArgentina } from '../../components/SingUp/LenderOptions';
 
 const Profile = ({ user, userNoAuth, userReview }) => {
 
+    if(userNoAuth === null){
+        return (
+            <Layout user={user}>
+
+                <h1>No existe este usuario</h1>
+                 </Layout>
+        )
+    }
+
     const [provincesOptions, setprovincesOptions] = useState([]);
     const queryprovinces = useQuery(['provinces'], getProvincesArgentina, {
         onSettled: (data) => {
@@ -140,7 +149,7 @@ const Profile = ({ user, userNoAuth, userReview }) => {
                             }
                             <div className="lg:-mt-8 flex flex-col justify-self-start">
                                 <div className="text-3xl text-center lg:text-left ">
-                                    {userClient.name}
+                                    {userClient?.name}
                                     <VerifiedIcon sx={{ fontSize: 30 }} className="ml-2" />
                                 </div>
                                 <div className="flex justify-center text-md text-center lg:justify-start items-center  lg:items-start pt-2">
@@ -158,13 +167,13 @@ const Profile = ({ user, userNoAuth, userReview }) => {
                         </div>
                         <div className="flex lg:justify-end py-2 items-center">
                             {user ?
-                                user.id === userClient.id ?
+                                user.id === userClient?.id ?
                                     <></>
                                     :
                                     <HireLender authUser={user} lender={userClient} />
                                 :
                                 <></>}
-                            {userClient.phone && user?.id !== userClient.id &&
+                            {userClient?.phone && user?.id !== userClient.id &&
                                 <div>
                                     <Link href={'https://api.whatsapp.com/send?phone=' + userClient?.phone} >
                                         <button
@@ -249,10 +258,10 @@ export async function getServerSideProps({ req, query }) {
     const userProfile = await fetcher(
         `${process.env.NEXT_PUBLIC_STRAPI_URL}/users?${queryuser}`
     );
-    if (!jwt) {
+    if (!jwt ) {
         return {
             props: {
-                userNoAuth: userProfile[0],
+                userNoAuth: userProfile[0] || null,
             },
         };
     } else {

@@ -20,7 +20,7 @@ module.exports = ({ env }) => ({
         "enabled": true,
         "config": {
             "IOServerOptions": {                               
-                "cors": { "origin": ["https://lavorar-beta.vercel.app", "http://localhost:3000"], "methods": ["GET", "POST"] },
+                "cors": { "origin": ["https://laborar.vercel.app", "http://localhost:3000"], "methods": ["GET", "POST"] },
             },
             "contentTypes": {
                 "notification": '*',

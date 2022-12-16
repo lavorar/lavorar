@@ -1,5 +1,4 @@
 import { useFetchUser } from '../lib/AuthContext';
-import Layout from '../components/Layouts/mainLayout';
 import LoginComponent from '../components/SingUp/LoginComponent';
 import { getTokenFromServerCookie } from '../lib/auth';
 import SignUpLayout from '../components/Layouts/SignUpLayout';
